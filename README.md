@@ -25,10 +25,10 @@ cd ios
 
 ## Team
 
-- **Technical Lead:** [Your Name]
-- **Backend Engineer:** [Name]
-- **iOS Engineer:** [Name]
-- **Product Managers:** [Names]
+- **Technical Lead:** Jesse Hernandez
+- **Backend Engineer:** Rosario Miller
+- **iOS Engineer/UX/UI Designer:** Claudio Trejo
+- **Product Managers:** Elian Lopez & Jaime Arias
 
 ## Demo Date
 

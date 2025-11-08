@@ -1,0 +1,56 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual Environments
+venv/
+env/
+ENV/
+backend/venv/
+
+# Environment variables
+.env
+backend/.env
+
+# Uploaded files
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# Generated audio
+backend/generated/podcasts/*
+!backend/generated/podcasts/.gitkeep
+backend/generated/answers/*
+!backend/generated/answers/.gitkeep
+
+# Chroma database
+backend/chroma_db/
+
+# iOS
+ios/DerivedData/
+ios/build/
+*.xcuserstate
+*.xcworkspace
+!*.xcworkspace/contents.xcworkspacedata
+!*.xcworkspace/xcshareddata/
+ios/*.xcodeproj/*
+!ios/*.xcodeproj/project.pbxproj
+!ios/*.xcodeproj/xcshareddata/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
