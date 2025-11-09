@@ -6,8 +6,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from config.settings import PODCAST_DIR, ANSWER_DIR, ENVIRONMENT, HOST, PORT
 
-# Import route modules (we'll create these next)
-# from api.routes import documents, podcasts, questions
+# Import route modules
+from api.routes import documents, podcasts, questions
 
 # Create FastAPI app
 app = FastAPI(
@@ -30,10 +30,10 @@ app.add_middleware(
 app.mount("/generated/podcasts", StaticFiles(directory=PODCAST_DIR), name="podcasts")
 app.mount("/generated/answers", StaticFiles(directory=ANSWER_DIR), name="answers")
 
-# Include API routes (we'll uncomment these after creating the route files)
-# app.include_router(documents.router, prefix="/api/documents", tags=["documents"])
-# app.include_router(podcasts.router, prefix="/api/podcasts", tags=["podcasts"])
-# app.include_router(questions.router, prefix="/api/questions", tags=["questions"])
+# Include API routes
+app.include_router(documents.router, prefix="/api/documents", tags=["documents"])
+app.include_router(podcasts.router, prefix="/api/podcasts", tags=["podcasts"])
+app.include_router(questions.router, prefix="/api/questions", tags=["questions"])
 
 
 @app.get("/")
