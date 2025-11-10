@@ -104,7 +104,7 @@ ai-interactive-podcast/
 ### Clone the Repository
 ```bash
 # Clone the repo
-git clone https://github.com/[your-username]/ai-interactive-podcast.git
+git clone https://github.com/jdez23/ai-interactive-podcast.git
 
 # Navigate into the project
 cd ai-interactive-podcast
