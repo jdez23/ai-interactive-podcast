@@ -55,7 +55,7 @@ ai-interactive-podcast/
 │   ├── uploads/                 # Uploaded documents (gitignored)
 │   └── generated/               # Generated audio files (gitignored)
 └── frontend/                    # Frontend applications
-    └── ios/                     # Swift/SwiftUI iOS app
+    └── AIPodcast/                     # Swift/SwiftUI iOS app
         ├── README.md            # iOS overview
         ├── SETUP.md             # Step-by-step setup guide
         ├── AIPodcast.xcodeproj/ # Xcode project file
@@ -75,9 +75,8 @@ ai-interactive-podcast/
 |------|------------------|
 | **Technical Lead** | Architecture, code reviews, integration, technical decisions |
 | **Backend Engineer** | Python/FastAPI, document processing, podcast generation, Q&A |
-| **iOS Engineer** | SwiftUI, audio playback, UI/UX, speech recognition |
-| **Product Manager #1** | Market research, competitive analysis, business case |
-| **Product Manager #2** | Presentation deck, demo script, logistics |
+| **Frontend/iOS Engineer** | SwiftUI, audio playback, UI/UX, speech recognition |
+| **Project Managers** | Market research, competitive analysis, business case, presentation deck, demo script, logistics |
 
 ---
 
@@ -146,7 +145,7 @@ python main.py
 ### iOS Setup
 ```bash
 # Navigate to iOS directory
-cd frontend/ios
+cd frontend/AIPodcast
 
 # Open project in Xcode
 open AIPodcast.xcodeproj
@@ -161,7 +160,7 @@ xed .
 # 3. Press ⌘+R to build and run
 ```
 
-**Full instructions:** See [frontend/ios/SETUP.md](frontend/ios/SETUP.md)
+**Full instructions:** See [frontend/AIPodcast/SETUP.md](frontend/AIPodcast/SETUP.md)
 
 **Note:** Make sure backend server is running before launching iOS app!
 
@@ -195,7 +194,7 @@ xed .
 
 ### Setup Guides
 - **[Backend Setup](backend/SETUP.md)** - Detailed backend setup instructions
-- **[iOS Setup](frontend/ios/SETUP.md)** - Detailed iOS setup instructions
+- **[iOS Setup](frontend/AIPodcast/SETUP.md)** - Detailed iOS setup instructions
 
 ### Project Management
 - **Project Hub (Google Doc)** - [Link] - Sprint timeline, tickets, meeting notes

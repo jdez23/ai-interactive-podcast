@@ -13,7 +13,7 @@ SwiftUI iOS application for the AI Interactive Podcast platform.
 See [SETUP.md](SETUP.md) for detailed setup instructions.
 ```bash
 # From project root
-cd frontend/ios
+cd frontend/AIPodcast
 
 # Open in Xcode
 open AIPodcast.xcodeproj

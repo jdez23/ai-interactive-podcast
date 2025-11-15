@@ -436,9 +436,9 @@ deactivate
 
 ### Stuck for more than 20-30 minutes?
 
-Don't spin your wheels! Ask for help:
+Ask for help:
 
-**1. Post in Slack (#apprentice-ai-podcast):**
+**1. Post in Slack (#proj-four_thirty):**
 
 Good question format:
 ```

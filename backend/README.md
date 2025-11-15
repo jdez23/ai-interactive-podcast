@@ -97,4 +97,4 @@ While server is running, visit: http://localhost:8000/docs
 
 - Check [SETUP.md](SETUP.md) for detailed setup guide
 - Post in #apprentice-ai-podcast group chat
-- Reach out to Jesse Hernandez
+- Reach out to Jesse

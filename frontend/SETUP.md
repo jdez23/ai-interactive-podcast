@@ -32,10 +32,10 @@ xcodebuild -version
 
 ## Setup Steps
 
-### Step 1: Navigate to iOS Directory
+### Step 1: Navigate to AIPodcast Directory
 ```bash
 # From project root
-cd frontend/ios
+cd frontend/AIPodcast
 ```
 
 ### Step 2: Open Project in Xcode
@@ -218,7 +218,7 @@ python main.py
 ### Daily Workflow
 ```bash
 # 1. Navigate to iOS directory
-cd frontend/ios
+cd frontend/AIPodcast
 
 # 2. Open Xcode
 open AIPodcast.xcodeproj
@@ -327,7 +327,7 @@ Once app is running:
 
 ### Stuck for 30+ minutes?
 
-**Post in Slack (#apprentice-ai-podcast):**
+**Post in Slack (#proj-four_thirty):**
 ```
 I'm trying to: [what you want to do]
 I'm seeing: [error message or unexpected behavior]
@@ -353,4 +353,4 @@ Screenshot: [if helpful]
 
 ---
 
-*This guide is for apprentice engineers. If something is unclear, let [Your Name] know!*
+*This guide is for apprentice engineers. If something is unclear, let Jesse know!*
