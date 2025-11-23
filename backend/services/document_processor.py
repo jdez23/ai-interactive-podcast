@@ -11,32 +11,20 @@ This module handles:
 from pathlib import Path
 from typing import List
 
-# TODO: Import required libraries
-# import PyPDF2
-# from langchain.text_splitter import RecursiveCharacterTextSplitter
-# from database.vector_store import store_document_chunks
-# from config.settings import CHUNK_SIZE, CHUNK_OVERLAP
-
+import PyPDF2 
+from langchain.text_splitter import RecursiveCharacterTextSplitter 
+from database.vector_store import store_document_chunks 
+from config.settings import CHUNK_SIZE, CHUNK_OVERLAP
 
 def extract_text_from_pdf(pdf_path: Path) -> str:
     """
     Extract text content from a PDF file.
     
-    TODO - Backend Engineer Tasks:
-    1. Open PDF using PyPDF2.PdfReader
-    2. Loop through all pages
-    3. Extract text from each page
-    4. Combine into single string
-    5. Return extracted text
-    
     Args:
         pdf_path: Path to PDF file
         
     Returns:
-        Extracted text as a single string
-        
-    Raises:
-        ValueError: If PDF is empty or unreadable
+        Extracted text as a single string, or empty string if file is unreadable
         
     Example:
         text = extract_text_from_pdf(Path("document.pdf"))
@@ -44,15 +32,23 @@ def extract_text_from_pdf(pdf_path: Path) -> str:
     Resources:
         - PyPDF2 docs: https://pypdf2.readthedocs.io/
     """
-    # TODO: Implement PDF text extraction
-    # Hints:
-    # with open(pdf_path, "rb") as file:
-    #     pdf_reader = PyPDF2.PdfReader(file)
-    #     for page in pdf_reader.pages:
-    #         text += page.extract_text()
-    
-    raise NotImplementedError("TODO: Implement PDF text extraction")
+    try:
+        text = ""
+        with open(pdf_path, "rb") as file:
+            pdf_reader = PyPDF2.PdfReader(file)
+            for page in pdf_reader.pages:
+                text += page.extract_text() + "\n\n"
 
+        if not text.strip():
+            return ""
+
+        return text.strip()
+
+    except FileNotFoundError:
+        return ""
+    except Exception as e:
+        print(f"Error extracting PDF: {e}")
+        return ""
 
 def chunk_text(text: str, chunk_size: int = 500, chunk_overlap: int = 50) -> List[str]:
     """
@@ -79,17 +75,11 @@ def chunk_text(text: str, chunk_size: int = 500, chunk_overlap: int = 50) -> Lis
     Resources:
         - LangChain text splitters: https://python.langchain.com/docs/modules/data_connection/document_transformers/
     """
-    # TODO: Implement text chunking
-    # Hints:
-    # from langchain.text_splitter import RecursiveCharacterTextSplitter
-    # splitter = RecursiveCharacterTextSplitter(
-    #     chunk_size=chunk_size,
-    #     chunk_overlap=chunk_overlap
-    # )
-    # return splitter.split_text(text)
-    
-    raise NotImplementedError("TODO: Implement text chunking")
-
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=chunk_size,
+        chunk_overlap=chunk_overlap
+    )
+    return splitter.split_text(text)
 
 async def process_document(document_id: str, file_path: Path) -> int:
     """
@@ -115,12 +105,9 @@ async def process_document(document_id: str, file_path: Path) -> int:
     This is the Main Function that ties everything together.
     Called by api/routes/documents.py after file upload.
     """
-    # TODO: Implement complete document processing pipeline
-    # Steps:
-    # 1. text = extract_text_from_pdf(file_path)
-    # 2. if not text or len(text) < 100: raise ValueError("Document too short")
-    # 3. chunks = chunk_text(text)
-    # 4. await store_document_chunks(document_id, chunks)
-    # 5. return len(chunks)
-    
-    raise NotImplementedError("TODO: Implement document processing pipeline")
+    text = extract_text_from_pdf(file_path)
+    if not text or len(text) < 100: 
+        raise ValueError("Document too short")
+    chunks = chunk_text(text)
+    await store_document_chunks(document_id, chunks)
+    return len(chunks)

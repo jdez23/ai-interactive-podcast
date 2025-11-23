@@ -5,6 +5,8 @@ This module handles PDF document uploads and processing.
 Backend engineer should implement the actual upload and processing logic.
 """
 
+from services.document_processor import process_document
+from config.settings import UPLOAD_DIR
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from pathlib import Path
 import uuid
@@ -16,13 +18,6 @@ router = APIRouter()
 async def upload_document(file: UploadFile = File(...)):
     """
     Upload a PDF document for processing.
-    
-    TODO - Backend Engineer Tasks:
-    1. Validate file type (must be PDF)
-    2. Generate unique document_id
-    3. Save file to uploads directory
-    4. Call document_processor.process_document()
-    5. Return document metadata
     
     Args:
         file: Uploaded PDF file
@@ -37,26 +32,44 @@ async def upload_document(file: UploadFile = File(...)):
         
     Raises:
         HTTPException: If file is not PDF or processing fails
-        
-    See Also:
-        - services/document_processor.py for processing logic
-        - config/settings.py for UPLOAD_DIR path
     """
-    # TODO: Implement document upload
-    # Hints:
-    # - Check file.filename.endswith('.pdf')
-    # - Use uuid to generate document_id
-    # - Save file to config.settings.UPLOAD_DIR
-    # - Call await process_document(document_id, file_path)
+    # Validate file type
+    if not file.filename.endswith('.pdf'):
+        raise HTTPException(
+            status_code=400, 
+            detail="Only PDF files are allowed"
+        )
     
-    # STUB: Return placeholder response
-    return {
-        "document_id": "doc_stub_123",
-        "filename": file.filename,
-        "status": "stub_implementation",
-        "chunks_count": 0,
-        "message": "TODO: Implement actual document processing"
-    }
+    try:
+        # Generate unique document ID
+        document_id = f"doc_{uuid.uuid4().hex[:12]}"
+        file_path = UPLOAD_DIR / f"{document_id}.pdf"
+        
+        # Save uploaded file
+        content = await file.read()
+        with open(file_path, "wb") as f:
+            f.write(content)
+        
+        # Process document
+        chunks_count = await process_document(document_id, file_path)
+        
+        return {
+            "document_id": document_id,
+            "filename": file.filename,
+            "status": "processed",
+            "chunks_count": chunks_count,
+        }
+        
+    except ValueError as e:
+        # Document processing errors (e.g., "Document too short")
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        # Unexpected errors
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Failed to process document: {str(e)}"
+        )
+
 
 
 @router.get("/list")
