@@ -50,7 +50,7 @@ def extract_text_from_pdf(pdf_path: Path) -> str:
         print(f"Error extracting PDF: {e}")
         return ""
 
-def chunk_text(text: str, chunk_size: int = 500, chunk_overlap: int = 50) -> List[str]:
+def chunk_text(text: str, chunk_size: int = CHUNK_SIZE, chunk_overlap: int = CHUNK_OVERLAP) -> List[str]:
     """
     Split text into manageable chunks for processing.
     
@@ -75,11 +75,17 @@ def chunk_text(text: str, chunk_size: int = 500, chunk_overlap: int = 50) -> Lis
     Resources:
         - LangChain text splitters: https://python.langchain.com/docs/modules/data_connection/document_transformers/
     """
+    if not text or not text.strip():
+        return []
+
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=chunk_size,
-        chunk_overlap=chunk_overlap
+        chunk_overlap=chunk_overlap,
+        separators=["\n\n", "\n", " ", ""]
     )
-    return splitter.split_text(text)
+    
+    chunks = splitter.split_text(text)
+    return chunks
 
 async def process_document(document_id: str, file_path: Path) -> int:
     """
