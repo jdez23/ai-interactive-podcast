@@ -7,16 +7,38 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		02F20AC42EDA422C00062E4E /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F20AC22EDA422C00062E4E /* Question.swift */; };
+		02F20AC52EDA422C00062E4E /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F20AC02EDA422C00062E4E /* Document.swift */; };
+		02F20AC62EDA422C00062E4E /* Podcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F20AC12EDA422C00062E4E /* Podcast.swift */; };
 		C590EEA52EC81B9E007D62CC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C590EEA22EC81B9E007D62CC /* ContentView.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		024E6FD32EDA363D00D0D3DE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C590EE8A2EC81A11007D62CC /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C590EE912EC81A11007D62CC;
+			remoteInfo = AIPodcast;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		024E6FCF2EDA363D00D0D3DE /* AIPodcastTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AIPodcastTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		02F20AC02EDA422C00062E4E /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
+		02F20AC12EDA422C00062E4E /* Podcast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Podcast.swift; sourceTree = "<group>"; };
+		02F20AC22EDA422C00062E4E /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
 		C590EE922EC81A11007D62CC /* AIPodcast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AIPodcast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C590EEA22EC81B9E007D62CC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C590EEAC2EC81D37007D62CC /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		024E6FD02EDA363D00D0D3DE /* AIPodcastTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = AIPodcastTests;
+			sourceTree = "<group>";
+		};
 		C590EE942EC81A11007D62CC /* AIPodcast */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = AIPodcast;
@@ -25,6 +47,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		024E6FCC2EDA363D00D0D3DE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C590EE8F2EC81A11007D62CC /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -35,15 +64,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		02F20AC32EDA422C00062E4E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				02F20AC02EDA422C00062E4E /* Document.swift */,
+				02F20AC12EDA422C00062E4E /* Podcast.swift */,
+				02F20AC22EDA422C00062E4E /* Question.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		C590EE892EC81A11007D62CC = {
 			isa = PBXGroup;
 			children = (
+				02F20AC32EDA422C00062E4E /* Models */,
 				C590EEAA2EC81BE0007D62CC /* Utils */,
 				C590EEA92EC81BDB007D62CC /* Services */,
-				C590EEA82EC81BD6007D62CC /* Models */,
 				C590EEA72EC81BC8007D62CC /* ViewModels */,
 				C590EEA62EC81BBC007D62CC /* Views */,
 				C590EE942EC81A11007D62CC /* AIPodcast */,
+				024E6FD02EDA363D00D0D3DE /* AIPodcastTests */,
 				C590EE932EC81A11007D62CC /* Products */,
 			);
 			sourceTree = "<group>";
@@ -52,6 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				C590EE922EC81A11007D62CC /* AIPodcast.app */,
+				024E6FCF2EDA363D00D0D3DE /* AIPodcastTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -69,13 +110,6 @@
 			children = (
 			);
 			path = ViewModels;
-			sourceTree = "<group>";
-		};
-		C590EEA82EC81BD6007D62CC /* Models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 		C590EEA92EC81BDB007D62CC /* Services */ = {
@@ -96,6 +130,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		024E6FCE2EDA363D00D0D3DE /* AIPodcastTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 024E6FD72EDA363D00D0D3DE /* Build configuration list for PBXNativeTarget "AIPodcastTests" */;
+			buildPhases = (
+				024E6FCB2EDA363D00D0D3DE /* Sources */,
+				024E6FCC2EDA363D00D0D3DE /* Frameworks */,
+				024E6FCD2EDA363D00D0D3DE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				024E6FD42EDA363D00D0D3DE /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				024E6FD02EDA363D00D0D3DE /* AIPodcastTests */,
+			);
+			name = AIPodcastTests;
+			packageProductDependencies = (
+			);
+			productName = AIPodcastTests;
+			productReference = 024E6FCF2EDA363D00D0D3DE /* AIPodcastTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		C590EE912EC81A11007D62CC /* AIPodcast */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C590EE9D2EC81A15007D62CC /* Build configuration list for PBXNativeTarget "AIPodcast" */;
@@ -128,6 +185,10 @@
 				LastSwiftUpdateCheck = 2610;
 				LastUpgradeCheck = 2610;
 				TargetAttributes = {
+					024E6FCE2EDA363D00D0D3DE = {
+						CreatedOnToolsVersion = 26.1.1;
+						TestTargetID = C590EE912EC81A11007D62CC;
+					};
 					C590EE912EC81A11007D62CC = {
 						CreatedOnToolsVersion = 26.1;
 					};
@@ -148,11 +209,19 @@
 			projectRoot = "";
 			targets = (
 				C590EE912EC81A11007D62CC /* AIPodcast */,
+				024E6FCE2EDA363D00D0D3DE /* AIPodcastTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		024E6FCD2EDA363D00D0D3DE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C590EE902EC81A11007D62CC /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -163,17 +232,80 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		024E6FCB2EDA363D00D0D3DE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C590EE8E2EC81A11007D62CC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02F20AC42EDA422C00062E4E /* Question.swift in Sources */,
+				02F20AC52EDA422C00062E4E /* Document.swift in Sources */,
+				02F20AC62EDA422C00062E4E /* Podcast.swift in Sources */,
 				C590EEA52EC81B9E007D62CC /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		024E6FD42EDA363D00D0D3DE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C590EE912EC81A11007D62CC /* AIPodcast */;
+			targetProxy = 024E6FD32EDA363D00D0D3DE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		024E6FD52EDA363D00D0D3DE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.examplet.AIPodcastTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AIPodcast.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AIPodcast";
+			};
+			name = Debug;
+		};
+		024E6FD62EDA363D00D0D3DE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.1;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.examplet.AIPodcastTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AIPodcast.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AIPodcast";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		C590EE9B2EC81A15007D62CC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -297,7 +429,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = RZU677VZM4;
+				DEVELOPMENT_TEAM = C67Q8HDBL9;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -342,7 +474,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = RZU677VZM4;
+				DEVELOPMENT_TEAM = C67Q8HDBL9;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -383,6 +515,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		024E6FD72EDA363D00D0D3DE /* Build configuration list for PBXNativeTarget "AIPodcastTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				024E6FD52EDA363D00D0D3DE /* Debug */,
+				024E6FD62EDA363D00D0D3DE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		C590EE8D2EC81A11007D62CC /* Build configuration list for PBXProject "AIPodcast" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
