@@ -9,12 +9,16 @@ This module handles:
 """
 
 from pathlib import Path
-from typing import List
+from typing import List, Dict
+import logging
 
-import PyPDF2 
-from langchain.text_splitter import RecursiveCharacterTextSplitter 
-from database.vector_store import store_document_chunks 
+import PyPDF2
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from database.vector_store import store_document_chunks
 from config.settings import CHUNK_SIZE, CHUNK_OVERLAP
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 def extract_text_from_pdf(pdf_path: Path) -> str:
     """
@@ -87,23 +91,20 @@ def chunk_text(text: str, chunk_size: int = CHUNK_SIZE, chunk_overlap: int = CHU
     chunks = splitter.split_text(text)
     return chunks
 
-async def process_document(document_id: str, file_path: Path) -> int:
+async def process_document(document_id: str, file_path: Path) -> Dict[str, any]:
     """
     Process a document: extract text, chunk, embed, and store.
-    
-    TODO - Backend Engineer Tasks:
-    1. Call extract_text_from_pdf()
-    2. Validate text is not empty
-    3. Call chunk_text()
-    4. Call database.vector_store.store_document_chunks()
-    5. Return number of chunks created
     
     Args:
         document_id: Unique identifier for the document
         file_path: Path to the uploaded PDF
         
     Returns:
-        Number of chunks created
+        {
+            "chunks_count": int,
+            "status": "success" | "failed",
+            "error": str (only if failed)
+        }
         
     Raises:
         ValueError: If document is empty or processing fails
@@ -111,9 +112,32 @@ async def process_document(document_id: str, file_path: Path) -> int:
     This is the Main Function that ties everything together.
     Called by api/routes/documents.py after file upload.
     """
+    logger.info(f"Processing document {document_id} from {file_path.name}")
+    
     text = extract_text_from_pdf(file_path)
-    if not text or len(text) < 100: 
-        raise ValueError("Document too short")
+    if not text or len(text) < 100:
+        logger.error(f"Document {document_id} is too short or empty")
+        raise ValueError("Document too short or empty")
+    
+    logger.info(f"Extracted {len(text)} characters from {file_path.name}")
+    
     chunks = chunk_text(text)
-    await store_document_chunks(document_id, chunks)
-    return len(chunks)
+    logger.info(f"Created {len(chunks)} chunks from document {document_id}")
+    
+    storage_result = await store_document_chunks(
+        document_id=document_id,
+        chunks=chunks,
+        source=file_path.name
+    )
+    
+    if storage_result["status"] == "failed":
+        error_msg = f"Failed to store document chunks: {storage_result.get('error', 'Unknown error')}"
+        logger.error(error_msg)
+        raise ValueError(error_msg)
+    
+    logger.info(f"Successfully processed document {document_id}: {storage_result['chunks_stored']} chunks stored")
+    
+    return {
+        "chunks_count": storage_result["chunks_stored"],
+        "status": storage_result["status"]
+    }

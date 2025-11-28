@@ -33,7 +33,6 @@ async def upload_document(file: UploadFile = File(...)):
     Raises:
         HTTPException: If file is not PDF or processing fails
     """
-    # Validate file type
     if not file.filename.endswith('.pdf'):
         raise HTTPException(
             status_code=400, 
@@ -41,30 +40,25 @@ async def upload_document(file: UploadFile = File(...)):
         )
     
     try:
-        # Generate unique document ID
         document_id = f"doc_{uuid.uuid4().hex[:12]}"
         file_path = UPLOAD_DIR / f"{document_id}.pdf"
         
-        # Save uploaded file
         content = await file.read()
         with open(file_path, "wb") as f:
             f.write(content)
         
-        # Process document
-        chunks_count = await process_document(document_id, file_path)
+        result = await process_document(document_id, file_path)
         
         return {
             "document_id": document_id,
             "filename": file.filename,
             "status": "processed",
-            "chunks_count": chunks_count,
+            "chunks_count": result["chunks_count"],
         }
         
     except ValueError as e:
-        # Document processing errors (e.g., "Document too short")
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        # Unexpected errors
         raise HTTPException(
             status_code=500, 
             detail=f"Failed to process document: {str(e)}"
