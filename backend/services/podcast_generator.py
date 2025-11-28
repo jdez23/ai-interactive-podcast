@@ -28,6 +28,8 @@ async def generate_podcast_from_documents(
     Step 1: Retrieve relevant document chunks
         - Use database.vector_store.get_all_chunks_for_documents(document_ids)
         - Or use search_documents(topic, document_ids)
+        - Check result["status"] == "success" before using chunks
+        - Handle errors gracefully if status is "failed"
         
     Step 2: Generate podcast script using LLM
         - Use prompts.podcast_prompts.PODCAST_SCRIPT_PROMPT

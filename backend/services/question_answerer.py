@@ -22,6 +22,7 @@ async def answer_question(podcast_id: str, question: str) -> Dict:
     Step 1: Search documents for relevant information
         - Use database.vector_store.search_documents(question)
         - Get top 3-5 most relevant chunks
+        - Check result["status"] == "success" before using chunks
         
     Step 2: Decide if we have enough information
         - If relevant chunks found: Generate answer from documents

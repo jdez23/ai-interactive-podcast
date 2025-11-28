@@ -18,7 +18,7 @@ from database.vector_store import (
     store_document_chunks,
     search_documents,
     get_all_chunks_for_documents,
-    collection
+    get_collection
 )
 
 
@@ -32,6 +32,7 @@ async def test_vector_store():
     print("\nClearing old test data...")
     print("-" * 60)
     try:
+        collection = get_collection()
         existing = collection.get(where={"document_id": {"$in": ["test_doc_1", "test_doc_2"]}})
         if existing['ids']:
             collection.delete(ids=existing['ids'])
@@ -56,6 +57,7 @@ async def test_vector_store():
         print(f"   Status: {result['status']}")
         print(f"   Chunks stored: {result['chunks_stored']}")
         
+        collection = get_collection()
         count = collection.count()
         print(f"   Total chunks in database: {count}")
         assert count >= 3, "Should have at least 3 chunks"
@@ -79,6 +81,8 @@ async def test_vector_store():
         for query in queries:
             print(f"\n   Query: '{query}'")
             results = await search_documents(query, n_results=2)
+            
+            assert results['status'] == 'success', f"Search should succeed for query: {query}"
             print(f"   Found {len(results['chunks'])} relevant chunks:")
             
             for i, (chunk, metadata) in enumerate(zip(results['chunks'], results['metadatas']), 1):
@@ -99,7 +103,10 @@ async def test_vector_store():
     print("-" * 60)
     
     try:
-        all_chunks = await get_all_chunks_for_documents(["test_doc_1"])
+        result = await get_all_chunks_for_documents(["test_doc_1"])
+        assert result['status'] == 'success', "Get all chunks should succeed"
+        
+        all_chunks = result['chunks']
         print(f"   Retrieved {len(all_chunks)} chunks for 'test_doc_1'")
         
         for i, chunk in enumerate(all_chunks, 1):
@@ -125,13 +132,15 @@ async def test_vector_store():
         print(f"   Added test_doc_2: {result2['chunks_stored']} chunks")
         
         results = await search_documents("programming language", n_results=3)
+        assert results['status'] == 'success', "Search should succeed"
         print(f"   Search across all documents found {len(results['chunks'])} results")
         
         results_filtered = await search_documents(
-            "programming language", 
+            "programming language",
             document_ids=["test_doc_2"],
             n_results=3
         )
+        assert results_filtered['status'] == 'success', "Filtered search should succeed"
         print(f"   Search within test_doc_2 found {len(results_filtered['chunks'])} results")
         
         for metadata in results_filtered['metadatas']:
@@ -175,6 +184,7 @@ async def test_vector_store():
     print("✨ ALL TESTS PASSED SUCCESSFULLY!")
     print("=" * 60)
     print("\nSummary:")
+    collection = get_collection()
     print(f"   • Total chunks in database: {collection.count()}")
     print(f"   • Documents tested: test_doc_1, test_doc_2")
     print(f"   • Semantic search: ✅ Working")
