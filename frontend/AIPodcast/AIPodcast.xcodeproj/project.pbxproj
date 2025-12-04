@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		02F20AC42EDA422C00062E4E /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F20AC22EDA422C00062E4E /* Question.swift */; };
-		02F20AC52EDA422C00062E4E /* Document.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F20AC02EDA422C00062E4E /* Document.swift */; };
-		02F20AC62EDA422C00062E4E /* Podcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F20AC12EDA422C00062E4E /* Podcast.swift */; };
 		C590EEA52EC81B9E007D62CC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C590EEA22EC81B9E007D62CC /* ContentView.swift */; };
 /* End PBXBuildFile section */
 
@@ -25,9 +22,6 @@
 
 /* Begin PBXFileReference section */
 		024E6FCF2EDA363D00D0D3DE /* AIPodcastTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AIPodcastTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		02F20AC02EDA422C00062E4E /* Document.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Document.swift; sourceTree = "<group>"; };
-		02F20AC12EDA422C00062E4E /* Podcast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Podcast.swift; sourceTree = "<group>"; };
-		02F20AC22EDA422C00062E4E /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
 		C590EE922EC81A11007D62CC /* AIPodcast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AIPodcast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C590EEA22EC81B9E007D62CC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C590EEAC2EC81D37007D62CC /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -37,6 +31,11 @@
 		024E6FD02EDA363D00D0D3DE /* AIPodcastTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = AIPodcastTests;
+			sourceTree = "<group>";
+		};
+		02E8BB822EE1FA27006B99D4 /* Models */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Models;
 			sourceTree = "<group>";
 		};
 		C590EE942EC81A11007D62CC /* AIPodcast */ = {
@@ -64,20 +63,10 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		02F20AC32EDA422C00062E4E /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				02F20AC02EDA422C00062E4E /* Document.swift */,
-				02F20AC12EDA422C00062E4E /* Podcast.swift */,
-				02F20AC22EDA422C00062E4E /* Question.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
 		C590EE892EC81A11007D62CC = {
 			isa = PBXGroup;
 			children = (
-				02F20AC32EDA422C00062E4E /* Models */,
+				02E8BB822EE1FA27006B99D4 /* Models */,
 				C590EEAA2EC81BE0007D62CC /* Utils */,
 				C590EEA92EC81BDB007D62CC /* Services */,
 				C590EEA72EC81BC8007D62CC /* ViewModels */,
@@ -166,6 +155,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				02E8BB822EE1FA27006B99D4 /* Models */,
 				C590EE942EC81A11007D62CC /* AIPodcast */,
 			);
 			name = AIPodcast;
@@ -243,9 +233,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				02F20AC42EDA422C00062E4E /* Question.swift in Sources */,
-				02F20AC52EDA422C00062E4E /* Document.swift in Sources */,
-				02F20AC62EDA422C00062E4E /* Podcast.swift in Sources */,
 				C590EEA52EC81B9E007D62CC /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
