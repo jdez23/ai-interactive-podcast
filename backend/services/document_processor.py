@@ -14,7 +14,7 @@ import logging
 
 import PyPDF2
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from database.vector_store import store_document_chunks
+from database.vector_store import store_document_chunks, search_documents
 from config.settings import CHUNK_SIZE, CHUNK_OVERLAP
 
 logging.basicConfig(level=logging.INFO)
@@ -141,3 +141,99 @@ async def process_document(document_id: str, file_path: Path) -> Dict[str, any]:
         "chunks_count": storage_result["chunks_stored"],
         "status": storage_result["status"]
     }
+
+async def retrieve_relevant_chunks(
+    query: str,
+    document_ids: List[str] = None,
+    n_results: int = 10
+) -> Dict:
+    """
+    Retrieve relevant document chunks using semantic search.
+    
+    This function uses the vector database to find chunks that are semantically
+    similar to the query, enabling intelligent content retrieval even when
+    exact keywords don't match.
+    
+    Args:
+        query: Search query (e.g., "explain neural networks")
+        document_ids: Optional list of document IDs to search within
+        n_results: Number of chunks to return (default: 10)
+        
+    Returns:
+        {
+            "chunks": ["chunk text 1", "chunk text 2", ...],
+            "metadatas": [{"document_id": "...", "chunk_index": 0}, ...],
+            "relevance_scores": [0.95, 0.87, ...]  # Optional, if available
+        }
+        
+    How Semantic Search Works:
+        1. Query gets converted to embedding (vector representation)
+        2. Chroma finds chunks with similar embeddings
+        3. Similar embeddings = similar meaning
+        4. Can find relevant content even if exact words don't match
+        
+    Example:
+        # Basic search
+        results = await retrieve_relevant_chunks("machine learning basics", n_results=5)
+        
+        # Search within specific documents
+        results = await retrieve_relevant_chunks(
+            "deep learning",
+            document_ids=["doc_123", "doc_456"],
+            n_results=3
+        )
+        
+    Resources:
+        - Chroma Query Docs: https://docs.trychroma.com/reference/Collection#query
+        - Vector search explanation: https://www.pinecone.io/learn/vector-search/
+    """
+    logger.info(f"Retrieving relevant chunks for query: '{query}' (n_results={n_results})")
+    
+    if not query or not query.strip():
+        logger.warning("Empty query provided to retrieve_relevant_chunks")
+        return {
+            "chunks": [],
+            "metadatas": [],
+            "relevance_scores": []
+        }
+    
+    try:
+        search_result = await search_documents(
+            query=query,
+            document_ids=document_ids,
+            n_results=n_results
+        )
+        
+        if search_result["status"] == "failed":
+            error_msg = search_result.get("error", "Unknown error")
+            logger.error(f"Search failed: {error_msg}")
+            return {
+                "chunks": [],
+                "metadatas": [],
+                "relevance_scores": [],
+                "error": error_msg
+            }
+        
+        chunks = search_result.get("chunks", [])
+        metadatas = search_result.get("metadatas", [])
+        
+        logger.info(f"Successfully retrieved {len(chunks)} relevant chunks")
+        
+        # Note: Chroma doesn't return explicit relevance scores by default
+        # The results are already ranked by relevance (most relevant first)
+        # We could add distances if needed in the future
+        return {
+            "chunks": chunks,
+            "metadatas": metadatas,
+            "relevance_scores": []  # Placeholder for future enhancement
+        }
+        
+    except Exception as e:
+        error_msg = f"Error retrieving relevant chunks: {str(e)}"
+        logger.error(error_msg)
+        return {
+            "chunks": [],
+            "metadatas": [],
+            "relevance_scores": [],
+            "error": error_msg
+        }
