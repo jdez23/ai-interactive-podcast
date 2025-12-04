@@ -1,10 +1,3 @@
-//
-//  Constants.swift
-//  AIPodcast
-//
-//  Created on November 14, 2025.
-//
-
 import Foundation
 
 struct Constants {

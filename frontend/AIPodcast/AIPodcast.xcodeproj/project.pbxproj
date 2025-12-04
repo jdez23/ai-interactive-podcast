@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		02BB28DD2EE21BC5004CA6CC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C590EEAC2EC81D37007D62CC /* Constants.swift */; };
+		02E8BBAC2EE20210006B99D4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02E8BBAB2EE20210006B99D4 /* Assets.xcassets */; };
+		02E8BBAD2EE20210006B99D4 /* AIPodcastApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E8BBAA2EE20210006B99D4 /* AIPodcastApp.swift */; };
+		02E8BBBE2EE209B1006B99D4 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 02E8BBBD2EE209B1006B99D4 /* Alamofire */; };
+		02E8BBC22EE20B4D006B99D4 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E8BBC12EE20B4A006B99D4 /* TestView.swift */; };
 		C590EEA52EC81B9E007D62CC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C590EEA22EC81B9E007D62CC /* ContentView.swift */; };
 /* End PBXBuildFile section */
 
@@ -22,6 +27,12 @@
 
 /* Begin PBXFileReference section */
 		024E6FCF2EDA363D00D0D3DE /* AIPodcastTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AIPodcastTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		02E8BBAA2EE20210006B99D4 /* AIPodcastApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIPodcastApp.swift; sourceTree = "<group>"; };
+		02E8BBAB2EE20210006B99D4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		02E8BBB62EE20569006B99D4 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		02E8BBB72EE2057B006B99D4 /* AudioPlayerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerService.swift; sourceTree = "<group>"; };
+		02E8BBB82EE205CF006B99D4 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		02E8BBC12EE20B4A006B99D4 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		C590EE922EC81A11007D62CC /* AIPodcast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AIPodcast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C590EEA22EC81B9E007D62CC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C590EEAC2EC81D37007D62CC /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -38,11 +49,6 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		C590EE942EC81A11007D62CC /* AIPodcast */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = AIPodcast;
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,21 +63,60 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02E8BBBE2EE209B1006B99D4 /* Alamofire in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		02E8BBB22EE203A6006B99D4 /* Documents */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Documents;
+			sourceTree = "<group>";
+		};
+		02E8BBB32EE203B5006B99D4 /* Podcasts */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Podcasts;
+			sourceTree = "<group>";
+		};
+		02E8BBB42EE203C1006B99D4 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		02E8BBB52EE2054C006B99D4 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				02E8BBB72EE2057B006B99D4 /* AudioPlayerService.swift */,
+				02E8BBB62EE20569006B99D4 /* APIService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		02E8BBB92EE205F1006B99D4 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				02E8BBAB2EE20210006B99D4 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		C590EE892EC81A11007D62CC = {
 			isa = PBXGroup;
 			children = (
+				02E8BBAA2EE20210006B99D4 /* AIPodcastApp.swift */,
+				02E8BBB92EE205F1006B99D4 /* Resources */,
+				02E8BBB52EE2054C006B99D4 /* Services */,
 				02E8BB822EE1FA27006B99D4 /* Models */,
-				C590EEAA2EC81BE0007D62CC /* Utils */,
-				C590EEA92EC81BDB007D62CC /* Services */,
-				C590EEA72EC81BC8007D62CC /* ViewModels */,
+				C590EEAA2EC81BE0007D62CC /* Utilities */,
 				C590EEA62EC81BBC007D62CC /* Views */,
-				C590EE942EC81A11007D62CC /* AIPodcast */,
 				024E6FD02EDA363D00D0D3DE /* AIPodcastTests */,
 				C590EE932EC81A11007D62CC /* Products */,
 			);
@@ -89,31 +134,22 @@
 		C590EEA62EC81BBC007D62CC /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				02E8BBC12EE20B4A006B99D4 /* TestView.swift */,
+				02E8BBB22EE203A6006B99D4 /* Documents */,
+				02E8BBB32EE203B5006B99D4 /* Podcasts */,
+				02E8BBB42EE203C1006B99D4 /* Shared */,
 				C590EEA22EC81B9E007D62CC /* ContentView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
 		};
-		C590EEA72EC81BC8007D62CC /* ViewModels */ = {
+		C590EEAA2EC81BE0007D62CC /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-			);
-			path = ViewModels;
-			sourceTree = "<group>";
-		};
-		C590EEA92EC81BDB007D62CC /* Services */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Services;
-			sourceTree = "<group>";
-		};
-		C590EEAA2EC81BE0007D62CC /* Utils */ = {
-			isa = PBXGroup;
-			children = (
+				02E8BBB82EE205CF006B99D4 /* Extensions.swift */,
 				C590EEAC2EC81D37007D62CC /* Constants.swift */,
 			);
-			path = Utils;
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -156,10 +192,10 @@
 			);
 			fileSystemSynchronizedGroups = (
 				02E8BB822EE1FA27006B99D4 /* Models */,
-				C590EE942EC81A11007D62CC /* AIPodcast */,
 			);
 			name = AIPodcast;
 			packageProductDependencies = (
+				02E8BBBD2EE209B1006B99D4 /* Alamofire */,
 			);
 			productName = AIPodcast;
 			productReference = C590EE922EC81A11007D62CC /* AIPodcast.app */;
@@ -193,6 +229,9 @@
 			);
 			mainGroup = C590EE892EC81A11007D62CC;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				02E8BBBC2EE209B1006B99D4 /* XCRemoteSwiftPackageReference "Alamofire" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C590EE932EC81A11007D62CC /* Products */;
 			projectDirPath = "";
@@ -216,6 +255,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				02E8BBAC2EE20210006B99D4 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,6 +274,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				C590EEA52EC81B9E007D62CC /* ContentView.swift in Sources */,
+				02E8BBAD2EE20210006B99D4 /* AIPodcastApp.swift in Sources */,
+				02E8BBC22EE20B4D006B99D4 /* TestView.swift in Sources */,
+				02BB28DD2EE21BC5004CA6CC /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -530,6 +573,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		02E8BBBC2EE209B1006B99D4 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		02E8BBBD2EE209B1006B99D4 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 02E8BBBC2EE209B1006B99D4 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C590EE8A2EC81A11007D62CC /* Project object */;
 }
