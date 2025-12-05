@@ -51,16 +51,33 @@ python tests/test_end_to_end.py
 ### 4. `test_document_processor.py`
 Unit tests for document processing functions (existing file).
 
+### 5. `test_retrieve_chunks.py`
+Tests the `retrieve_relevant_chunks()` function for semantic search:
+- Basic semantic search with multiple queries
+- Document ID filtering (single and multiple documents)
+- n_results parameter validation
+- Metadata structure verification
+- Edge cases (empty queries, non-existent documents)
+- Relevance ranking verification
+
+**Run:**
+```bash
+cd backend
+source venv/bin/activate
+python tests/test_retrieve_chunks.py
+```
+
 ## Running All Tests
 
 To run all tests sequentially:
 
 ```bash
 cd backend
-source venv/bin/activate 
+source venv/bin/activate
 python tests/test_vector_store.py && \
 python tests/test_storage_errors.py && \
-python tests/test_end_to_end.py
+python tests/test_end_to_end.py && \
+python tests/test_retrieve_chunks.py
 ```
 
 ## What's Being Tested
@@ -102,6 +119,11 @@ python tests/test_end_to_end.py
    - ✅ Logs chunks stored
    - ✅ Logs errors
    - ✅ Logs document processing steps
+
+8. **retrieve_relevant_chunks() function implemented**
+   - ✅ Semantic search with document_id filtering
+   - ✅ Configurable n_results parameter
+   - ✅ Returns chunks with metadata, tested with 3+ queries
 
 ## Expected Output
 
