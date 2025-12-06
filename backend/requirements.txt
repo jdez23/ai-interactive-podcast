@@ -13,6 +13,7 @@ pypdf2==3.0.1
 
 # Audio processing
 pydub==0.25.1
+elevenlabs==0.2.27
 
 # Utilities
 requests==2.31.0

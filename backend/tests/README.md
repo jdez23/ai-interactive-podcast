@@ -67,6 +67,29 @@ source venv/bin/activate
 python tests/test_retrieve_chunks.py
 ```
 
+### 6. `test_audio.py`
+Tests the ElevenLabs audio generation service:
+- Text-to-speech conversion with host and guest voices
+- Audio quality verification
+- Long text handling
+- Special character support (quotes, symbols, emojis, numbers)
+- Error handling (empty text, invalid voice IDs)
+- Cohesive podcast-style dialogue about Mars
+
+**Run:**
+```bash
+cd backend
+source venv/bin/activate
+python tests/test_audio.py
+```
+
+**Expected Output:**
+- Generates 4 MP3 files in `backend/generated/podcasts/`:
+  - `test_host.mp3` - Host introduction
+  - `test_guest.mp3` - Guest response
+  - `test_long.mp3` - Detailed Mars facts
+  - `test_special.mp3` - Mars life potential with special characters
+
 ## Running All Tests
 
 To run all tests sequentially:
@@ -77,7 +100,8 @@ source venv/bin/activate
 python tests/test_vector_store.py && \
 python tests/test_storage_errors.py && \
 python tests/test_end_to_end.py && \
-python tests/test_retrieve_chunks.py
+python tests/test_retrieve_chunks.py && \
+python tests/test_audio.py
 ```
 
 ## What's Being Tested
@@ -124,6 +148,11 @@ python tests/test_retrieve_chunks.py
    - ✅ Semantic search with document_id filtering
    - ✅ Configurable n_results parameter
    - ✅ Returns chunks with metadata, tested with 3+ queries
+
+9. **ElevenLabs text-to-speech integration**
+   - ✅ Two distinct voices configured (host and guest)
+   - ✅ Successfully converts text to speech with error handling
+   - ✅ Audio quality verified and saved to correct directory
 
 ## Expected Output
 
