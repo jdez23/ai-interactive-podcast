@@ -23,6 +23,11 @@ struct Constants {
         static let documents = "/api/documents"
         static let podcasts = "/api/podcasts"
         static let questions = "/api/questions"
+        
+        static let health = "/"
+        static let uploadDocument = "/api/documents/upload"
+        static let generatePodcast = "/api/podcasts/generate"
+        static let askQuestion = "/api/questions/ask"
     }
     
     // MARK: - App Configuration
