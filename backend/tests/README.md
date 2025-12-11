@@ -90,6 +90,46 @@ python tests/test_audio.py
   - `test_long.mp3` - Detailed Mars facts
   - `test_special.mp3` - Mars life potential with special characters
 
+### 7. `test_openai_with_pdfs.py`
+Tests OpenAI service with real PDF documents:
+- PDF text extraction and chunking
+- Podcast dialogue generation from document content
+- Host/guest conversation formatting
+- Token usage tracking and cost estimation
+- Error handling for API failures
+- Interactive and command-line modes
+
+**Run (Interactive Mode):**
+```bash
+cd backend
+source venv/bin/activate
+python tests/test_openai_with_pdfs.py
+# Then enter your PDF path when prompted
+```
+
+**Run (Command Line Mode):**
+```bash
+cd backend
+source venv/bin/activate
+python tests/test_openai_with_pdfs.py /path/to/your/file.pdf "Your Topic"
+```
+
+**Examples:**
+```bash
+# With custom topic
+python tests/test_openai_with_pdfs.py ~/Desktop/research.pdf "Machine Learning"
+
+# Without topic (uses filename)
+python tests/test_openai_with_pdfs.py ~/Desktop/biology_notes.pdf
+```
+
+**Expected Output:**
+- Extracts text from your PDF
+- Creates chunks from the content
+- Generates 3-minute podcast dialogue with Host A and Host B
+- Shows token usage and cost estimate (~$0.001-0.003 per test)
+- Displays full generated dialogue
+
 ## Running All Tests
 
 To run all tests sequentially:
@@ -103,6 +143,8 @@ python tests/test_end_to_end.py && \
 python tests/test_retrieve_chunks.py && \
 python tests/test_audio.py
 ```
+
+**Note:** `test_openai_with_pdfs.py` requires a PDF file path and is run separately with your own documents.
 
 ## What's Being Tested
 
@@ -153,6 +195,14 @@ python tests/test_audio.py
    - ✅ Two distinct voices configured (host and guest)
    - ✅ Successfully converts text to speech with error handling
    - ✅ Audio quality verified and saved to correct directory
+
+10. **OpenAI service for podcast script generation**
+    - ✅ OpenAI client configured with API key and timeout
+    - ✅ Prompt templates for host/guest dialogue generation
+    - ✅ Error handling for API failures (invalid key, rate limits, network errors)
+    - ✅ Retry logic with exponential backoff
+    - ✅ Token usage tracking for cost monitoring
+    - ✅ Tested with real PDF documents (3+ different topics)
 
 ## Expected Output
 
