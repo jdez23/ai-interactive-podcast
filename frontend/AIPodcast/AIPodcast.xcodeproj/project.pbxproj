@@ -7,12 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		02975DCF2EECD3A800843580 /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02975DCE2EECD3A000843580 /* DesignSystem.swift */; };
-		02975DD22EECDBFF00843580 /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02975DD12EECDBF500843580 /* ButtonStyles.swift */; };
-		02975DD42EECE81B00843580 /* DocumentCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02975DD32EECE80F00843580 /* DocumentCard.swift */; };
-		02975DD62EECF82500843580 /* PodcastCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02975DD52EECF81E00843580 /* PodcastCard.swift */; };
-		02975DD82EECFB0A00843580 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02975DD72EECFB0100843580 /* LoadingView.swift */; };
-		02975DDA2EECFB7E00843580 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02975DD92EECFB7700843580 /* EmptyStateView.swift */; };
+		026624C52EEA39FA00640CA3 /* HomeTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026624C42EEA39F300640CA3 /* HomeTabView.swift */; };
+		026624C82EEA3A3100640CA3 /* GenerateTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026624C72EEA3A2B00640CA3 /* GenerateTabView.swift */; };
+		026624EC2EEB45EA00640CA3 /* UnpopulatedHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026624EB2EEB45D800640CA3 /* UnpopulatedHomeView.swift */; };
+		026624EE2EEB474700640CA3 /* PopulatedHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026624ED2EEB46BA00640CA3 /* PopulatedHomeView.swift */; };
+		026624F02EEB47A000640CA3 /* PodcastCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026624EF2EEB479600640CA3 /* PodcastCardView.swift */; };
+		026624F22EEB488F00640CA3 /* AddFileSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026624F12EEB488800640CA3 /* AddFileSection.swift */; };
+		026624F42EEB4B0F00640CA3 /* FileListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026624F32EEB4B0A00640CA3 /* FileListView.swift */; };
+		026624F62EEB7F7200640CA3 /* GenerateButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026624F52EEB7F6900640CA3 /* GenerateButton.swift */; };
+		026624F82EEB7FCC00640CA3 /* LoadingOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026624F72EEB7FC700640CA3 /* LoadingOverlay.swift */; };
+		026624FC2EEB803000640CA3 /* PodcastPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026624FB2EEB802A00640CA3 /* PodcastPlayerView.swift */; };
+		026624FE2EEB806F00640CA3 /* CustomNavBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026624FD2EEB806800640CA3 /* CustomNavBar.swift */; };
+		026625002EEB80DA00640CA3 /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026624FF2EEB80D500640CA3 /* ProgressBarView.swift */; };
+		026625022EEB810100640CA3 /* PlaybackControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026625012EEB80FB00640CA3 /* PlaybackControlsView.swift */; };
+		026625042EEB820A00640CA3 /* AskAISection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026625032EEB820400640CA3 /* AskAISection.swift */; };
+		029C772B2EE8D1AD007E9335 /* DocumentTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029C772A2EE8D1A0007E9335 /* DocumentTabView.swift */; };
+		029C772D2EE8D1BB007E9335 /* DocumentListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029C772C2EE8D1B1007E9335 /* DocumentListView.swift */; };
+		029C772F2EE8D1E0007E9335 /* PodcastTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029C772E2EE8D1D8007E9335 /* PodcastTabView.swift */; };
+		029C77312EE8D1ED007E9335 /* PodcastListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029C77302EE8D1E6007E9335 /* PodcastListView.swift */; };
+		029C77332EE8D204007E9335 /* LibraryTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029C77322EE8D1FC007E9335 /* LibraryTabView.swift */; };
+		029C77352EE8D2D4007E9335 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029C77342EE8D2D2007E9335 /* MainTabView.swift */; };
 		02BB28DD2EE21BC5004CA6CC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C590EEAC2EC81D37007D62CC /* Constants.swift */; };
 		02BB290A2EE88897004CA6CC /* TestAPIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02BB29092EE887CE004CA6CC /* TestAPIView.swift */; };
 		02BB29222EE889B7004CA6CC /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E8BBB62EE20569006B99D4 /* APIService.swift */; };
@@ -35,13 +49,26 @@
 
 /* Begin PBXFileReference section */
 		024E6FCF2EDA363D00D0D3DE /* AIPodcastTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AIPodcastTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		02975DCE2EECD3A000843580 /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
-		02975DD12EECDBF500843580 /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
-		02975DD32EECE80F00843580 /* DocumentCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentCard.swift; sourceTree = "<group>"; };
-		02975DD52EECF81E00843580 /* PodcastCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastCard.swift; sourceTree = "<group>"; };
-		02975DD72EECFB0100843580 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
-		02975DD92EECFB7700843580 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
-		02975DDB2EF0B33A00843580 /* Untitled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Untitled.swift; sourceTree = "<group>"; };
+		026624C42EEA39F300640CA3 /* HomeTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabView.swift; sourceTree = "<group>"; };
+		026624C72EEA3A2B00640CA3 /* GenerateTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateTabView.swift; sourceTree = "<group>"; };
+		026624EB2EEB45D800640CA3 /* UnpopulatedHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnpopulatedHomeView.swift; sourceTree = "<group>"; };
+		026624ED2EEB46BA00640CA3 /* PopulatedHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopulatedHomeView.swift; sourceTree = "<group>"; };
+		026624EF2EEB479600640CA3 /* PodcastCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastCardView.swift; sourceTree = "<group>"; };
+		026624F12EEB488800640CA3 /* AddFileSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFileSection.swift; sourceTree = "<group>"; };
+		026624F32EEB4B0A00640CA3 /* FileListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileListView.swift; sourceTree = "<group>"; };
+		026624F52EEB7F6900640CA3 /* GenerateButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateButton.swift; sourceTree = "<group>"; };
+		026624F72EEB7FC700640CA3 /* LoadingOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingOverlay.swift; sourceTree = "<group>"; };
+		026624FB2EEB802A00640CA3 /* PodcastPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastPlayerView.swift; sourceTree = "<group>"; };
+		026624FD2EEB806800640CA3 /* CustomNavBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavBar.swift; sourceTree = "<group>"; };
+		026624FF2EEB80D500640CA3 /* ProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarView.swift; sourceTree = "<group>"; };
+		026625012EEB80FB00640CA3 /* PlaybackControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackControlsView.swift; sourceTree = "<group>"; };
+		026625032EEB820400640CA3 /* AskAISection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskAISection.swift; sourceTree = "<group>"; };
+		029C772A2EE8D1A0007E9335 /* DocumentTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentTabView.swift; sourceTree = "<group>"; };
+		029C772C2EE8D1B1007E9335 /* DocumentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentListView.swift; sourceTree = "<group>"; };
+		029C772E2EE8D1D8007E9335 /* PodcastTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastTabView.swift; sourceTree = "<group>"; };
+		029C77302EE8D1E6007E9335 /* PodcastListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastListView.swift; sourceTree = "<group>"; };
+		029C77322EE8D1FC007E9335 /* LibraryTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryTabView.swift; sourceTree = "<group>"; };
+		029C77342EE8D2D2007E9335 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
 		02BB29092EE887CE004CA6CC /* TestAPIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAPIView.swift; sourceTree = "<group>"; };
 		02E8BBAA2EE20210006B99D4 /* AIPodcastApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIPodcastApp.swift; sourceTree = "<group>"; };
 		02E8BBAB2EE20210006B99D4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -54,10 +81,40 @@
 		C590EEAC2EC81D37007D62CC /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		026624E72EEB41A900640CA3 /* Exceptions for "ViewModels" folder in "AIPodcast" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AppState.swift,
+				GenerateViewModel.swift,
+				PodcastPlayerViewModel.swift,
+			);
+			target = C590EE912EC81A11007D62CC /* AIPodcast */;
+		};
+		026624E82EEB41A900640CA3 /* Exceptions for "ViewModels" folder in "AIPodcastTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AppState.swift,
+				GenerateViewModel.swift,
+				PodcastPlayerViewModel.swift,
+			);
+			target = 024E6FCE2EDA363D00D0D3DE /* AIPodcastTests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		024E6FD02EDA363D00D0D3DE /* AIPodcastTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = AIPodcastTests;
+			sourceTree = "<group>";
+		};
+		026624E22EEB416600640CA3 /* ViewModels */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				026624E72EEB41A900640CA3 /* Exceptions for "ViewModels" folder in "AIPodcast" target */,
+				026624E82EEB41A900640CA3 /* Exceptions for "ViewModels" folder in "AIPodcastTests" target */,
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		02E8BB822EE1FA27006B99D4 /* Models */ = {
@@ -86,14 +143,44 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		02975DD02EECDBEB00843580 /* Shared */ = {
+		026624C32EEA39DD00640CA3 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				02975DD92EECFB7700843580 /* EmptyStateView.swift */,
-				02975DD72EECFB0100843580 /* LoadingView.swift */,
-				02975DD52EECF81E00843580 /* PodcastCard.swift */,
-				02975DD32EECE80F00843580 /* DocumentCard.swift */,
-				02975DD12EECDBF500843580 /* ButtonStyles.swift */,
+				026624ED2EEB46BA00640CA3 /* PopulatedHomeView.swift */,
+				026624EB2EEB45D800640CA3 /* UnpopulatedHomeView.swift */,
+				026624C42EEA39F300640CA3 /* HomeTabView.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		026624C62EEA3A1B00640CA3 /* Generate */ = {
+			isa = PBXGroup;
+			children = (
+				026624F72EEB7FC700640CA3 /* LoadingOverlay.swift */,
+				026624F52EEB7F6900640CA3 /* GenerateButton.swift */,
+				026624F32EEB4B0A00640CA3 /* FileListView.swift */,
+				026624F12EEB488800640CA3 /* AddFileSection.swift */,
+				026624C72EEA3A2B00640CA3 /* GenerateTabView.swift */,
+			);
+			path = Generate;
+			sourceTree = "<group>";
+		};
+		026624E92EEB41FE00640CA3 /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				026625032EEB820400640CA3 /* AskAISection.swift */,
+				026625012EEB80FB00640CA3 /* PlaybackControlsView.swift */,
+				026624FF2EEB80D500640CA3 /* ProgressBarView.swift */,
+				026624FD2EEB806800640CA3 /* CustomNavBar.swift */,
+				026624FB2EEB802A00640CA3 /* PodcastPlayerView.swift */,
+			);
+			path = Player;
+			sourceTree = "<group>";
+		};
+		026624EA2EEB421000640CA3 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				026624EF2EEB479600640CA3 /* PodcastCardView.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -101,6 +188,8 @@
 		02E8BBB22EE203A6006B99D4 /* Documents */ = {
 			isa = PBXGroup;
 			children = (
+				029C772C2EE8D1B1007E9335 /* DocumentListView.swift */,
+				029C772A2EE8D1A0007E9335 /* DocumentTabView.swift */,
 			);
 			path = Documents;
 			sourceTree = "<group>";
@@ -108,8 +197,18 @@
 		02E8BBB32EE203B5006B99D4 /* Podcasts */ = {
 			isa = PBXGroup;
 			children = (
+				029C77302EE8D1E6007E9335 /* PodcastListView.swift */,
+				029C772E2EE8D1D8007E9335 /* PodcastTabView.swift */,
 			);
 			path = Podcasts;
+			sourceTree = "<group>";
+		};
+		02E8BBB42EE203C1006B99D4 /* Library */ = {
+			isa = PBXGroup;
+			children = (
+				029C77322EE8D1FC007E9335 /* LibraryTabView.swift */,
+			);
+			path = Library;
 			sourceTree = "<group>";
 		};
 		02E8BBB52EE2054C006B99D4 /* Services */ = {
@@ -138,6 +237,7 @@
 				02E8BB822EE1FA27006B99D4 /* Models */,
 				C590EEAA2EC81BE0007D62CC /* Utilities */,
 				C590EEA62EC81BBC007D62CC /* Views */,
+				026624E22EEB416600640CA3 /* ViewModels */,
 				024E6FD02EDA363D00D0D3DE /* AIPodcastTests */,
 				C590EE932EC81A11007D62CC /* Products */,
 			);
@@ -155,12 +255,16 @@
 		C590EEA62EC81BBC007D62CC /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				02975DDB2EF0B33A00843580 /* Untitled.swift */,
-				02975DD02EECDBEB00843580 /* Shared */,
+				026624EA2EEB421000640CA3 /* Shared */,
+				026624E92EEB41FE00640CA3 /* Player */,
+				026624C62EEA3A1B00640CA3 /* Generate */,
+				026624C32EEA39DD00640CA3 /* Home */,
+				029C77342EE8D2D2007E9335 /* MainTabView.swift */,
 				02BB29092EE887CE004CA6CC /* TestAPIView.swift */,
 				02E8BBC12EE20B4A006B99D4 /* TestView.swift */,
 				02E8BBB22EE203A6006B99D4 /* Documents */,
 				02E8BBB32EE203B5006B99D4 /* Podcasts */,
+				02E8BBB42EE203C1006B99D4 /* Library */,
 				C590EEA22EC81B9E007D62CC /* ContentView.swift */,
 			);
 			path = Views;
@@ -169,7 +273,6 @@
 		C590EEAA2EC81BE0007D62CC /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				02975DCE2EECD3A000843580 /* DesignSystem.swift */,
 				02E8BBB82EE205CF006B99D4 /* Extensions.swift */,
 				C590EEAC2EC81D37007D62CC /* Constants.swift */,
 			);
@@ -194,6 +297,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				024E6FD02EDA363D00D0D3DE /* AIPodcastTests */,
+				026624E22EEB416600640CA3 /* ViewModels */,
 			);
 			name = AIPodcastTests;
 			packageProductDependencies = (
@@ -297,18 +401,32 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				026624C82EEA3A3100640CA3 /* GenerateTabView.swift in Sources */,
+				026624F02EEB47A000640CA3 /* PodcastCardView.swift in Sources */,
+				026624F82EEB7FCC00640CA3 /* LoadingOverlay.swift in Sources */,
+				026624C52EEA39FA00640CA3 /* HomeTabView.swift in Sources */,
 				02BB29222EE889B7004CA6CC /* APIService.swift in Sources */,
 				C590EEA52EC81B9E007D62CC /* ContentView.swift in Sources */,
 				02E8BBAD2EE20210006B99D4 /* AIPodcastApp.swift in Sources */,
-				02975DD42EECE81B00843580 /* DocumentCard.swift in Sources */,
-				02975DDA2EECFB7E00843580 /* EmptyStateView.swift in Sources */,
-				02975DD62EECF82500843580 /* PodcastCard.swift in Sources */,
-				02975DD22EECDBFF00843580 /* ButtonStyles.swift in Sources */,
-				02975DD82EECFB0A00843580 /* LoadingView.swift in Sources */,
-				02975DCF2EECD3A800843580 /* DesignSystem.swift in Sources */,
+				029C772D2EE8D1BB007E9335 /* DocumentListView.swift in Sources */,
+				026624EC2EEB45EA00640CA3 /* UnpopulatedHomeView.swift in Sources */,
+				026624F22EEB488F00640CA3 /* AddFileSection.swift in Sources */,
+				026624F62EEB7F7200640CA3 /* GenerateButton.swift in Sources */,
+				029C772B2EE8D1AD007E9335 /* DocumentTabView.swift in Sources */,
+				029C772F2EE8D1E0007E9335 /* PodcastTabView.swift in Sources */,
+				029C77352EE8D2D4007E9335 /* MainTabView.swift in Sources */,
+				026625042EEB820A00640CA3 /* AskAISection.swift in Sources */,
+				026624EE2EEB474700640CA3 /* PopulatedHomeView.swift in Sources */,
+				026624FC2EEB803000640CA3 /* PodcastPlayerView.swift in Sources */,
+				026624F42EEB4B0F00640CA3 /* FileListView.swift in Sources */,
+				026624FE2EEB806F00640CA3 /* CustomNavBar.swift in Sources */,
+				029C77332EE8D204007E9335 /* LibraryTabView.swift in Sources */,
+				029C77312EE8D1ED007E9335 /* PodcastListView.swift in Sources */,
 				02E8BBC22EE20B4D006B99D4 /* TestView.swift in Sources */,
 				02BB290A2EE88897004CA6CC /* TestAPIView.swift in Sources */,
 				02BB28DD2EE21BC5004CA6CC /* Constants.swift in Sources */,
+				026625002EEB80DA00640CA3 /* ProgressBarView.swift in Sources */,
+				026625022EEB810100640CA3 /* PlaybackControlsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

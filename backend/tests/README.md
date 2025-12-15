@@ -130,6 +130,53 @@ python tests/test_openai_with_pdfs.py ~/Desktop/biology_notes.pdf
 - Shows token usage and cost estimate (~$0.001-0.003 per test)
 - Displays full generated dialogue
 
+### 8. `test_script_generator.py`
+Tests the podcast script generation pipeline:
+- Script generation from document chunks
+- Multiple target lengths (short ~3min, medium ~5min, long ~10min)
+- Natural host/guest dialogue formatting
+- Speaker alternation and quality validation
+- Token management and content summarization
+- Error handling for missing documents
+- Structure validation
+
+**Run (Comprehensive Test):**
+```bash
+cd backend
+source venv/bin/activate
+python tests/test_script_generator.py /path/to/your/file.pdf
+```
+
+**Run (Quick Test):**
+```bash
+cd backend
+source venv/bin/activate
+python tests/run_script_test.py /path/to/your/file.pdf short
+```
+
+**Examples:**
+```bash
+# Test all three lengths (short, medium, long)
+python tests/test_script_generator.py ~/Desktop/article.pdf
+
+# Quick test with short script
+python tests/run_script_test.py ~/Desktop/article.pdf short
+
+# Test medium length
+python tests/run_script_test.py ~/Desktop/research.pdf medium
+
+# Test long script
+python tests/run_script_test.py ~/Desktop/book_chapter.pdf long
+```
+
+**Expected Output:**
+- Processes document and stores chunks
+- Generates structured podcast script with host/guest dialogue
+- Shows quality metrics (word count, speaker balance, alternation rate)
+- Displays complete script with all exchanges
+- Validates script structure and format
+- Tests all three target lengths sequentially
+
 ## Running All Tests
 
 To run all tests sequentially:
@@ -144,7 +191,7 @@ python tests/test_retrieve_chunks.py && \
 python tests/test_audio.py
 ```
 
-**Note:** `test_openai_with_pdfs.py` requires a PDF file path and is run separately with your own documents.
+**Note:** `test_openai_with_pdfs.py` and `test_script_generator.py` require a PDF file path and are run separately with your own documents.
 
 ## What's Being Tested
 
@@ -203,6 +250,17 @@ python tests/test_audio.py
     - ✅ Retry logic with exponential backoff
     - ✅ Token usage tracking for cost monitoring
     - ✅ Tested with real PDF documents (3+ different topics)
+
+11. **Script generator pipeline (generate_podcast_script)**
+    - ✅ Takes document chunks and generates natural dialogue
+    - ✅ Output formatted as alternating host/guest exchanges
+    - ✅ Each exchange has speaker label ("host" or "guest") and text
+    - ✅ Script flows naturally (engaging, not robotic)
+    - ✅ Tested with short content (1-2 chunks)
+    - ✅ Tested with longer content (10+ chunks)
+    - ✅ Different content types work (technical, narrative, etc.)
+    - ✅ Multiple target lengths supported (short, medium, long)
+    - ✅ Quality validation (speaker alternation, natural reactions, questions)
 
 ## Expected Output
 

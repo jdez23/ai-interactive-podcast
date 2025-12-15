@@ -7,6 +7,7 @@ struct Podcast: Codable, Identifiable {
     let duration: Int?
     let status: PodcastStatus
     let createdAt: Date
+    var topic: String?
     
     enum PodcastStatus: String, Codable {
         case generating
@@ -21,5 +22,6 @@ struct Podcast: Codable, Identifiable {
         case duration
         case status
         case createdAt = "created_at"
+        case topic
     }
 }

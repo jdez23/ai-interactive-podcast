@@ -1,24 +1,36 @@
 import SwiftUI
 
 struct MainTabView: View {
+    @StateObject private var appState = AppState.shared
+    
     var body: some View {
-        TabView {
-            DocumentTabView()
+        TabView(selection: $appState.selectedTab) {
+            HomeTabView()
                 .tabItem {
-                    Label("Documents", systemImage: "doc.text.fill")
+                    Label("Home", systemImage: "house.fill")
                 }
+                .tag(Tab.home)
             
-            PodcastTabView()
+            GenerateTabView()
                 .tabItem {
-                    Label("Podcasts", systemImage: "waveform")
+                    Label("Generate", systemImage: "sparkles")
                 }
+                .tag(Tab.generate)
             
             LibraryTabView()
                 .tabItem {
                     Label("Library", systemImage: "books.vertical.fill")
                 }
+                .tag(Tab.library)
+        }
+        .sheet(item: $appState.selectedPodcast) { podcast in
+            PodcastPlayerView(podcast: podcast)
         }
     }
+}
+
+enum Tab {
+    case home, generate, library
 }
 
 #Preview {
