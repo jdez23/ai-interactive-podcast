@@ -21,6 +21,12 @@
 		026625002EEB80DA00640CA3 /* ProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026624FF2EEB80D500640CA3 /* ProgressBarView.swift */; };
 		026625022EEB810100640CA3 /* PlaybackControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026625012EEB80FB00640CA3 /* PlaybackControlsView.swift */; };
 		026625042EEB820A00640CA3 /* AskAISection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026625032EEB820400640CA3 /* AskAISection.swift */; };
+		02975E4F2EF0B8DB00843580 /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02975E4A2EF0B8DB00843580 /* ButtonStyles.swift */; };
+		02975E502EF0B8DB00843580 /* DocumentCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02975E4B2EF0B8DB00843580 /* DocumentCard.swift */; };
+		02975E512EF0B8DB00843580 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02975E4D2EF0B8DB00843580 /* LoadingView.swift */; };
+		02975E522EF0B8DB00843580 /* PodcastCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02975E4E2EF0B8DB00843580 /* PodcastCard.swift */; };
+		02975E532EF0B8DB00843580 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02975E4C2EF0B8DB00843580 /* EmptyStateView.swift */; };
+		02975E552EF0B8FB00843580 /* DesignSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02975E542EF0B8FB00843580 /* DesignSystem.swift */; };
 		029C772B2EE8D1AD007E9335 /* DocumentTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029C772A2EE8D1A0007E9335 /* DocumentTabView.swift */; };
 		029C772D2EE8D1BB007E9335 /* DocumentListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029C772C2EE8D1B1007E9335 /* DocumentListView.swift */; };
 		029C772F2EE8D1E0007E9335 /* PodcastTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029C772E2EE8D1D8007E9335 /* PodcastTabView.swift */; };
@@ -63,6 +69,12 @@
 		026624FF2EEB80D500640CA3 /* ProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressBarView.swift; sourceTree = "<group>"; };
 		026625012EEB80FB00640CA3 /* PlaybackControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackControlsView.swift; sourceTree = "<group>"; };
 		026625032EEB820400640CA3 /* AskAISection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AskAISection.swift; sourceTree = "<group>"; };
+		02975E4A2EF0B8DB00843580 /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
+		02975E4B2EF0B8DB00843580 /* DocumentCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentCard.swift; sourceTree = "<group>"; };
+		02975E4C2EF0B8DB00843580 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
+		02975E4D2EF0B8DB00843580 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		02975E4E2EF0B8DB00843580 /* PodcastCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastCard.swift; sourceTree = "<group>"; };
+		02975E542EF0B8FB00843580 /* DesignSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignSystem.swift; sourceTree = "<group>"; };
 		029C772A2EE8D1A0007E9335 /* DocumentTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentTabView.swift; sourceTree = "<group>"; };
 		029C772C2EE8D1B1007E9335 /* DocumentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentListView.swift; sourceTree = "<group>"; };
 		029C772E2EE8D1D8007E9335 /* PodcastTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastTabView.swift; sourceTree = "<group>"; };
@@ -180,6 +192,11 @@
 		026624EA2EEB421000640CA3 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				02975E4A2EF0B8DB00843580 /* ButtonStyles.swift */,
+				02975E4B2EF0B8DB00843580 /* DocumentCard.swift */,
+				02975E4C2EF0B8DB00843580 /* EmptyStateView.swift */,
+				02975E4D2EF0B8DB00843580 /* LoadingView.swift */,
+				02975E4E2EF0B8DB00843580 /* PodcastCard.swift */,
 				026624EF2EEB479600640CA3 /* PodcastCardView.swift */,
 			);
 			path = Shared;
@@ -273,6 +290,7 @@
 		C590EEAA2EC81BE0007D62CC /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				02975E542EF0B8FB00843580 /* DesignSystem.swift */,
 				02E8BBB82EE205CF006B99D4 /* Extensions.swift */,
 				C590EEAC2EC81D37007D62CC /* Constants.swift */,
 			);
@@ -419,11 +437,17 @@
 				026624EE2EEB474700640CA3 /* PopulatedHomeView.swift in Sources */,
 				026624FC2EEB803000640CA3 /* PodcastPlayerView.swift in Sources */,
 				026624F42EEB4B0F00640CA3 /* FileListView.swift in Sources */,
+				02975E4F2EF0B8DB00843580 /* ButtonStyles.swift in Sources */,
+				02975E502EF0B8DB00843580 /* DocumentCard.swift in Sources */,
+				02975E512EF0B8DB00843580 /* LoadingView.swift in Sources */,
+				02975E522EF0B8DB00843580 /* PodcastCard.swift in Sources */,
+				02975E532EF0B8DB00843580 /* EmptyStateView.swift in Sources */,
 				026624FE2EEB806F00640CA3 /* CustomNavBar.swift in Sources */,
 				029C77332EE8D204007E9335 /* LibraryTabView.swift in Sources */,
 				029C77312EE8D1ED007E9335 /* PodcastListView.swift in Sources */,
 				02E8BBC22EE20B4D006B99D4 /* TestView.swift in Sources */,
 				02BB290A2EE88897004CA6CC /* TestAPIView.swift in Sources */,
+				02975E552EF0B8FB00843580 /* DesignSystem.swift in Sources */,
 				02BB28DD2EE21BC5004CA6CC /* Constants.swift in Sources */,
 				026625002EEB80DA00640CA3 /* ProgressBarView.swift in Sources */,
 				026625022EEB810100640CA3 /* PlaybackControlsView.swift in Sources */,
