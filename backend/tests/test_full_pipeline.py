@@ -75,7 +75,7 @@ def generate_podcast(document_id: str, target_duration: str = "short") -> str:
                 "target_duration": target_duration
             }
         },
-        timeout=60
+        timeout=300
     )
     
     if response.status_code != 202:

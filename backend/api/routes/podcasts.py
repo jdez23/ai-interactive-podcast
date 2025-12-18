@@ -14,8 +14,8 @@ import asyncio
 from pathlib import Path
 
 from services.script_generator import generate_podcast_script, validate_script
-from services.audio_service import generate_podcast_segment, VOICE_CONFIG
-from services.audio_concatenation import concatenate_audio_files, get_audio_duration
+from services.audio_service import synthesize_audio, VOICE_CONFIG
+from services.audio_concatenation import get_audio_duration
 from database.vector_store import get_all_chunks_for_documents
 from config.settings import PODCAST_DIR
 
@@ -110,40 +110,18 @@ async def _generate_podcast_pipeline(
         
         podcast_storage[podcast_id]["script_url"] = f"/generated/podcasts/{podcast_id}_script.json"
         
-        podcast_storage[podcast_id]["stage"] = "generating_audio"
-        logger.info(f"[{podcast_id}] Step 2: Generating audio segments...")
+        podcast_storage[podcast_id]["stage"] = "synthesizing_audio"
+        logger.info(f"[{podcast_id}] Step 2: Synthesizing audio with pauses...")
         
-        audio_files = []
-        for i, line in enumerate(script):
-            speaker = line["speaker"]
-            text = line["text"]
-            
-            logger.info(f"[{podcast_id}] Generating segment {i+1}/{len(script)} ({speaker})")
-            
-            audio_path = await generate_podcast_segment(
-                text=text,
-                speaker=speaker,
-                segment_number=i
-            )
-            
-            audio_files.append(audio_path)
+        final_audio_path = await synthesize_audio(
+            script=script,
+            output_filename=f"{podcast_id}.mp3",
+            pause_duration=500
+        )
         
-        logger.info(f"[{podcast_id}] Generated {len(audio_files)} audio segments")
+        logger.info(f"[{podcast_id}] Audio synthesis complete")
         
-        podcast_storage[podcast_id]["stage"] = "concatenating_audio"
-        logger.info(f"[{podcast_id}] Step 3: Concatenating audio segments...")
-        
-        final_audio_path = PODCAST_DIR / f"{podcast_id}.mp3"
-        await concatenate_audio_files(audio_files, str(final_audio_path))
-        
-        duration = await get_audio_duration(str(final_audio_path))
-        
-        logger.info(f"[{podcast_id}] Cleaning up temporary segment files...")
-        for audio_file in audio_files:
-            try:
-                Path(audio_file).unlink()
-            except Exception as e:
-                logger.warning(f"Failed to delete segment file {audio_file}: {e}")
+        duration = await get_audio_duration(final_audio_path)
         
         podcast_storage[podcast_id].update({
             "status": "complete",
