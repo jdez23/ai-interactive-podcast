@@ -177,6 +177,85 @@ python tests/run_script_test.py ~/Desktop/book_chapter.pdf long
 - Validates script structure and format
 - Tests all three target lengths sequentially
 
+### 9. `test_full_pipeline.py`
+Tests the complete podcast generation API pipeline end-to-end:
+- PDF upload via API endpoint
+- Podcast generation from uploaded document
+- Background task processing and status tracking
+- Audio file generation and verification
+- Script file generation and validation
+- Complete workflow from upload to playable podcast
+
+**Run:**
+```bash
+cd backend
+source venv/bin/activate
+python tests/test_full_pipeline.py /path/to/your/file.pdf short
+```
+
+**Examples:**
+```bash
+python tests/test_full_pipeline.py ~/Desktop/article.pdf short
+
+python tests/test_full_pipeline.py ~/Desktop/research.pdf medium
+
+python tests/test_full_pipeline.py ~/Desktop/book.pdf long
+```
+
+**Expected Output:**
+- Uploads document and receives document_id
+- Initiates podcast generation and receives podcast_id
+- Polls status every 5 seconds until complete
+- Verifies audio file exists (MP3 format, reasonable size)
+- Verifies script file exists (JSON format with exchanges)
+- Validates duration matches target length
+- Complete test takes 1-3 minutes depending on podcast length
+
+### 10. `manual_podcast_test.py`
+Interactive script for manual testing of podcast generation API:
+- Prompts for document_id and target duration
+- Calls POST /api/podcasts/generate endpoint
+- Polls GET /api/podcasts/{id} for status updates
+- Displays real-time progress and final results
+- Shows audio URL for playback
+
+**Run:**
+```bash
+cd backend
+source venv/bin/activate
+python tests/manual_podcast_test.py
+```
+
+**Expected Output:**
+- Interactive prompts for input
+- Real-time status updates (processing → complete)
+- Stage information (generating_script, generating_audio, concatenating_audio)
+- Final podcast details with audio URL
+- Access link to generated MP3 file
+
+### 11. `test_podcast_generation.py`
+Automated API endpoint tests for podcast generation:
+- POST /api/podcasts/generate validation
+- GET /api/podcasts/{id} status checking
+- GET /api/podcasts/ list endpoint
+- Error handling (invalid document_id, invalid duration)
+- 404 responses for non-existent podcasts
+- Response format validation
+
+**Run:**
+```bash
+cd backend
+source venv/bin/activate
+python tests/test_podcast_generation.py
+```
+
+**Expected Output:**
+- Tests invalid document_id returns 400
+- Tests invalid target_duration returns 400
+- Tests non-existent podcast_id returns 404
+- Tests list endpoint returns all podcasts
+- All validation tests pass
+
 ## Running All Tests
 
 To run all tests sequentially:
@@ -191,7 +270,15 @@ python tests/test_retrieve_chunks.py && \
 python tests/test_audio.py
 ```
 
-**Note:** `test_openai_with_pdfs.py` and `test_script_generator.py` require a PDF file path and are run separately with your own documents.
+**Note:** The following tests require a PDF file path and are run separately with your own documents:
+- `test_openai_with_pdfs.py` - OpenAI script generation test
+- `test_script_generator.py` - Script generator pipeline test
+- `test_full_pipeline.py` - Complete podcast generation test (upload + generate)
+
+**Example:**
+```bash
+python tests/test_full_pipeline.py ~/Desktop/your-document.pdf short
+```
 
 ## What's Being Tested
 
