@@ -177,9 +177,150 @@ python tests/run_script_test.py ~/Desktop/book_chapter.pdf long
 - Validates script structure and format
 - Tests all three target lengths sequentially
 
+### 9. `test_full_pipeline.py`
+Tests the complete podcast generation API pipeline end-to-end:
+- PDF upload via API endpoint
+- Podcast generation from uploaded document
+- Background task processing and status tracking
+- Audio file generation and verification
+- Script file generation and validation
+- Complete workflow from upload to playable podcast
+
+**Run:**
+```bash
+cd backend
+source venv/bin/activate
+python tests/test_full_pipeline.py /path/to/your/file.pdf short
+```
+
+**Examples:**
+```bash
+python tests/test_full_pipeline.py ~/Desktop/article.pdf short
+
+python tests/test_full_pipeline.py ~/Desktop/research.pdf medium
+
+python tests/test_full_pipeline.py ~/Desktop/book.pdf long
+```
+
+**Expected Output:**
+- Uploads document and receives document_id
+- Initiates podcast generation and receives podcast_id
+- Polls status every 5 seconds until complete
+- Verifies audio file exists (MP3 format, reasonable size)
+- Verifies script file exists (JSON format with exchanges)
+- Validates duration matches target length
+- Complete test takes 1-3 minutes depending on podcast length
+
+### 10. `manual_podcast_test.py`
+Interactive script for manual testing of podcast generation API:
+- Prompts for document_id and target duration
+- Calls POST /api/podcasts/generate endpoint
+- Polls GET /api/podcasts/{id} for status updates
+- Displays real-time progress and final results
+- Shows audio URL for playback
+
+**Run:**
+```bash
+cd backend
+source venv/bin/activate
+python tests/manual_podcast_test.py
+```
+
+**Expected Output:**
+- Interactive prompts for input
+- Real-time status updates (processing → complete)
+- Stage information (generating_script, generating_audio, concatenating_audio)
+- Final podcast details with audio URL
+- Access link to generated MP3 file
+
+### 11. `test_podcast_generation.py`
+Automated API endpoint tests for podcast generation:
+- POST /api/podcasts/generate validation
+- GET /api/podcasts/{id} status checking
+- GET /api/podcasts/ list endpoint
+- Error handling (invalid document_id, invalid duration)
+- 404 responses for non-existent podcasts
+- Response format validation
+
+**Run:**
+```bash
+cd backend
+source venv/bin/activate
+python tests/test_podcast_generation.py
+```
+
+**Expected Output:**
+- Tests invalid document_id returns 400
+- Tests invalid target_duration returns 400
+- Tests non-existent podcast_id returns 404
+- Tests list endpoint returns all podcasts
+- All validation tests pass
+
+### 12. `test_podcast_storage.py`
+Tests the podcast storage layer (SQLite database):
+- Save and retrieve podcast metadata
+- Status progression (processing → complete → failed)
+- Update multiple fields at once
+- List all podcasts
+- Podcast not found handling
+- Database persistence
+
+**Run:**
+```bash
+cd backend
+source venv/bin/activate
+python tests/test_podcast_storage.py
+```
+
+**Expected Output:**
+- Creates test podcasts in database
+- Verifies save/retrieve operations
+- Tests status transitions
+- Validates all database fields
+- Cleans up test data automatically
+- All tests pass (~6 tests)
+
+**Note:** This test only validates the database storage layer. No actual audio files are generated or required.
+
+### 13. `test_podcast_api_integration.py`
+Integration tests for podcast API endpoints:
+- Health check endpoint
+- Document upload (optional if test file exists)
+- Podcast generation initiation
+- Status polling and tracking
+- List all podcasts endpoint
+- 404 error handling
+
+**Prerequisites:**
+- Backend server must be running (`python main.py`)
+- Optional: Test PDF file in `backend/uploads/test.pdf`
+
+**Run:**
+```bash
+# Terminal 1: Start server
+cd backend
+source venv/bin/activate
+python main.py
+
+# Terminal 2: Run tests
+cd backend
+source venv/bin/activate
+python tests/test_podcast_api_integration.py
+```
+
+**Expected Output:**
+- Server health check passes
+- Document upload works (if test file exists)
+- Podcast generation starts successfully
+- Status endpoint returns correct data
+- List endpoint shows all podcasts
+- 404 handling works correctly
+
 ## Running All Tests
 
-To run all tests sequentially:
+### Unit Tests (No Server Required)
+
+To run all unit tests sequentially:
 
 ```bash
 cd backend
@@ -188,10 +329,35 @@ python tests/test_vector_store.py && \
 python tests/test_storage_errors.py && \
 python tests/test_end_to_end.py && \
 python tests/test_retrieve_chunks.py && \
-python tests/test_audio.py
+python tests/test_audio.py && \
+python tests/test_podcast_storage.py
 ```
 
-**Note:** `test_openai_with_pdfs.py` and `test_script_generator.py` require a PDF file path and are run separately with your own documents.
+### Integration Tests (Server Required)
+
+To run integration tests (requires running server):
+
+```bash
+# Terminal 1: Start server
+cd backend
+source venv/bin/activate
+python main.py
+
+# Terminal 2: Run integration tests
+cd backend
+source venv/bin/activate
+python tests/test_podcast_api_integration.py
+```
+
+**Note:** The following tests require a PDF file path and are run separately with your own documents:
+- `test_openai_with_pdfs.py` - OpenAI script generation test
+- `test_script_generator.py` - Script generator pipeline test
+- `test_full_pipeline.py` - Complete podcast generation test (upload + generate)
+
+**Example:**
+```bash
+python tests/test_full_pipeline.py ~/Desktop/your-document.pdf short
+```
 
 ## What's Being Tested
 
@@ -261,6 +427,18 @@ python tests/test_audio.py
     - ✅ Different content types work (technical, narrative, etc.)
     - ✅ Multiple target lengths supported (short, medium, long)
     - ✅ Quality validation (speaker alternation, natural reactions, questions)
+
+12. **Podcast storage and retrieval system**
+    - ✅ Podcast metadata storage implemented (SQLite)
+    - ✅ GET /api/podcasts/{id} endpoint created
+    - ✅ Returns podcast details (status, audio_url, metadata)
+    - ✅ Status tracking works (processing, complete, failed)
+    - ✅ Audio file paths stored correctly
+    - ✅ Failed generation cleanup implemented
+    - ✅ GET /api/podcasts endpoint (list all podcasts)
+    - ✅ Tested with multiple podcasts
+    - ✅ Database persists across server restarts
+    - ✅ Concurrent podcast generation supported
 
 ## Expected Output
 
