@@ -33,6 +33,13 @@ backend/generated/answers/*
 # Chroma database
 backend/chroma_db/
 
+# SQLite databases
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+backend/database/*.db
+
 # iOS
 **/xcuserdata/
 **/DerivedData/

@@ -17,13 +17,18 @@ from services.script_generator import generate_podcast_script, validate_script
 from services.audio_service import synthesize_audio, VOICE_CONFIG
 from services.audio_concatenation import get_audio_duration
 from database.vector_store import get_all_chunks_for_documents
+from database.podcast_storage import (
+    save_podcast,
+    get_podcast as get_podcast_from_db,
+    get_all_podcasts,
+    update_podcast_status,
+    cleanup_failed_podcast
+)
 from config.settings import PODCAST_DIR
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
-
-podcast_storage: Dict[str, Dict] = {}
 
 
 class GenerationOptions(BaseModel):
@@ -92,8 +97,7 @@ async def _generate_podcast_pipeline(
     try:
         logger.info(f"Starting podcast generation pipeline for {podcast_id}")
         
-        podcast_storage[podcast_id]["status"] = "processing"
-        podcast_storage[podcast_id]["stage"] = "generating_script"
+        update_podcast_status(podcast_id, "processing", stage="generating_script")
         
         logger.info(f"[{podcast_id}] Step 1: Generating script...")
         script = await generate_podcast_script(document_id, target_duration)
@@ -108,9 +112,13 @@ async def _generate_podcast_pipeline(
         with open(script_path, "w") as f:
             json.dump(script, f, indent=2)
         
-        podcast_storage[podcast_id]["script_url"] = f"/generated/podcasts/{podcast_id}_script.json"
+        update_podcast_status(
+            podcast_id,
+            "processing",
+            stage="synthesizing_audio",
+            script_url=f"/generated/podcasts/{podcast_id}_script.json"
+        )
         
-        podcast_storage[podcast_id]["stage"] = "synthesizing_audio"
         logger.info(f"[{podcast_id}] Step 2: Synthesizing audio with pauses...")
         
         final_audio_path = await synthesize_audio(
@@ -123,13 +131,13 @@ async def _generate_podcast_pipeline(
         
         duration = await get_audio_duration(final_audio_path)
         
-        podcast_storage[podcast_id].update({
-            "status": "complete",
-            "stage": "complete",
-            "audio_url": f"/generated/podcasts/{podcast_id}.mp3",
-            "duration_seconds": duration,
-            "completed_at": datetime.utcnow().isoformat() + "Z"
-        })
+        update_podcast_status(
+            podcast_id,
+            "complete",
+            stage="complete",
+            audio_url=f"/generated/podcasts/{podcast_id}.mp3",
+            duration_seconds=duration
+        )
         
         logger.info(f"[{podcast_id}] Podcast generation complete! Duration: {duration:.1f}s")
         
@@ -137,12 +145,17 @@ async def _generate_podcast_pipeline(
         error_msg = str(e)
         logger.error(f"[{podcast_id}] Pipeline failed: {error_msg}")
         
-        podcast_storage[podcast_id].update({
-            "status": "failed",
-            "stage": "failed",
-            "error": error_msg,
-            "failed_at": datetime.utcnow().isoformat() + "Z"
-        })
+        update_podcast_status(
+            podcast_id,
+            "failed",
+            stage="failed",
+            error_message=error_msg
+        )
+        
+        try:
+            cleanup_failed_podcast(podcast_id)
+        except Exception as cleanup_error:
+            logger.error(f"[{podcast_id}] Cleanup failed: {str(cleanup_error)}")
 
 
 @router.post("/generate", response_model=PodcastGenerateResponse, status_code=202)
@@ -196,18 +209,19 @@ async def generate_podcast(
         
         podcast_id = f"pod_{uuid.uuid4().hex[:12]}"
         
-        podcast_storage[podcast_id] = {
+        podcast_data = {
             "podcast_id": podcast_id,
             "status": "processing",
             "stage": "initializing",
-            "document_id": request.document_id,
+            "document_ids": [request.document_id],
             "target_duration": target_duration,
             "created_at": datetime.utcnow().isoformat() + "Z",
             "audio_url": None,
             "script_url": None,
             "duration_seconds": None,
-            "error": None
+            "error_message": None
         }
+        save_podcast(podcast_data)
         
         logger.info(f"Starting background task for podcast {podcast_id}")
         background_tasks.add_task(
@@ -272,13 +286,13 @@ async def get_podcast(podcast_id: str):
             "duration_seconds": 180.5
         }
     """
-    if podcast_id not in podcast_storage:
+    podcast_data = get_podcast_from_db(podcast_id)
+    
+    if podcast_data is None:
         raise HTTPException(
             status_code=404,
             detail=f"Podcast '{podcast_id}' not found"
         )
-    
-    podcast_data = podcast_storage[podcast_id]
     
     return PodcastStatusResponse(
         podcast_id=podcast_data["podcast_id"],
@@ -287,7 +301,7 @@ async def get_podcast(podcast_id: str):
         audio_url=podcast_data.get("audio_url"),
         script_url=podcast_data.get("script_url"),
         duration_seconds=podcast_data.get("duration_seconds"),
-        error=podcast_data.get("error")
+        error=podcast_data.get("error_message")
     )
 
 
@@ -315,7 +329,7 @@ async def list_podcasts():
             "total": 1
         }
     """
-    podcasts = list(podcast_storage.values())
+    podcasts = get_all_podcasts()
     
     return {
         "podcasts": podcasts,

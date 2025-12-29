@@ -256,9 +256,71 @@ python tests/test_podcast_generation.py
 - Tests list endpoint returns all podcasts
 - All validation tests pass
 
+### 12. `test_podcast_storage.py`
+Tests the podcast storage layer (SQLite database):
+- Save and retrieve podcast metadata
+- Status progression (processing → complete → failed)
+- Update multiple fields at once
+- List all podcasts
+- Podcast not found handling
+- Database persistence
+
+**Run:**
+```bash
+cd backend
+source venv/bin/activate
+python tests/test_podcast_storage.py
+```
+
+**Expected Output:**
+- Creates test podcasts in database
+- Verifies save/retrieve operations
+- Tests status transitions
+- Validates all database fields
+- Cleans up test data automatically
+- All tests pass (~6 tests)
+
+**Note:** This test only validates the database storage layer. No actual audio files are generated or required.
+
+### 13. `test_podcast_api_integration.py`
+Integration tests for podcast API endpoints:
+- Health check endpoint
+- Document upload (optional if test file exists)
+- Podcast generation initiation
+- Status polling and tracking
+- List all podcasts endpoint
+- 404 error handling
+
+**Prerequisites:**
+- Backend server must be running (`python main.py`)
+- Optional: Test PDF file in `backend/uploads/test.pdf`
+
+**Run:**
+```bash
+# Terminal 1: Start server
+cd backend
+source venv/bin/activate
+python main.py
+
+# Terminal 2: Run tests
+cd backend
+source venv/bin/activate
+python tests/test_podcast_api_integration.py
+```
+
+**Expected Output:**
+- Server health check passes
+- Document upload works (if test file exists)
+- Podcast generation starts successfully
+- Status endpoint returns correct data
+- List endpoint shows all podcasts
+- 404 handling works correctly
+
 ## Running All Tests
 
-To run all tests sequentially:
+### Unit Tests (No Server Required)
+
+To run all unit tests sequentially:
 
 ```bash
 cd backend
@@ -267,7 +329,24 @@ python tests/test_vector_store.py && \
 python tests/test_storage_errors.py && \
 python tests/test_end_to_end.py && \
 python tests/test_retrieve_chunks.py && \
-python tests/test_audio.py
+python tests/test_audio.py && \
+python tests/test_podcast_storage.py
+```
+
+### Integration Tests (Server Required)
+
+To run integration tests (requires running server):
+
+```bash
+# Terminal 1: Start server
+cd backend
+source venv/bin/activate
+python main.py
+
+# Terminal 2: Run integration tests
+cd backend
+source venv/bin/activate
+python tests/test_podcast_api_integration.py
 ```
 
 **Note:** The following tests require a PDF file path and are run separately with your own documents:
@@ -348,6 +427,18 @@ python tests/test_full_pipeline.py ~/Desktop/your-document.pdf short
     - ✅ Different content types work (technical, narrative, etc.)
     - ✅ Multiple target lengths supported (short, medium, long)
     - ✅ Quality validation (speaker alternation, natural reactions, questions)
+
+12. **Podcast storage and retrieval system**
+    - ✅ Podcast metadata storage implemented (SQLite)
+    - ✅ GET /api/podcasts/{id} endpoint created
+    - ✅ Returns podcast details (status, audio_url, metadata)
+    - ✅ Status tracking works (processing, complete, failed)
+    - ✅ Audio file paths stored correctly
+    - ✅ Failed generation cleanup implemented
+    - ✅ GET /api/podcasts endpoint (list all podcasts)
+    - ✅ Tested with multiple podcasts
+    - ✅ Database persists across server restarts
+    - ✅ Concurrent podcast generation supported
 
 ## Expected Output
 
