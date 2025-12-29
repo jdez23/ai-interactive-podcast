@@ -7,7 +7,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from services.audio_service import generate_speech, VOICE_CONFIG
+from services.audio_service import generate_speech, synthesize_audio, VOICE_CONFIG
 
 
 async def test_audio_generation():
