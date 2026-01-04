@@ -12,7 +12,6 @@
 		026624EC2EEB45EA00640CA3 /* UnpopulatedHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026624EB2EEB45D800640CA3 /* UnpopulatedHomeView.swift */; };
 		026624EE2EEB474700640CA3 /* PopulatedHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026624ED2EEB46BA00640CA3 /* PopulatedHomeView.swift */; };
 		026624F02EEB47A000640CA3 /* PodcastCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026624EF2EEB479600640CA3 /* PodcastCardView.swift */; };
-		026624F22EEB488F00640CA3 /* AddFileSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026624F12EEB488800640CA3 /* AddFileSection.swift */; };
 		026624F42EEB4B0F00640CA3 /* FileListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026624F32EEB4B0A00640CA3 /* FileListView.swift */; };
 		026624F62EEB7F7200640CA3 /* GenerateButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026624F52EEB7F6900640CA3 /* GenerateButton.swift */; };
 		026624F82EEB7FCC00640CA3 /* LoadingOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 026624F72EEB7FC700640CA3 /* LoadingOverlay.swift */; };
@@ -41,6 +40,8 @@
 		02E8BBBE2EE209B1006B99D4 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 02E8BBBD2EE209B1006B99D4 /* Alamofire */; };
 		02E8BBC22EE20B4D006B99D4 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E8BBC12EE20B4A006B99D4 /* TestView.swift */; };
 		63C3F2A22EF629F400B856D7 /* CardButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C3F2A12EF629F400B856D7 /* CardButtonStyle.swift */; };
+		63C3F2E42F09FA9B00B856D7 /* AddFileEmptyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C3F2E32F09FA9200B856D7 /* AddFileEmptyState.swift */; };
+		63C3F2E62F09FAF100B856D7 /* AddFileBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C3F2E52F09FAED00B856D7 /* AddFileBox.swift */; };
 		C590EEA52EC81B9E007D62CC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C590EEA22EC81B9E007D62CC /* ContentView.swift */; };
 /* End PBXBuildFile section */
 
@@ -61,7 +62,6 @@
 		026624EB2EEB45D800640CA3 /* UnpopulatedHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnpopulatedHomeView.swift; sourceTree = "<group>"; };
 		026624ED2EEB46BA00640CA3 /* PopulatedHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopulatedHomeView.swift; sourceTree = "<group>"; };
 		026624EF2EEB479600640CA3 /* PodcastCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastCardView.swift; sourceTree = "<group>"; };
-		026624F12EEB488800640CA3 /* AddFileSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFileSection.swift; sourceTree = "<group>"; };
 		026624F32EEB4B0A00640CA3 /* FileListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileListView.swift; sourceTree = "<group>"; };
 		026624F52EEB7F6900640CA3 /* GenerateButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateButton.swift; sourceTree = "<group>"; };
 		026624F72EEB7FC700640CA3 /* LoadingOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingOverlay.swift; sourceTree = "<group>"; };
@@ -90,6 +90,8 @@
 		02E8BBB82EE205CF006B99D4 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		02E8BBC12EE20B4A006B99D4 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		63C3F2A12EF629F400B856D7 /* CardButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardButtonStyle.swift; sourceTree = "<group>"; };
+		63C3F2E32F09FA9200B856D7 /* AddFileEmptyState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFileEmptyState.swift; sourceTree = "<group>"; };
+		63C3F2E52F09FAED00B856D7 /* AddFileBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFileBox.swift; sourceTree = "<group>"; };
 		C590EE922EC81A11007D62CC /* AIPodcast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AIPodcast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C590EEA22EC81B9E007D62CC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C590EEAC2EC81D37007D62CC /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -170,11 +172,12 @@
 		026624C62EEA3A1B00640CA3 /* Generate */ = {
 			isa = PBXGroup;
 			children = (
+				026624C72EEA3A2B00640CA3 /* GenerateTabView.swift */,
+				63C3F2E32F09FA9200B856D7 /* AddFileEmptyState.swift */,
+				63C3F2E52F09FAED00B856D7 /* AddFileBox.swift */,
+				026624F32EEB4B0A00640CA3 /* FileListView.swift */,
 				026624F72EEB7FC700640CA3 /* LoadingOverlay.swift */,
 				026624F52EEB7F6900640CA3 /* GenerateButton.swift */,
-				026624F32EEB4B0A00640CA3 /* FileListView.swift */,
-				026624F12EEB488800640CA3 /* AddFileSection.swift */,
-				026624C72EEA3A2B00640CA3 /* GenerateTabView.swift */,
 			);
 			path = Generate;
 			sourceTree = "<group>";
@@ -431,7 +434,6 @@
 				02E8BBAD2EE20210006B99D4 /* AIPodcastApp.swift in Sources */,
 				029C772D2EE8D1BB007E9335 /* DocumentListView.swift in Sources */,
 				026624EC2EEB45EA00640CA3 /* UnpopulatedHomeView.swift in Sources */,
-				026624F22EEB488F00640CA3 /* AddFileSection.swift in Sources */,
 				63C3F2A22EF629F400B856D7 /* CardButtonStyle.swift in Sources */,
 				026624F62EEB7F7200640CA3 /* GenerateButton.swift in Sources */,
 				029C772B2EE8D1AD007E9335 /* DocumentTabView.swift in Sources */,
@@ -443,6 +445,7 @@
 				026624F42EEB4B0F00640CA3 /* FileListView.swift in Sources */,
 				02975E4F2EF0B8DB00843580 /* ButtonStyles.swift in Sources */,
 				02975E502EF0B8DB00843580 /* DocumentCard.swift in Sources */,
+				63C3F2E42F09FA9B00B856D7 /* AddFileEmptyState.swift in Sources */,
 				02975E512EF0B8DB00843580 /* LoadingView.swift in Sources */,
 				02975E522EF0B8DB00843580 /* PodcastCard.swift in Sources */,
 				02975E532EF0B8DB00843580 /* EmptyStateView.swift in Sources */,
@@ -450,6 +453,7 @@
 				029C77332EE8D204007E9335 /* LibraryTabView.swift in Sources */,
 				029C77312EE8D1ED007E9335 /* PodcastListView.swift in Sources */,
 				02E8BBC22EE20B4D006B99D4 /* TestView.swift in Sources */,
+				63C3F2E62F09FAF100B856D7 /* AddFileBox.swift in Sources */,
 				02BB290A2EE88897004CA6CC /* TestAPIView.swift in Sources */,
 				02975E552EF0B8FB00843580 /* DesignSystem.swift in Sources */,
 				02BB28DD2EE21BC5004CA6CC /* Constants.swift in Sources */,
