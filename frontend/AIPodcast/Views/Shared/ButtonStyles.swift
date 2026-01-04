@@ -10,11 +10,12 @@ struct PrimaryButtonStyle: ButtonStyle {
             .foregroundColor(.white)
             .frame(maxWidth: .infinity)
             .padding(.vertical, Spacing.md)
+            .padding(.horizontal, 20)
             .background(isEnabled ? Color.appPrimary : Color.appSecondary)
-            .cornerRadius(CornerRadius.md)
-            .opacity(configuration.isPressed ? 0.8 : 1.0)
+            .cornerRadius(CornerRadius.xl)
+            .glassEffect(.regular.tint(isEnabled ? Color.appPrimary : Color.appSecondary), in: RoundedRectangle(cornerRadius: 16))
             .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
-            .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
+            .animation(.easeInOut(duration: 0.15), value: configuration.isPressed)
     }
 }
 
@@ -25,96 +26,224 @@ struct SecondaryButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.appBodyBold)
-            .foregroundColor(isEnabled ? Color.appPrimary : Color.appSecondaryText)
+            .foregroundColor(isEnabled ? Color.white : Color.appSecondaryText)
             .frame(maxWidth: .infinity)
             .padding(.vertical, Spacing.md)
-            .background(Color.appSecondaryBackground)
-            .cornerRadius(CornerRadius.md)
-            .overlay(
-                RoundedRectangle(cornerRadius: CornerRadius.md)
-                    .stroke(isEnabled ? Color.appPrimary : Color.appCardBorder, lineWidth: 1.5)
-            )
-            .opacity(configuration.isPressed ? 0.8 : 1.0)
+            .padding(.horizontal, 20)
+            .glassEffect(.clear, in: RoundedRectangle(cornerRadius: 16))
             .scaleEffect(configuration.isPressed ? 0.98 : 1.0)
-            .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
+            .animation(.easeInOut(duration: 0.15), value: configuration.isPressed)
     }
 }
 
 // MARK: - Icon Button Style
 struct IconButtonStyle: ButtonStyle {
-    var backgroundColor: Color = Color.appPrimary
-    var foregroundColor: Color = .white
+    var tintColor: Color = Color.white
     
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.title3)
-            .foregroundColor(foregroundColor)
+            .foregroundColor(.white)
             .padding(Spacing.md)
-            .background(backgroundColor)
-            .cornerRadius(CornerRadius.md)
-            .opacity(configuration.isPressed ? 0.8 : 1.0)
+            .glassEffect(.clear, in: Circle())
             .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
-            .animation(.easeInOut(duration: 0.1), value: configuration.isPressed)
+            .animation(.easeInOut(duration: 0.15), value: configuration.isPressed)
+    }
+}
+
+// MARK: - Bare Icon Button Style
+struct BareIconButtonStyle: ButtonStyle {
+    enum Size {
+        case mini
+        case regular
+        case large
+        
+        var fontSize: CGFloat {
+            switch self {
+            case .mini: return 16
+            case .regular: return 20
+            case .large: return 24
+            }
+        }
+    }
+    
+    var tintColor: Color = .white
+    var size: Size = .regular
+    
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(.system(size: size.fontSize, weight: .semibold))
+            .foregroundColor(tintColor)
+            .opacity(configuration.isPressed ? 0.6 : 1.0)
+            .scaleEffect(configuration.isPressed ? 0.9 : 1.0)
+            .animation(.easeInOut(duration: 0.15), value: configuration.isPressed)
     }
 }
 
 // MARK: - Previews
-#Preview("Button Styles - Light Mode") {
-    VStack(spacing: Spacing.lg) {
-        Button("Primary Button") {}
-            .buttonStyle(PrimaryButtonStyle())
-        
-        Button("Primary Disabled") {}
-            .buttonStyle(PrimaryButtonStyle(isEnabled: false))
-            .disabled(true)
-        
-        Button("Secondary Button") {}
-            .buttonStyle(SecondaryButtonStyle())
-        
-        Button("Secondary Disabled") {}
-            .buttonStyle(SecondaryButtonStyle(isEnabled: false))
-            .disabled(true)
-        
-        HStack(spacing: Spacing.md) {
-            Button(action: {}) {
-                Image(systemName: "play.fill")
-            }
-            .buttonStyle(IconButtonStyle())
-            
-            Button(action: {}) {
-                Image(systemName: "heart.fill")
-            }
-            .buttonStyle(IconButtonStyle(backgroundColor: .appError))
-            
-            Button(action: {}) {
-                Image(systemName: "square.and.arrow.up")
-            }
-            .buttonStyle(IconButtonStyle(backgroundColor: .appSecondary))
-        }
-    }
-    .padding()
-}
-
 #Preview("Button Styles - Dark Mode") {
-    VStack(spacing: Spacing.lg) {
-        Button("Primary Button") {}
-            .buttonStyle(PrimaryButtonStyle())
+    ZStack {
+        LinearGradient(
+            colors: [
+                Color.blue.opacity(0.2),
+                Color.indigo.opacity(0.2),
+                Color.black.opacity(0.1)
+            ],
+            startPoint: .topLeading,
+            endPoint: .bottomTrailing
+        )
+        .ignoresSafeArea()
         
-        Button("Secondary Button") {}
-            .buttonStyle(SecondaryButtonStyle())
-        
-        HStack(spacing: Spacing.md) {
-            Button(action: {}) {
-                Image(systemName: "play.fill")
-            }
-            .buttonStyle(IconButtonStyle())
+        VStack(spacing: Spacing.lg) {
+            Text("Large Buttons")
+                .font(.title)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
             
-            Button(action: {}) {
-                Image(systemName: "heart.fill")
+            Button("Primary Button") {}
+                .buttonStyle(PrimaryButtonStyle())
+            
+            Button("Primary Disabled") {}
+                .buttonStyle(PrimaryButtonStyle(isEnabled: false))
+                .disabled(true)
+            
+            Button("Secondary Button") {}
+                .buttonStyle(SecondaryButtonStyle())
+            
+            Button("Secondary Disabled") {}
+                .buttonStyle(SecondaryButtonStyle(isEnabled: false))
+                .disabled(true)
+            
+            Divider()
+            
+            Text("Icon Buttons")
+                .font(.headline)
+                .foregroundColor(.white)
+            
+            HStack(spacing: Spacing.md) {
+                Button(action: {}) {
+                    Image(systemName: "play.fill")
+                }
+                .buttonStyle(IconButtonStyle())
+                
+                Button(action: {}) {
+                    Image(systemName: "square.and.arrow.up")
+                }
+                .buttonStyle(IconButtonStyle())
             }
-            .buttonStyle(IconButtonStyle(backgroundColor: .appError))
+            
+            Divider()
+            
+            Text("Bare Icon Buttons")
+                .font(.headline)
+                .foregroundColor(.white)
+            
+            VStack(spacing: 16) {
+                HStack(spacing: 20) {
+                    Text("Mini:")
+                        .foregroundColor(.white)
+                    Button(action: {}) {
+                        Image(systemName: "gobackward.15")
+                    }
+                    .buttonStyle(BareIconButtonStyle(size: .mini))
+                    
+                    Button(action: {}) {
+                        Image(systemName: "goforward.30")
+                    }
+                    .buttonStyle(BareIconButtonStyle(size: .mini))
+                    
+                    Button(action: {}) {
+                        Image(systemName: "arrow.down")
+                    }
+                    .buttonStyle(BareIconButtonStyle(size: .mini))
+                    
+                    Button(action: {}) {
+                        Image(systemName: "play.fill")
+                    }
+                    .buttonStyle(BareIconButtonStyle(size: .mini))
+                    
+                    Button(action: {}) {
+                        Image(systemName: "square.and.arrow.up")
+                    }
+                    .buttonStyle(BareIconButtonStyle(size: .mini))
+                    
+                    Button(action: {}) {
+                        Image(systemName: "trash.fill")
+                    }
+                    .buttonStyle(BareIconButtonStyle(size: .mini))
+                }
+                
+                HStack(spacing: 20) {
+                    Text("Regular:")
+                        .foregroundColor(.white)
+                    Button(action: {}) {
+                        Image(systemName: "gobackward.15")
+                    }
+                    .buttonStyle(BareIconButtonStyle(size: .regular))
+                    
+                    Button(action: {}) {
+                        Image(systemName: "goforward.30")
+                    }
+                    .buttonStyle(BareIconButtonStyle(size: .regular))
+                    
+                    Button(action: {}) {
+                        Image(systemName: "arrow.down")
+                    }
+                    .buttonStyle(BareIconButtonStyle(size: .regular))
+                    
+                    Button(action: {}) {
+                        Image(systemName: "play.fill")
+                    }
+                    .buttonStyle(BareIconButtonStyle(size: .regular))
+                    
+                    Button(action: {}) {
+                        Image(systemName: "square.and.arrow.up")
+                    }
+                    .buttonStyle(BareIconButtonStyle(size: .regular))
+                    
+                    Button(action: {}) {
+                        Image(systemName: "trash.fill")
+                    }
+                    .buttonStyle(BareIconButtonStyle(size: .regular))
+                }
+                
+                HStack(spacing: 20) {
+                    Text("Large:")
+                        .foregroundColor(.white)
+                    
+                    Button(action: {}) {
+                        Image(systemName: "gobackward.15")
+                    }
+                    .buttonStyle(BareIconButtonStyle(size: .large))
+                    
+                    Button(action: {}) {
+                        Image(systemName: "goforward.30")
+                    }
+                    .buttonStyle(BareIconButtonStyle(size: .large))
+                    
+                    Button(action: {}) {
+                        Image(systemName: "arrow.down")
+                    }
+                    .buttonStyle(BareIconButtonStyle(size: .large))
+                    
+                    Button(action: {}) {
+                        Image(systemName: "play.fill")
+                    }
+                    .buttonStyle(BareIconButtonStyle(size: .large))
+                    
+                    Button(action: {}) {
+                        Image(systemName: "square.and.arrow.up")
+                    }
+                    .buttonStyle(BareIconButtonStyle(size: .large))
+                    
+                    Button(action: {}) {
+                        Image(systemName: "trash.fill")
+                    }
+                    .buttonStyle(BareIconButtonStyle(size: .large))
+                }
+            }
         }
+        .padding()
+        .preferredColorScheme(.dark)
     }
-    .padding()
-    .preferredColorScheme(.dark)
 }

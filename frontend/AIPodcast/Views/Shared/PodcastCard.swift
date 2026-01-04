@@ -75,16 +75,18 @@ struct PodcastCard: View {
                 // Play Button
                 if let playAction = onPlayTap {
                     Button(action: playAction) {
-                        Image(systemName: "play.circle.fill")
-                            .font(.title)
-                            .foregroundColor(.appPrimary)
+                        Image(systemName: "play.fill")
                     }
-                    .buttonStyle(PlainButtonStyle())
+                    .buttonStyle(IconButtonStyle())
                 }
             }
             .padding(Spacing.md)
-            .background(Color.appCardBackground)
+            .background(.regularMaterial)
             .cornerRadius(CornerRadius.md)
+            .overlay(
+                RoundedRectangle(cornerRadius: CornerRadius.md)
+                    .stroke(Color.appSeparator, lineWidth: 0.5)
+            )
             .appLightShadow()
         }
         .buttonStyle(PlainButtonStyle())
@@ -267,3 +269,4 @@ struct LargePodcastCard: View {
     .padding()
     .preferredColorScheme(.dark)
 }
+

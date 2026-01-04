@@ -10,16 +10,27 @@ extension Color {
     static let appSecondaryBackground = Color(.secondarySystemBackground)
     static let appTertiaryBackground = Color(.tertiarySystemBackground)
     
-    static let appText = Color(.label)
-    static let appSecondaryText = Color(.secondaryLabel)
-    static let appTertiaryText = Color(.tertiaryLabel)
+    static let appText = Color.primary
+    static let appSecondaryText = Color.secondary
+    static let appTertiaryText = Color.secondary.opacity(0.7)
     
     static let appSuccess = Color.green
     static let appWarning = Color.orange
     static let appError = Color.red
     
     static let appCardBackground = Color(.secondarySystemBackground)
-    static let appCardBorder = Color(.separator)
+    static let appCardBorder = appSeparator
+    
+    // Adaptive separator that subtly changes between light and dark modes
+    static var appSeparator: Color {
+        Color(UIColor { trait in
+            if trait.userInterfaceStyle == .dark {
+                return UIColor.white.withAlphaComponent(0.12)
+            } else {
+                return UIColor.black.withAlphaComponent(0.15)
+            }
+        })
+    }
 }
 
 // MARK: Typography
@@ -70,3 +81,4 @@ extension View {
         self.shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 2)
     }
 }
+

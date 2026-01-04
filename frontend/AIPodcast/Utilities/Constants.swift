@@ -42,7 +42,7 @@ struct Constants {
     // MARK: - UI Configuration
     
     /// Default corner radius for cards and buttons
-    static let cornerRadius: CGFloat = 12
+    static let cornerRadius: CGFloat = 20
     
     /// Standard padding
     static let padding: CGFloat = 16
