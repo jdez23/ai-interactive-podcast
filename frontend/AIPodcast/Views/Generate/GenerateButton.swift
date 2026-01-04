@@ -10,11 +10,8 @@ struct GenerateButton: View {
                 if isGenerating {
                     ProgressView()
                         .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                    Text("Generating...")
-                } else {
-                    Image(systemName: "waveform.circle.fill")
-                    Text("Generate Podcast")
                 }
+                Text("Generate")
             }
         }
         .buttonStyle(PrimaryButtonStyle(isEnabled: !isGenerating))
@@ -23,9 +20,14 @@ struct GenerateButton: View {
 }
 
 #Preview {
-    VStack {
-        GenerateButton(isGenerating: false, onGenerate: {})
-        GenerateButton(isGenerating: true, onGenerate: {})
+    ZStack {
+        Color.black.ignoresSafeArea()
+        
+        VStack(spacing: 20) {
+            GenerateButton(isGenerating: false, onGenerate: {})
+            GenerateButton(isGenerating: true, onGenerate: {})
+        }
+        .padding()
     }
-    .padding()
 }
+

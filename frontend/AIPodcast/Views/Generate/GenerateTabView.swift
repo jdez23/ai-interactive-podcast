@@ -5,108 +5,68 @@ struct GenerateTabView: View {
     @StateObject private var viewModel = GenerateViewModel()
     
     var body: some View {
-        if #available(iOS 16.0, *) {
-            NavigationStack {
-                ZStack {
-                    VStack(spacing: 0) {
-                        // Add File Section
-                        AddFileSection(
-                            hasFiles: !viewModel.selectedFiles.isEmpty,
-                            onAddFile: { viewModel.showFilePicker = true }
-                        )
-                        .padding()
-                        
-                        // Selected Files List
-                        if !viewModel.selectedFiles.isEmpty {
+        NavigationStack {
+            ZStack {
+                // Dark background
+                Color.black.ignoresSafeArea()
+                
+                VStack(spacing: 0) {
+                    // Main content area
+                    if viewModel.selectedFiles.isEmpty {
+                        // Empty state - centered
+                        Spacer()
+                        AddFileEmptyState(onAddFile: { viewModel.showFilePicker = true })
+                        Spacer()
+                    } else {
+                        // Files selected state
+                        VStack(spacing: 0) {
+                            // Add file box at top
+                            AddFileBox(onAddFile: { viewModel.showFilePicker = true })
+                                .padding()
+                            
+                            // File list
                             FileListView(
                                 files: viewModel.selectedFiles,
                                 onDelete: viewModel.removeFile
                             )
-                        } else {
+                            
                             Spacer()
-                        }
-                        
-                        // Generate Button
-                        if viewModel.canGenerate {
-                            GenerateButton(
-                                isGenerating: viewModel.isGenerating,
-                                onGenerate: viewModel.generatePodcast
-                            )
-                            .padding()
                         }
                     }
                     
-                    // Loading Overlay
-                    if viewModel.isGenerating {
-                        LoadingOverlay()
+                    // Generate Button - always visible
+                    if !viewModel.selectedFiles.isEmpty {
+                        GenerateButton(
+                            isGenerating: viewModel.isGenerating,
+                            onGenerate: viewModel.generatePodcast
+                        )
+                        .padding(.horizontal, 32)
+                        .padding(.bottom, 20)
                     }
                 }
-                .navigationTitle("Generate")
-                .fileImporter(
-                    isPresented: $viewModel.showFilePicker,
-                    allowedContentTypes: [.pdf],
-                    allowsMultipleSelection: true
-                ) { result in
-                    viewModel.handleFileSelection(result)
-                }
-                .alert("Error", isPresented: $viewModel.showError) {
-                    Button("OK") { viewModel.errorMessage = nil }
-                } message: {
-                    if let error = viewModel.errorMessage {
-                        Text(error)
-                    }
+                
+                // Loading Overlay
+                if viewModel.isGenerating {
+                    LoadingOverlay()
                 }
             }
-        } else {
-            NavigationView {
-                ZStack {
-                    VStack(spacing: 0) {
-                        // Add File Section
-                        AddFileSection(
-                            hasFiles: !viewModel.selectedFiles.isEmpty,
-                            onAddFile: { viewModel.showFilePicker = true }
-                        )
-                        .padding()
-                        
-                        // Selected Files List
-                        if !viewModel.selectedFiles.isEmpty {
-                            FileListView(
-                                files: viewModel.selectedFiles,
-                                onDelete: viewModel.removeFile
-                            )
-                        } else {
-                            Spacer()
-                        }
-                        
-                        // Generate Button
-                        if viewModel.canGenerate {
-                            GenerateButton(
-                                isGenerating: viewModel.isGenerating,
-                                onGenerate: viewModel.generatePodcast
-                            )
-                            .padding()
-                        }
-                    }
-                    
-                    // Loading Overlay
-                    if viewModel.isGenerating {
-                        LoadingOverlay()
-                    }
-                }
-                .navigationTitle("Generate")
-                .fileImporter(
-                    isPresented: $viewModel.showFilePicker,
-                    allowedContentTypes: [.pdf],
-                    allowsMultipleSelection: true
-                ) { result in
-                    viewModel.handleFileSelection(result)
-                }
-                .alert("Error", isPresented: $viewModel.showError) {
-                    Button("OK") { viewModel.errorMessage = nil }
-                } message: {
-                    if let error = viewModel.errorMessage {
-                        Text(error)
-                    }
+            .navigationTitle("Generate")
+            .navigationBarTitleDisplayMode(.large)
+            .toolbarBackground(Color.black, for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
+            .toolbarColorScheme(.dark, for: .navigationBar)
+            .fileImporter(
+                isPresented: $viewModel.showFilePicker,
+                allowedContentTypes: [.pdf],
+                allowsMultipleSelection: true
+            ) { result in
+                viewModel.handleFileSelection(result)
+            }
+            .alert("Error", isPresented: $viewModel.showError) {
+                Button("OK") { viewModel.errorMessage = nil }
+            } message: {
+                if let error = viewModel.errorMessage {
+                    Text(error)
                 }
             }
         }
