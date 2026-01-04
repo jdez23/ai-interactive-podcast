@@ -2,9 +2,16 @@ import SwiftUI
 
 struct PodcastTabView: View {
     var body: some View {
-        NavigationStack {
-            PodcastListView()
-                .navigationTitle("Podcasts")
+        if #available(iOS 16.0, *) {
+            NavigationStack {
+                PodcastListView()
+                    .navigationTitle("Podcasts")
+            }
+        } else {
+            NavigationView {
+                PodcastListView()
+                    .navigationTitle("Podcasts")
+            }
         }
     }
 }

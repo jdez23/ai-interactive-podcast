@@ -57,4 +57,5 @@ struct PopulatedHomeView: View {
 
 #Preview {
     PopulatedHomeView()
+        .preferredColorScheme(.dark)
 }

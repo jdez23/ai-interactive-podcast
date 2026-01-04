@@ -4,15 +4,28 @@ struct HomeTabView: View {
     @StateObject private var appState = AppState.shared
     
     var body: some View {
-        NavigationStack {
-            Group {
-                if appState.generatedPodcasts.isEmpty && appState.downloadedPodcasts.isEmpty {
-                    UnpopulatedHomeView()
-                } else {
-                    PopulatedHomeView()
+        if #available(iOS 16.0, *) {
+            NavigationStack {
+                Group {
+                    if appState.generatedPodcasts.isEmpty && appState.downloadedPodcasts.isEmpty {
+                        UnpopulatedHomeView()
+                    } else {
+                        PopulatedHomeView()
+                    }
                 }
+                .navigationTitle("Home")
             }
-            .navigationTitle("Home")
+        } else {
+            NavigationView {
+                Group {
+                    if appState.generatedPodcasts.isEmpty && appState.downloadedPodcasts.isEmpty {
+                        UnpopulatedHomeView()
+                    } else {
+                        PopulatedHomeView()
+                    }
+                }
+                .navigationTitle("Home")
+            }
         }
     }
 }

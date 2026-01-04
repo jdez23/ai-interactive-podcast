@@ -51,7 +51,8 @@ struct CustomNavBar: View {
             .foregroundColor(.primary)
         }
         .padding()
-        .background(Color(.systemBackground))
+        .background(.background)
         .shadow(color: .black.opacity(0.1), radius: 2, y: 2)
     }
 }
+
