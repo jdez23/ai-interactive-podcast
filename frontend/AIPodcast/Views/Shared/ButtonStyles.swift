@@ -38,16 +38,40 @@ struct SecondaryButtonStyle: ButtonStyle {
 
 // MARK: - Icon Button Style
 struct IconButtonStyle: ButtonStyle {
+    enum Style {
+        case glass
+        case circularAdd(size: CGFloat = 56)
+    }
+    
     var tintColor: Color = Color.white
+    var style: Style = .glass
     
     func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .font(.title3)
-            .foregroundColor(.white)
-            .padding(Spacing.md)
-            .glassEffect(.clear, in: Circle())
-            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
-            .animation(.easeInOut(duration: 0.15), value: configuration.isPressed)
+        Group {
+            switch style {
+            case .glass:
+                configuration.label
+                    .font(.title3)
+                    .foregroundColor(.white)
+                    .padding(Spacing.md)
+                    .glassEffect(.clear, in: Circle())
+                    .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
+                    .animation(.easeInOut(duration: 0.15), value: configuration.isPressed)
+                
+            case .circularAdd(let size):
+                ZStack {
+                    Circle()
+                        .fill(Color.appPrimary)
+                        .frame(width: size, height: size)
+                    
+                    Image(systemName: "plus")
+                        .font(.system(size: size * 0.43, weight: .medium))
+                        .foregroundColor(.white)
+                }
+                .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
+                .animation(.easeInOut(duration: 0.15), value: configuration.isPressed)
+            }
+        }
     }
 }
 
@@ -95,6 +119,8 @@ struct BareIconButtonStyle: ButtonStyle {
         .ignoresSafeArea()
         
         VStack(spacing: Spacing.lg) {
+            
+// LARGE BUTTONS
             Text("Large Buttons")
                 .font(.title)
                 .fontWeight(.bold)
@@ -116,6 +142,7 @@ struct BareIconButtonStyle: ButtonStyle {
             
             Divider()
             
+// ICON BUTTTONS
             Text("Icon Buttons")
                 .font(.headline)
                 .foregroundColor(.white)
@@ -130,10 +157,16 @@ struct BareIconButtonStyle: ButtonStyle {
                     Image(systemName: "square.and.arrow.up")
                 }
                 .buttonStyle(IconButtonStyle())
+                
+                Button(action: {}) {
+                    Image(systemName: "plus")
+                }
+                .buttonStyle(IconButtonStyle())
             }
             
             Divider()
             
+// BARE ICON BUTTONS
             Text("Bare Icon Buttons")
                 .font(.headline)
                 .foregroundColor(.white)

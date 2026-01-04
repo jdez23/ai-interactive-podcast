@@ -128,15 +128,15 @@ struct SkeletonLoadingView: View {
     VStack(spacing: Spacing.xl) {
         Text("Standard Loading View")
             .font(.appTitle3)
-        LoadingView(message: "Loading your data...")
+        LoadingView(message: "Generating...")
         
         Text("Without Background")
             .font(.appTitle3)
-        LoadingView(message: "Processing...", showBackground: false)
+        LoadingView(message: "Generating...", showBackground: false)
         
         Text("Inline Loading")
             .font(.appTitle3)
-        InlineLoadingView(message: "Uploading...")
+        InlineLoadingView(message: "Generating...")
         
         Text("Skeleton Loading")
             .font(.appTitle3)

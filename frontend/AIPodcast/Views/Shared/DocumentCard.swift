@@ -2,27 +2,48 @@ import SwiftUI
 
 struct DocumentCard: View {
     let filename: String
-    let uploadDate: Date
+    let uploadDate: Date?
     let status: DocumentStatus
     let fileSize: String?
-    let onTap: () -> Void
+    let onTap: (() -> Void)?
     let onDelete: () -> Void
+    
+    // Convenience initializer for backward compatibility
+    init(
+        filename: String,
+        uploadDate: Date,
+        status: DocumentStatus,
+        fileSize: String?,
+        onTap: @escaping () -> Void,
+        onDelete: @escaping () -> Void
+    ) {
+        self.filename = filename
+        self.uploadDate = uploadDate
+        self.status = status
+        self.fileSize = fileSize
+        self.onTap = onTap
+        self.onDelete = onDelete
+    }
+    
+    // Simple initializer without tap action
+    init(
+        filename: String,
+        status: DocumentStatus,
+        fileSize: String?,
+        onDelete: @escaping () -> Void
+    ) {
+        self.filename = filename
+        self.uploadDate = nil
+        self.status = status
+        self.fileSize = fileSize
+        self.onTap = nil
+        self.onDelete = onDelete
+    }
     
     enum DocumentStatus {
         case uploading(progress: Double) // 0.0 to 1.0
         case ready
         case failed
-        
-        var color: Color {
-            switch self {
-            case .uploading:
-                return .appWarning
-            case .ready:
-                return .appSuccess
-            case .failed:
-                return .appError
-            }
-        }
         
         var documentIcon: String {
             switch self {
@@ -35,89 +56,73 @@ struct DocumentCard: View {
     }
     
     var body: some View {
-        Button(action: onTap) {
-            HStack(spacing: Spacing.md) {
-                // Document Icon with Progress Overlay
-                ZStack {
-                    Image(systemName: status.documentIcon)
-                        .font(.title2)
-                        .foregroundColor(.white)
-                        .frame(width: 44, height: 44)
-                        .clipShape(RoundedRectangle(cornerRadius: CornerRadius.sm))
-                        .glassEffect(.clear, in: Circle())
-                    
-                    // Circular Progress Overlay (only for uploading)
-                    if case .uploading(let progress) = status {
-                        CircularProgressView(progress: progress)
-                            .frame(width: 44, height: 44)
-                    }
-                }
+        let content = HStack(spacing: 12) {
+            // File Icon with Progress Overlay
+            ZStack {
+                Image(systemName: status.documentIcon)
+                    .font(.system(size: 20))
+                    .foregroundColor(.white)
                 
-                // Document Info
-                VStack(alignment: .leading, spacing: Spacing.xs) {
-                    Text(filename)
-                        .font(.appCallout)
-                        .fontWeight(.medium)
-                        .foregroundColor(.white)
-                        .lineLimit(1)
-                    
-                    HStack(spacing: Spacing.sm) {
-                        Text(formattedDate)
-                            .font(.appCaption)
-                            .foregroundColor(.white.opacity(0.7))
-                        
-                        if let size = fileSize {
-                            Text("•")
-                                .foregroundColor(.white.opacity(0.5))
-                            Text(size)
-                                .font(.appCaption)
-                                .foregroundColor(.white.opacity(0.7))
-                        }
-                    }
-                }
-                
-                Spacer()
-                
-                // Right side: File size + Delete OR Failed badge
-                if case .failed = status {
-                    // Show failed badge
-                    HStack(spacing: Spacing.xs) {
-                        Image(systemName: "xmark")
-                            .font(.appCaption)
-                            .fontWeight(.semibold)
-                        Text("Failed")
-                            .font(.appCaption)
-                            .fontWeight(.medium)
-                    }
-                    .foregroundColor(.appError)
-                    .padding(.horizontal, Spacing.sm)
-                    .padding(.vertical, Spacing.xs)
-                    .background(Color.appError.opacity(0.15))
-                    .clipShape(RoundedRectangle(cornerRadius: CornerRadius.sm))
-                    .glassEffect(.clear, in: RoundedRectangle(cornerRadius: CornerRadius.sm))
-                } else {
-                    // Show file size and delete button
-                    HStack(spacing: Spacing.md) {
-                        if let size = fileSize {
-                            Text(size)
-                                .font(.appCaption)
-                                .foregroundColor(.white.opacity(0.7))
-                        }
-                        
-                        Button(action: onDelete) {
-                            Image(systemName: "trash.fill")
-                        }
-                        .buttonStyle(BareIconButtonStyle(size: .large))
-                    }
+                // Circular Progress Overlay (only for uploading)
+                if case .uploading(let progress) = status {
+                    CircularProgressView(progress: progress)
+                        .frame(width: 32, height: 32)
                 }
             }
+            .frame(width: 32, height: 32)
+            
+            // File name
+            VStack(alignment: .leading, spacing: 2) {
+                Text(filename)
+                    .font(.appBody)
+                    .foregroundColor(.white)
+                    .lineLimit(1)
+                
+                // Show date only if provided (for library view)
+                if let uploadDate = uploadDate {
+                    Text(formattedDate(uploadDate))
+                        .font(.appCaption)
+                        .foregroundColor(.white.opacity(0.7))
+                }
+            }
+            
+            Spacer()
+            
+            // File size
+            if let size = fileSize {
+                Text(size)
+                    .font(.appBody)
+                    .foregroundColor(.white)
+            }
+            
+            // Delete button (X)
+            Button(action: onDelete) {
+                Image(systemName: "xmark")
+            }
+            .buttonStyle(BareIconButtonStyle(tintColor: .gray, size: .mini))
+        }
+        .padding(.vertical, 12)
+        .padding(.horizontal, 16)
+        .background(
+            RoundedRectangle(cornerRadius: 8)
+                .fill(Color.white.opacity(0.1))
+        )
+        
+        // Wrap in button only if onTap is provided
+        if let onTap = onTap {
+            Button(action: onTap) {
+                content
+            }
+            .buttonStyle(.plain)
+        } else {
+            content
         }
     }
     
-    private var formattedDate: String {
+    private func formattedDate(_ date: Date) -> String {
         let formatter = RelativeDateTimeFormatter()
         formatter.unitsStyle = .abbreviated
-        return formatter.localizedString(for: uploadDate, relativeTo: Date())
+        return formatter.localizedString(for: date, relativeTo: Date())
     }
 }
 
@@ -131,7 +136,7 @@ struct CircularProgressView: View {
             Circle()
                 .stroke(
                     Color.white.opacity(0.2),
-                    lineWidth: 3
+                    lineWidth: 2
                 )
             
             // Progress circle
@@ -140,7 +145,7 @@ struct CircularProgressView: View {
                 .stroke(
                     Color.appWarning,
                     style: StrokeStyle(
-                        lineWidth: 3,
+                        lineWidth: 2,
                         lineCap: .round
                     )
                 )
@@ -153,16 +158,7 @@ struct CircularProgressView: View {
 // MARK: Previews
 #Preview("Document Cards - Dark Mode") {
     ZStack {
-        LinearGradient(
-            colors: [
-                Color.blue.opacity(0.2),
-                Color.indigo.opacity(0.2),
-                Color.black.opacity(0.1)
-            ],
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing
-        )
-        .ignoresSafeArea()
+        Color.black.ignoresSafeArea()
         
         VStack(spacing: Spacing.md) {
             Text("Document Cards")
@@ -171,38 +167,23 @@ struct CircularProgressView: View {
                 .padding(.bottom, Spacing.sm)
             
             DocumentCard(
-                filename: "New Employee Onboarding",
-                uploadDate: Date().addingTimeInterval(-3600),
+                filename: "File_name_one.pdf",
                 status: .ready,
-                fileSize: "2.4 MB",
-                onTap: {},
+                fileSize: "364 KB",
                 onDelete: {}
             )
             
             DocumentCard(
-                filename: "Installing Python on macOS",
-                uploadDate: Date().addingTimeInterval(-300),
-                status: .uploading(progress: 0.35),
-                fileSize: "5.1 MB",
-                onTap: {},
+                filename: "File_name_two.pdf",
+                status: .uploading(progress: 0.65),
+                fileSize: "12 MB",
                 onDelete: {}
             )
             
             DocumentCard(
-                filename: "Development Onboarding",
-                uploadDate: Date().addingTimeInterval(-120),
-                status: .uploading(progress: 0.75),
-                fileSize: "1.8 MB",
-                onTap: {},
-                onDelete: {}
-            )
-            
-            DocumentCard(
-                filename: "Getting Started - SWE",
-                uploadDate: Date().addingTimeInterval(-600),
+                filename: "File_name_three.pdf",
                 status: .failed,
-                fileSize: "3.2 MB",
-                onTap: {},
+                fileSize: "364 KB",
                 onDelete: {}
             )
         }
