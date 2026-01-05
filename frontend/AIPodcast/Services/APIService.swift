@@ -80,7 +80,7 @@ class APIService {
     }
     
     // MARK: - Podcasts
-    
+
     func generatePodcast(documentIds: [String], topic: String, durationMinutes: Int) async throws -> Podcast {
         let url = "\(baseURL)\(Constants.Endpoints.generatePodcast)"
         
@@ -116,7 +116,29 @@ class APIService {
             createdAt: Date()
         )
     }
-    
+
+    func getPodcastStatus(podcastId: String) async throws -> Podcast {
+        let url = "\(baseURL)/api/podcasts/\(podcastId)"
+        
+        let data = try await AF.request(url, method: .get)
+            .validate()
+            .serializingData()
+            .value
+        
+        let decoder = JSONDecoder()
+        let statusResponse = try decoder.decode(PodcastStatusResponse.self, from: data)
+        
+        // Convert API response to app's Podcast model
+        return Podcast(
+            id: statusResponse.podcastId,
+            documentIds: [], // Not provided in status response
+            audioUrl: statusResponse.audioUrl,
+            duration: statusResponse.durationSeconds ?? 0,
+            status: statusResponse.status == "complete" ? .ready : .generating,
+            createdAt: Date()
+        )
+    }
+
     // MARK: - Questions
     
     func askQuestion(podcastId: String, questionText: String) async throws -> Question {
