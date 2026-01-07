@@ -38,9 +38,9 @@ class GenerationOptions(BaseModel):
 
 class PodcastGenerateRequest(BaseModel):
     """Request model for podcast generation."""
-    document_id: str
-    options: Optional[GenerationOptions] = None
-
+    document_ids: list[str]
+    topic: str
+    duration_minutes: int
 
 class PodcastGenerateResponse(BaseModel):
     """Response model for podcast generation initiation."""
@@ -199,13 +199,13 @@ async def generate_podcast(
     """
     try:
         target_duration = "medium"
-        if request.options and request.options.target_duration:
-            target_duration = request.options.target_duration.lower()
-            if target_duration not in ["short", "medium", "long"]:
-                raise HTTPException(
-                    status_code=400,
-                    detail="target_duration must be 'short', 'medium', or 'long'"
-                )
+        if request.duration_minutes <= 2:
+            target_duration = "short"
+        elif request.duration_minutes <= 5:
+            target_duration = "medium"
+        else:
+            target_duration = "long"
+
         
         podcast_id = f"pod_{uuid.uuid4().hex[:12]}"
         
@@ -213,7 +213,7 @@ async def generate_podcast(
             "podcast_id": podcast_id,
             "status": "processing",
             "stage": "initializing",
-            "document_ids": [request.document_id],
+            "document_ids": request.document_ids,
             "target_duration": target_duration,
             "created_at": datetime.utcnow().isoformat() + "Z",
             "audio_url": None,
@@ -227,7 +227,7 @@ async def generate_podcast(
         background_tasks.add_task(
             _generate_podcast_pipeline,
             podcast_id,
-            request.document_id,
+            request.document_ids[0],
             target_duration
         )
         

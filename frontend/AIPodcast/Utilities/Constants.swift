@@ -9,7 +9,7 @@ struct Constants {
     /// - For Physical Device: Use your Mac's IP address (find with: ifconfig | grep inet)
     static let apiBaseURL: String = {
         #if targetEnvironment(simulator)
-        return "http://localhost:8000"
+        return "http://127.0.0.1:8000"
         #else
         // TODO: Replace with your Mac's IP address when testing on physical device
         // Example: "http://192.168.1.100:8000"
