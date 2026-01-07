@@ -21,9 +21,25 @@ class PodcastPlayerViewModel: ObservableObject {
     }
     
     private func setupPlayer() {
-        guard let audioUrlString = podcast.audioUrl,
-              let url = URL(string: audioUrlString) else { return }
+        guard let audioUrlString = podcast.audioUrl else {
+            print("⚠️ No audio URL available for podcast")
+            return
+        }
         
+        let fullUrlString: String
+        if audioUrlString.hasPrefix("http://") || audioUrlString.hasPrefix("https://") {
+            fullUrlString = audioUrlString
+        } else {
+            let cleanPath = audioUrlString.hasPrefix("/") ? String(audioUrlString.dropFirst()) : audioUrlString
+            fullUrlString = "\(Constants.apiBaseURL)/\(cleanPath)"
+        }
+        
+        guard let url = URL(string: fullUrlString) else {
+            print("⚠️ Invalid audio URL: \(fullUrlString)")
+            return
+        }
+        
+        print("🎵 Setting up player with URL: \(fullUrlString)")
         player = AVPlayer(url: url)
         duration = Double(podcast.duration ?? 0)
         
@@ -92,6 +108,7 @@ class PodcastPlayerViewModel: ObservableObject {
     }
     
     private func playAnswerAudio(url: URL) {
+        print("🎤 Playing answer audio: \(url.absoluteString)")
         let answerPlayer = AVPlayer(url: url)
         answerPlayer.play()
         

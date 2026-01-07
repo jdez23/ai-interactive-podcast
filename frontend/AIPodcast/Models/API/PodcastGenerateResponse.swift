@@ -2,31 +2,34 @@ import Foundation
 
 struct PodcastGenerateResponse: Codable, Sendable {
     let podcastId: String
-    let audioUrl: String
-    let script: String
-    let durationSeconds: Int
-    
-    enum CodingKeys: String, CodingKey {
-        case podcastId = "podcast_id"
-        case audioUrl = "audio_url"
-        case script
-        case durationSeconds = "duration_seconds"
-    }
-}
-
-struct PodcastStatusResponse: Codable, Sendable {
-    let podcastId: String
     let status: String
-    let audioUrl: String?
-    let durationSeconds: Int?
-    let currentStage: String?
+    let message: String
     
     enum CodingKeys: String, CodingKey {
         case podcastId = "podcast_id"
         case status
+        case message
+    }
+}
+
+
+struct PodcastStatusResponse: Codable, Sendable {
+    let podcastId: String
+    let status: String
+    let createdAt: String
+    let audioUrl: String?
+    let scriptUrl: String?
+    let durationSeconds: Double?
+    let error: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case podcastId = "podcast_id"
+        case status
+        case createdAt = "created_at"
         case audioUrl = "audio_url"
+        case scriptUrl = "script_url"
         case durationSeconds = "duration_seconds"
-        case currentStage = "current_stage"
+        case error
     }
 }
 

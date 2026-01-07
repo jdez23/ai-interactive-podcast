@@ -42,9 +42,6 @@
 		63C3F2A22EF629F400B856D7 /* CardButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C3F2A12EF629F400B856D7 /* CardButtonStyle.swift */; };
 		63C3F2E42F09FA9B00B856D7 /* AddFileEmptyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C3F2E32F09FA9200B856D7 /* AddFileEmptyState.swift */; };
 		63C3F2E62F09FAF100B856D7 /* AddFileBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C3F2E52F09FAED00B856D7 /* AddFileBox.swift */; };
-		63C3F2EA2F0B50A000B856D7 /* Getting Started with Python.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 63C3F2E72F0B50A000B856D7 /* Getting Started with Python.pdf */; };
-		63C3F2EB2F0B50A000B856D7 /* Java.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 63C3F2E82F0B50A000B856D7 /* Java.pdf */; };
-		63C3F2EC2F0B50A000B856D7 /* Onboarding.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 63C3F2E92F0B50A000B856D7 /* Onboarding.pdf */; };
 		C590EEA52EC81B9E007D62CC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C590EEA22EC81B9E007D62CC /* ContentView.swift */; };
 /* End PBXBuildFile section */
 
@@ -95,16 +92,13 @@
 		63C3F2A12EF629F400B856D7 /* CardButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardButtonStyle.swift; sourceTree = "<group>"; };
 		63C3F2E32F09FA9200B856D7 /* AddFileEmptyState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFileEmptyState.swift; sourceTree = "<group>"; };
 		63C3F2E52F09FAED00B856D7 /* AddFileBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFileBox.swift; sourceTree = "<group>"; };
-		63C3F2E72F0B50A000B856D7 /* Getting Started with Python.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "Getting Started with Python.pdf"; sourceTree = "<group>"; };
-		63C3F2E82F0B50A000B856D7 /* Java.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Java.pdf; sourceTree = "<group>"; };
-		63C3F2E92F0B50A000B856D7 /* Onboarding.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Onboarding.pdf; sourceTree = "<group>"; };
 		C590EE922EC81A11007D62CC /* AIPodcast.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AIPodcast.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C590EEA22EC81B9E007D62CC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C590EEAC2EC81D37007D62CC /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		026624E72EEB41A900640CA3 /* Exceptions for "ViewModels" folder in "AIPodcast" target */ = {
+		381E89C82F0C422E007A2434 /* Exceptions for "ViewModels" folder in "AIPodcast" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				AppState.swift,
@@ -113,7 +107,7 @@
 			);
 			target = C590EE912EC81A11007D62CC /* AIPodcast */;
 		};
-		026624E82EEB41A900640CA3 /* Exceptions for "ViewModels" folder in "AIPodcastTests" target */ = {
+		381E89C92F0C422E007A2434 /* Exceptions for "ViewModels" folder in "AIPodcastTests" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				AppState.swift,
@@ -133,8 +127,8 @@
 		026624E22EEB416600640CA3 /* ViewModels */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				026624E72EEB41A900640CA3 /* Exceptions for "ViewModels" folder in "AIPodcast" target */,
-				026624E82EEB41A900640CA3 /* Exceptions for "ViewModels" folder in "AIPodcastTests" target */,
+				381E89C82F0C422E007A2434 /* Exceptions for "ViewModels" folder in "AIPodcast" target */,
+				381E89C92F0C422E007A2434 /* Exceptions for "ViewModels" folder in "AIPodcastTests" target */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -260,9 +254,6 @@
 		C590EE892EC81A11007D62CC = {
 			isa = PBXGroup;
 			children = (
-				63C3F2E72F0B50A000B856D7 /* Getting Started with Python.pdf */,
-				63C3F2E82F0B50A000B856D7 /* Java.pdf */,
-				63C3F2E92F0B50A000B856D7 /* Onboarding.pdf */,
 				02E8BBAA2EE20210006B99D4 /* AIPodcastApp.swift */,
 				02E8BBB92EE205F1006B99D4 /* Resources */,
 				02E8BBB52EE2054C006B99D4 /* Services */,
@@ -417,9 +408,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				02E8BBAC2EE20210006B99D4 /* Assets.xcassets in Resources */,
-				63C3F2EA2F0B50A000B856D7 /* Getting Started with Python.pdf in Resources */,
-				63C3F2EB2F0B50A000B856D7 /* Java.pdf in Resources */,
-				63C3F2EC2F0B50A000B856D7 /* Onboarding.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -653,7 +641,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = C67Q8HDBL9;
+				DEVELOPMENT_TEAM = RWYVG7J5TU;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
@@ -698,7 +686,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = C67Q8HDBL9;
+				DEVELOPMENT_TEAM = RWYVG7J5TU;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;

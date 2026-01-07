@@ -99,7 +99,7 @@ class APIService {
         urlRequest.httpBody = requestData
         
         let data = try await AF.request(urlRequest)
-            .validate()
+            .validate(statusCode: 200..<300)
             .serializingData()
             .value
         
@@ -110,9 +110,9 @@ class APIService {
         return Podcast(
             id: generateResponse.podcastId,
             documentIds: documentIds,
-            audioUrl: generateResponse.audioUrl,
-            duration: generateResponse.durationSeconds,
-            status: .ready,
+            audioUrl: nil,
+            duration: 0,
+            status: .generating,
             createdAt: Date()
         )
     }
@@ -133,7 +133,8 @@ class APIService {
             id: statusResponse.podcastId,
             documentIds: [], // Not provided in status response
             audioUrl: statusResponse.audioUrl,
-            duration: statusResponse.durationSeconds ?? 0,
+            duration: statusResponse.durationSeconds != nil ?
+            Int(statusResponse.durationSeconds!) : nil,
             status: statusResponse.status == "complete" ? .ready : .generating,
             createdAt: Date()
         )
