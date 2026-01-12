@@ -50,6 +50,7 @@ struct PodcastCardView: View {
         audioUrl: nil,
         duration: 180,
         status: .ready,
+        progressPercentage: 100,
         createdAt: Date()
     ))
 }

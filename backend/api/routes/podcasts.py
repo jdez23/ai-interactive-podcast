@@ -53,6 +53,7 @@ class PodcastStatusResponse(BaseModel):
     """Response model for podcast status."""
     podcast_id: str
     status: str
+    progress_percentage: int = 0
     created_at: str
     audio_url: Optional[str] = None
     script_url: Optional[str] = None
@@ -97,7 +98,7 @@ async def _generate_podcast_pipeline(
     try:
         logger.info(f"Starting podcast generation pipeline for {podcast_id}")
         
-        update_podcast_status(podcast_id, "processing", stage="generating_script")
+        update_podcast_status(podcast_id, "processing", progress_percentage=10, stage="generating_script")
         
         logger.info(f"[{podcast_id}] Step 1: Generating script...")
         script = await generate_podcast_script(document_id, target_duration)
@@ -115,6 +116,7 @@ async def _generate_podcast_pipeline(
         update_podcast_status(
             podcast_id,
             "processing",
+            progress_percentage=50,
             stage="synthesizing_audio",
             script_url=f"/generated/podcasts/{podcast_id}_script.json"
         )
@@ -134,6 +136,7 @@ async def _generate_podcast_pipeline(
         update_podcast_status(
             podcast_id,
             "complete",
+            progress_percentage=100,
             stage="complete",
             audio_url=f"/generated/podcasts/{podcast_id}.mp3",
             duration_seconds=duration
@@ -148,6 +151,7 @@ async def _generate_podcast_pipeline(
         update_podcast_status(
             podcast_id,
             "failed",
+            progress_percentage=0,
             stage="failed",
             error_message=error_msg
         )
@@ -212,6 +216,7 @@ async def generate_podcast(
         podcast_data = {
             "podcast_id": podcast_id,
             "status": "processing",
+            "progress_percentage": 0,
             "stage": "initializing",
             "document_ids": request.document_ids,
             "target_duration": target_duration,
@@ -297,6 +302,7 @@ async def get_podcast(podcast_id: str):
     return PodcastStatusResponse(
         podcast_id=podcast_data["podcast_id"],
         status=podcast_data["status"],
+        progress_percentage=podcast_data.get("progress_percentage", 0),
         created_at=podcast_data["created_at"],
         audio_url=podcast_data.get("audio_url"),
         script_url=podcast_data.get("script_url"),

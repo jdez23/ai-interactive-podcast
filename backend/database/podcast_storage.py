@@ -46,6 +46,7 @@ def init_database() -> None:
                 podcast_id TEXT PRIMARY KEY,
                 document_ids TEXT NOT NULL,
                 status TEXT NOT NULL,
+                progress_percentage INTEGER DEFAULT 0,
                 stage TEXT,
                 target_duration TEXT,
                 audio_url TEXT,
@@ -77,6 +78,7 @@ def save_podcast(podcast_data: Dict) -> None:
             - status: Current status (processing, complete, failed)
             - created_at: ISO timestamp
             Optional fields:
+            - progress_percentage: Progress from 0-100
             - document_ids: List of document IDs (will be JSON serialized)
             - stage: Current processing stage
             - target_duration: Target length (short, medium, long)
@@ -104,14 +106,15 @@ def save_podcast(podcast_data: Dict) -> None:
         cursor = conn.cursor()
         cursor.execute("""
             INSERT OR REPLACE INTO podcasts (
-                podcast_id, document_ids, status, stage, target_duration,
+                podcast_id, document_ids, status, progress_percentage, stage, target_duration,
                 audio_url, script_url, duration_seconds,
                 created_at, completed_at, failed_at, error_message
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, (
             podcast_data["podcast_id"],
             document_ids,
             podcast_data["status"],
+            podcast_data.get("progress_percentage", 0),
             podcast_data.get("stage"),
             podcast_data.get("target_duration"),
             podcast_data.get("audio_url"),
@@ -207,6 +210,7 @@ def get_all_podcasts() -> List[Dict]:
 def update_podcast_status(
     podcast_id: str,
     status: str,
+    progress_percentage: int = None,
     **kwargs
 ) -> None:
     """
@@ -215,6 +219,7 @@ def update_podcast_status(
     Args:
         podcast_id: Unique podcast identifier
         status: New status (processing, complete, failed)
+        progress_percentage: Progress from 0-100 (optional)
         **kwargs: Additional fields to update (e.g., audio_url, error_message)
     
     Raises:
@@ -225,6 +230,9 @@ def update_podcast_status(
         raise ValueError(f"Podcast {podcast_id} not found")
     
     existing["status"] = status
+    
+    if progress_percentage is not None:
+        existing["progress_percentage"] = progress_percentage
     
     for key, value in kwargs.items():
         existing[key] = value

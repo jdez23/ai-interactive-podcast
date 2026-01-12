@@ -117,6 +117,7 @@ struct PodcastPlayerView: View {
         audioUrl: "http://localhost:8000/test.mp3",
         duration: 180,
         status: .ready,
+        progressPercentage: 100,
         createdAt: Date()
     ))
 }

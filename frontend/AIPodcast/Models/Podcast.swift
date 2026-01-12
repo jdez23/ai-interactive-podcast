@@ -6,6 +6,7 @@ struct Podcast: Codable, Identifiable {
     let audioUrl: String?
     let duration: Int?
     let status: PodcastStatus
+    let progressPercentage: Int
     let createdAt: Date
     var topic: String?
     
@@ -21,6 +22,7 @@ struct Podcast: Codable, Identifiable {
         case audioUrl = "audio_url"
         case duration
         case status
+        case progressPercentage = "progress_percentage"
         case createdAt = "created_at"
         case topic
     }

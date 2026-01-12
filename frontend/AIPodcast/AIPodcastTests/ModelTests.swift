@@ -82,6 +82,7 @@ final class ModelTests: XCTestCase {
             audioUrl: "https://example.com/audio.mp3",
             duration: 3600, // 1 hour in seconds
             status: .ready,
+            progressPercentage: 100,
             createdAt: originalDate
         )
 

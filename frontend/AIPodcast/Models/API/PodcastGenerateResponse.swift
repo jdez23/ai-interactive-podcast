@@ -16,6 +16,7 @@ struct PodcastGenerateResponse: Codable, Sendable {
 struct PodcastStatusResponse: Codable, Sendable {
     let podcastId: String
     let status: String
+    let progressPercentage: Int
     let createdAt: String
     let audioUrl: String?
     let scriptUrl: String?
@@ -25,6 +26,7 @@ struct PodcastStatusResponse: Codable, Sendable {
     enum CodingKeys: String, CodingKey {
         case podcastId = "podcast_id"
         case status
+        case progressPercentage = "progress_percentage"
         case createdAt = "created_at"
         case audioUrl = "audio_url"
         case scriptUrl = "script_url"

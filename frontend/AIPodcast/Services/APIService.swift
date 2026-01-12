@@ -113,6 +113,7 @@ class APIService {
             audioUrl: nil,
             duration: 0,
             status: .generating,
+            progressPercentage: 0,
             createdAt: Date()
         )
     }
@@ -135,7 +136,9 @@ class APIService {
             audioUrl: statusResponse.audioUrl,
             duration: statusResponse.durationSeconds != nil ?
             Int(statusResponse.durationSeconds!) : nil,
-            status: statusResponse.status == "complete" ? .ready : .generating,
+            status: statusResponse.status == "complete" ? .ready :
+                   (statusResponse.status == "failed" ? .failed : .generating),
+            progressPercentage: statusResponse.progressPercentage,
             createdAt: Date()
         )
     }
