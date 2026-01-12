@@ -132,7 +132,8 @@ def get_available_voices() -> dict:
 async def synthesize_audio(
     script: List[Dict],
     output_filename: str,
-    pause_duration: int = 500
+    pause_duration: int = 500,
+    progress_callback = None
 ) -> str:
     """
     Convert podcast script to audio file.
@@ -148,6 +149,7 @@ async def synthesize_audio(
                 [{"speaker": "host", "text": "..."}, ...]
         output_filename: Name for output file (e.g., "podcast_123.mp3")
         pause_duration: Duration of pause between speakers in milliseconds (default: 500ms)
+        progress_callback: Optional callback function(current, total) for progress updates
         
     Returns:
         Path to generated audio file
@@ -203,6 +205,10 @@ async def synthesize_audio(
             )
             
             temp_files.append(segment_path)
+            
+            # Report progress after each segment
+            if progress_callback:
+                progress_callback(i + 1, len(script))
         
         if not temp_files:
             raise Exception("No audio segments were generated")

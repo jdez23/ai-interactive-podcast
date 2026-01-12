@@ -1,5 +1,6 @@
 import SwiftUI
 import Combine
+import Foundation
 
 struct SelectedFile: Identifiable {
     let id = UUID()
@@ -39,8 +40,12 @@ class GenerateViewModel: ObservableObject {
     @Published var selectedFiles: [SelectedFile] = []
     @Published var showFilePicker = false
     @Published var isGenerating = false
+    @Published var generationProgress: Int = 0
     @Published var showError = false
     @Published var errorMessage: String?
+    
+    private var pollingTimer: Timer?
+    private var currentPodcastId: String?
     
     var canGenerate: Bool {
         !selectedFiles.isEmpty && selectedFiles.allSatisfy { $0.uploadStatus == .success }
@@ -122,11 +127,14 @@ class GenerateViewModel: ObservableObject {
         }
         
         isGenerating = true
+        generationProgress = 0
         
         Task {
             do {
                 // Generate default topic from filenames
                 let topic = selectedFiles.map { $0.name.replacingOccurrences(of: ".pdf", with: "") }.joined(separator: ", ")
+                
+                print("🎙️ Starting podcast generation...")
                 
                 // 1. Initiate generation
                 let podcast = try await APIService.shared.generatePodcast(
@@ -135,36 +143,82 @@ class GenerateViewModel: ObservableObject {
                     durationMinutes: 3
                 )
                 
-                let podcastId = podcast.id
+                await MainActor.run {
+                    currentPodcastId = podcast.id
+                    generationProgress = podcast.progressPercentage
+                    print("🎙️ Podcast initiated: \(podcast.id), initial progress: \(generationProgress)%")
+                }
                 
-                // 2. Poll for completion
-                while true {
-                    try await Task.sleep(nanoseconds: 3_000_000_000)
-                    
-                    let status = try await APIService.shared.getPodcastStatus(podcastId: podcastId)
-                    
-                    if status.status == .ready {
-                        // Success - open player
-                        AppState.shared.addGeneratedPodcast(status)
-                        AppState.shared.openPlayer(podcast: status)
-                        selectedFiles.removeAll()
-                        isGenerating = false
-                        break
-                    } else if status.status == .failed {
-                        // Failed
-                        isGenerating = false
-                        errorMessage = "Podcast generation failed"
-                        showError = true
-                        break
-                    }
-                    // Still generating - continue polling
+                // Wait a moment for backend to start processing
+                try await Task.sleep(nanoseconds: 500_000_000) // 0.5 seconds
+                
+                await MainActor.run {
+                    // Start polling with a timer
+                    startPolling()
                 }
                 
             } catch {
-                isGenerating = false
-                errorMessage = "Failed to generate podcast: \(error.localizedDescription)"
-                showError = true
+                await MainActor.run {
+                    print("🎙️ Error: \(error.localizedDescription)")
+                    isGenerating = false
+                    generationProgress = 0
+                    errorMessage = "Failed to generate podcast: \(error.localizedDescription)"
+                    showError = true
+                }
             }
+        }
+    }
+    
+    private func startPolling() {
+        print("🎙️ Starting polling timer...")
+        pollingTimer?.invalidate()
+        
+        pollingTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            guard let self = self, let podcastId = self.currentPodcastId else { return }
+            
+            Task { @MainActor in
+                await self.checkPodcastStatus(podcastId: podcastId)
+            }
+        }
+        
+        // Fire immediately
+        pollingTimer?.fire()
+    }
+    
+    private func checkPodcastStatus(podcastId: String) async {
+        do {
+            print("🎙️ Checking status for \(podcastId)...")
+            let status = try await APIService.shared.getPodcastStatus(podcastId: podcastId)
+            
+            generationProgress = status.progressPercentage
+            print("🎙️ Progress: \(generationProgress)%, Status: \(status.status)")
+            
+            if status.status == .ready {
+                print("🎙️ Podcast complete!")
+                pollingTimer?.invalidate()
+                generationProgress = 100
+                AppState.shared.addGeneratedPodcast(status)
+                AppState.shared.openPlayer(podcast: status)
+                selectedFiles.removeAll()
+                isGenerating = false
+                currentPodcastId = nil
+            } else if status.status == .failed {
+                print("🎙️ Podcast generation failed")
+                pollingTimer?.invalidate()
+                isGenerating = false
+                generationProgress = 0
+                errorMessage = "Podcast generation failed"
+                showError = true
+                currentPodcastId = nil
+            }
+        } catch {
+            print("🎙️ Error checking status: \(error.localizedDescription)")
+            pollingTimer?.invalidate()
+            isGenerating = false
+            generationProgress = 0
+            errorMessage = "Failed to check podcast status: \(error.localizedDescription)"
+            showError = true
+            currentPodcastId = nil
         }
     }
 }

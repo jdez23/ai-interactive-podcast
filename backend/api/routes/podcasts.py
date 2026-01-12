@@ -123,10 +123,24 @@ async def _generate_podcast_pipeline(
         
         logger.info(f"[{podcast_id}] Step 2: Synthesizing audio with pauses...")
         
+        # Progress callback to update database as segments are generated
+        def audio_progress_callback(current: int, total: int):
+            # Map audio progress (50-100% range)
+            # 50% at start of audio, 100% at end
+            progress = 50 + int((current / total) * 50)
+            update_podcast_status(
+                podcast_id,
+                "processing",
+                progress_percentage=progress,
+                stage="synthesizing_audio"
+            )
+            logger.info(f"[{podcast_id}] Audio progress: {current}/{total} segments ({progress}%)")
+        
         final_audio_path = await synthesize_audio(
             script=script,
             output_filename=f"{podcast_id}.mp3",
-            pause_duration=500
+            pause_duration=500,
+            progress_callback=audio_progress_callback
         )
         
         logger.info(f"[{podcast_id}] Audio synthesis complete")
