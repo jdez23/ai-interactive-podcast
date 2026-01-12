@@ -9,7 +9,7 @@ struct SelectedFile: Identifiable {
     let size: Int64
     var uploadStatus: UploadStatus = .pending
     var documentId: String?
-    
+
     var sizeString: String {
         ByteCountFormatter.string(fromByteCount: size, countStyle: .file)
     }
@@ -37,6 +37,8 @@ extension SelectedFile {
 
 @MainActor
 class GenerateViewModel: ObservableObject {
+    static let shared = GenerateViewModel()
+    
     @Published var selectedFiles: [SelectedFile] = []
     @Published var showFilePicker = false
     @Published var isGenerating = false
@@ -46,6 +48,8 @@ class GenerateViewModel: ObservableObject {
     
     private var pollingTimer: Timer?
     private var currentPodcastId: String?
+    
+    private init() {}
     
     var canGenerate: Bool {
         !selectedFiles.isEmpty && selectedFiles.allSatisfy { $0.uploadStatus == .success }
@@ -174,9 +178,8 @@ class GenerateViewModel: ObservableObject {
         pollingTimer?.invalidate()
         
         pollingTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-            guard let self = self, let podcastId = self.currentPodcastId else { return }
-            
-            Task { @MainActor in
+            Task { @MainActor [weak self] in
+                guard let self = self, let podcastId = self.currentPodcastId else { return }
                 await self.checkPodcastStatus(podcastId: podcastId)
             }
         }
