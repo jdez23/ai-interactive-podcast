@@ -2,7 +2,7 @@ import SwiftUI
 
 struct PopulatedHomeView: View {
     @StateObject private var appState = AppState.shared
-    
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 25) {
@@ -13,7 +13,7 @@ struct PopulatedHomeView: View {
                             .font(.title2)
                             .fontWeight(.bold)
                             .padding(.horizontal)
-                        
+
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 15) {
                                 ForEach(appState.generatedPodcasts) { podcast in
@@ -27,7 +27,7 @@ struct PopulatedHomeView: View {
                         }
                     }
                 }
-                
+
                 // Downloaded Section
                 if !appState.downloadedPodcasts.isEmpty {
                     VStack(alignment: .leading, spacing: 12) {
@@ -35,7 +35,7 @@ struct PopulatedHomeView: View {
                             .font(.title2)
                             .fontWeight(.bold)
                             .padding(.horizontal)
-                        
+
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 15) {
                                 ForEach(appState.downloadedPodcasts) { podcast in
@@ -52,10 +52,10 @@ struct PopulatedHomeView: View {
             }
             .padding(.vertical)
         }
+        .background(Color.black.ignoresSafeArea())
     }
 }
 
 #Preview {
     PopulatedHomeView()
-        .preferredColorScheme(.dark)
 }

@@ -2,14 +2,14 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct GenerateTabView: View {
-    @StateObject private var viewModel = GenerateViewModel()
-    
+    @StateObject private var viewModel = GenerateViewModel.shared
+
     var body: some View {
         NavigationStack {
             ZStack {
                 // Dark background
                 Color.black.ignoresSafeArea()
-                
+
                 VStack(spacing: 0) {
                     // Main content area
                     if viewModel.selectedFiles.isEmpty {
@@ -23,17 +23,17 @@ struct GenerateTabView: View {
                             // Add file box at top
                             AddFileBox(onAddFile: { viewModel.showFilePicker = true })
                                 .padding()
-                            
+
                             // File list
                             FileListView(
                                 files: viewModel.selectedFiles,
                                 onDelete: viewModel.removeFile
                             )
-                            
+
                             Spacer()
                         }
                     }
-                    
+
                     // Generate Button - always visible
                     if !viewModel.selectedFiles.isEmpty {
                         GenerateButton(
@@ -44,7 +44,7 @@ struct GenerateTabView: View {
                         .padding(.bottom, 20)
                     }
                 }
-                
+
                 // Loading Overlay
                 if viewModel.isGenerating {
                     LoadingOverlay()
