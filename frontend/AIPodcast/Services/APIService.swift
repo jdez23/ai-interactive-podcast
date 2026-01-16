@@ -145,12 +145,13 @@ class APIService {
 
     // MARK: - Questions
     
-    func askQuestion(podcastId: String, questionText: String) async throws -> Question {
+    func askQuestion(podcastId: String, questionText: String, timestamp: Double) async throws -> QuestionResponse {
         let url = "\(baseURL)\(Constants.Endpoints.askQuestion)"
         
         let request = QuestionRequest(
             podcastId: podcastId,
-            question: questionText
+            question: questionText,
+            timestamp: timestamp
         )
         
         let encoder = JSONEncoder()
@@ -169,15 +170,6 @@ class APIService {
         let decoder = JSONDecoder()
         let questionResponse = try decoder.decode(QuestionResponse.self, from: data)
         
-        // Convert API response to app's Question model
-        return Question(
-            id: UUID().uuidString,
-            podcastId: podcastId,
-            questionText: questionText,
-            answerText: questionResponse.answerText,
-            answerAudioUrl: questionResponse.answerAudioUrl,
-            timestamp: 0,
-            createdAt: Date()
-        )
+        return questionResponse
     }
 }

@@ -11,6 +11,10 @@ class PodcastPlayerViewModel: ObservableObject {
     @Published var duration: TimeInterval = 0
     @Published var questionText = ""
     @Published var isProcessingQuestion = false
+    @Published var currentAnswer: QuestionResponse?
+    @Published var showAnswer = false
+    @Published var errorMessage: String?
+    @Published var lastAskedQuestion = ""
     
     private var player: AVPlayer?
     private var timeObserver: Any?
@@ -78,41 +82,58 @@ class PodcastPlayerViewModel: ObservableObject {
         guard !questionText.isEmpty else { return }
         
         isProcessingQuestion = true
+        errorMessage = nil
+        
+        let askedQuestion = questionText
         
         Task {
             do {
+                print("📝 Asking question at timestamp: \(currentTime)s")
+                
                 let response = try await APIService.shared.askQuestion(
                     podcastId: podcast.id,
-                    questionText: questionText
+                    questionText: askedQuestion,
+                    timestamp: currentTime
                 )
+                
+                print("✅ Received answer: \(response.answerText.prefix(50))...")
+                print("📚 Sources: \(response.sources.joined(separator: ", "))")
+                print("📊 Context: \(response.contextUsed.documentChunks) chunks, \(response.contextUsed.dialogueExchanges) exchanges")
                 
                 // Pause current podcast
                 player?.pause()
                 isPlaying = false
                 
-                // Play answer audio
-                if let answerAudioUrl = response.answerAudioUrl,
-                   let answerUrl = URL(string: answerAudioUrl) {
-                    playAnswerAudio(url: answerUrl)
-                }
+                // Show answer
+                lastAskedQuestion = askedQuestion
+                currentAnswer = response
+                showAnswer = true
                 
-                // Clear question
+                // Clear question input
                 questionText = ""
                 isProcessingQuestion = false
                 
+            } catch let error as APIError {
+                print("❌ API Error asking question: \(error.localizedDescription)")
+                errorMessage = error.localizedDescription
+                isProcessingQuestion = false
             } catch {
-                print("Error asking question: \(error)")
+                print("❌ Error asking question: \(error.localizedDescription)")
+                errorMessage = "Failed to get answer. Please try again."
                 isProcessingQuestion = false
             }
         }
     }
     
-    private func playAnswerAudio(url: URL) {
-        print("🎤 Playing answer audio: \(url.absoluteString)")
-        let answerPlayer = AVPlayer(url: url)
-        answerPlayer.play()
-        
-        // TODO: Resume podcast after answer finishes
+    func dismissAnswer() {
+        showAnswer = false
+        currentAnswer = nil
+    }
+    
+    func resumePlayback() {
+        dismissAnswer()
+        player?.play()
+        isPlaying = true
     }
     
     deinit {

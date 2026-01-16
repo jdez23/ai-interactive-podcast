@@ -1,15 +1,25 @@
 import Foundation
 
 struct QuestionResponse: Codable, Sendable {
-    let answerAudioUrl: String
     let answerText: String
     let sources: [String]
-    let usedWebSearch: Bool
+    let contextUsed: ContextUsed
+    let timestamp: Double
+    
+    struct ContextUsed: Codable, Sendable {
+        let documentChunks: Int
+        let dialogueExchanges: Int
+        
+        enum CodingKeys: String, CodingKey {
+            case documentChunks = "document_chunks"
+            case dialogueExchanges = "dialogue_exchanges"
+        }
+    }
     
     enum CodingKeys: String, CodingKey {
-        case answerAudioUrl = "answer_audio_url"
         case answerText = "answer_text"
         case sources
-        case usedWebSearch = "used_web_search"
+        case contextUsed = "context_used"
+        case timestamp
     }
 }
