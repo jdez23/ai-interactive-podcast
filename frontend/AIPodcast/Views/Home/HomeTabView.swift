@@ -11,19 +11,19 @@ struct HomeTabView: View {
                     HStack(spacing: 10) {
                         Image(systemName: "waveform.circle.fill")
                             .font(.system(size: 28))
-                            .foregroundColor(.blue)
+                            .foregroundColor(.appOrange)
                         
                         Text("PROJ430")
                             .font(.largeTitle)
                             .fontWeight(.bold)
-                            .foregroundColor(.white)
+                            .foregroundColor(.appText)
                         
                         Spacer()
                     }
                     .padding(.horizontal, 20)
                     .padding(.top, 60)
                     .padding(.bottom, 8)
-                    .background(Color.black)
+                    .background(Color.appBackground)
                     
                     Group {
                         if appState.generatedPodcasts.isEmpty && appState.downloadedPodcasts.isEmpty {
@@ -34,7 +34,7 @@ struct HomeTabView: View {
                     }
                 }
                 .navigationBarHidden(true)
-                .background(Color.black.ignoresSafeArea())
+                .background(Color.appBackground.ignoresSafeArea())
             }
         } else {
             NavigationView {

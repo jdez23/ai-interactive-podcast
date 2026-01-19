@@ -61,7 +61,7 @@ struct DocumentCard: View {
             ZStack {
                 Image(systemName: status.documentIcon)
                     .font(.system(size: 20))
-                    .foregroundColor(.white)
+                    .foregroundColor(.appPrimary)
                 
                 // Circular Progress Overlay (only for uploading)
                 if case .uploading(let progress) = status {
@@ -75,14 +75,14 @@ struct DocumentCard: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(filename)
                     .font(.appBody)
-                    .foregroundColor(.white)
+                    .foregroundColor(.appText)
                     .lineLimit(1)
                 
                 // Show date only if provided (for library view)
                 if let uploadDate = uploadDate {
                     Text(formattedDate(uploadDate))
                         .font(.appCaption)
-                        .foregroundColor(.white.opacity(0.7))
+                        .foregroundColor(.appSecondaryText)
                 }
             }
             
@@ -92,20 +92,20 @@ struct DocumentCard: View {
             if let size = fileSize {
                 Text(size)
                     .font(.appBody)
-                    .foregroundColor(.white)
+                    .foregroundColor(.appSecondaryText)  // Changed from .white
             }
             
             // Delete button (X)
             Button(action: onDelete) {
                 Image(systemName: "xmark")
             }
-            .buttonStyle(BareIconButtonStyle(tintColor: .gray, size: .mini))
+            .buttonStyle(BareIconButtonStyle(tintColor: .appSecondaryText, size: .mini))
         }
         .padding(.vertical, 12)
         .padding(.horizontal, 16)
         .background(
             RoundedRectangle(cornerRadius: 8)
-                .fill(Color.white.opacity(0.1))
+                .fill(Color.appSecondaryBackground)
         )
         
         // Wrap in button only if onTap is provided
@@ -135,7 +135,7 @@ struct CircularProgressView: View {
             // Background circle
             Circle()
                 .stroke(
-                    Color.white.opacity(0.2),
+                    Color.appSecondaryText.opacity(0.3),
                     lineWidth: 2
                 )
             
@@ -143,7 +143,7 @@ struct CircularProgressView: View {
             Circle()
                 .trim(from: 0, to: progress)
                 .stroke(
-                    Color.appWarning,
+                    Color.appOrange,
                     style: StrokeStyle(
                         lineWidth: 2,
                         lineCap: .round
@@ -156,14 +156,14 @@ struct CircularProgressView: View {
 }
 
 // MARK: Previews
-#Preview("Document Cards - Dark Mode") {
+#Preview("Document Cards - Light Mode") {
     ZStack {
-        Color.black.ignoresSafeArea()
+        Color.appBackground.ignoresSafeArea()
         
         VStack(spacing: Spacing.md) {
             Text("Document Cards")
                 .font(.appTitle)
-                .foregroundColor(.white)
+                .foregroundColor(.appText)
                 .padding(.bottom, Spacing.sm)
             
             DocumentCard(
@@ -188,6 +188,6 @@ struct CircularProgressView: View {
             )
         }
         .padding()
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(.light)
     }
 }

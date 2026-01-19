@@ -182,7 +182,7 @@ extension EmptyStateView {
                 .frame(height: 400)
         }
     }
-    .preferredColorScheme(.dark)
+    .preferredColorScheme(.light)
 }
 
 #Preview("Compact Empty State") {

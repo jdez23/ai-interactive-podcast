@@ -19,7 +19,7 @@ struct AskAISection: View {
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
                 .padding()
-                .background(Color.blue)
+                .background(Color.appOrange)
                 .cornerRadius(12)
             }
             .disabled(isProcessing)
@@ -35,7 +35,7 @@ struct AskAISection: View {
                         ProgressView()
                     } else {
                         Image(systemName: "paperplane.fill")
-                            .foregroundColor(.blue)
+                            .foregroundColor(.appOrange)
                     }
             }
             .disabled(question.isEmpty || isProcessing)

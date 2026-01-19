@@ -34,8 +34,8 @@ struct LoadingOverlay: View {
     
     var body: some View {
         ZStack {
-            // Full black screen overlay
-            Color.black
+            // Orange background overlay
+            Color.appOrange
                 .ignoresSafeArea()
             
             VStack(spacing: 0) {
@@ -46,7 +46,7 @@ struct LoadingOverlay: View {
                     // Icon
                     Image(systemName: tips[currentTipIndex].icon)
                         .font(.system(size: 60))
-                        .foregroundColor(.blue)
+                        .foregroundColor(.white)
                         .transition(.opacity)
                     
                     // Title
@@ -60,7 +60,7 @@ struct LoadingOverlay: View {
                     // Description
                     Text(tips[currentTipIndex].description)
                         .font(.body)
-                        .foregroundColor(.gray)
+                        .foregroundColor(.white.opacity(0.9))
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, 40)
                         .transition(.opacity)
@@ -77,14 +77,14 @@ struct LoadingOverlay: View {
                     
                     GeometryReader { geometry in
                         ZStack(alignment: .leading) {
-                            // Background
+                            // Background track
                             RoundedRectangle(cornerRadius: 10)
-                                .fill(Color.gray.opacity(0.3))
+                                .fill(Color.white.opacity(0.3))
                                 .frame(height: 8)
                             
                             // Progress fill
                             RoundedRectangle(cornerRadius: 10)
-                                .fill(Color.blue)
+                                .fill(Color.white)
                                 .frame(width: geometry.size.width * progress, height: 8)
                                 .animation(.linear(duration: 0.3), value: progress)
                         }

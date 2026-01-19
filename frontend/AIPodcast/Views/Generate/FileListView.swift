@@ -29,7 +29,7 @@ struct FileListView: View {
 
 #Preview {
     ZStack {
-        Color.black.ignoresSafeArea()
+        Color.white.ignoresSafeArea()
         
         FileListView(
             files: [

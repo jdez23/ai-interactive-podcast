@@ -277,6 +277,6 @@ struct BareIconButtonStyle: ButtonStyle {
             }
         }
         .padding()
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(.light)
     }
 }

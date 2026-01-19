@@ -2,9 +2,11 @@ import SwiftUI
 
 // MARK: Colors
 extension Color {
-    static let appPrimary = Color.blue
+    static let appOrange = Color(red: 252/255, green: 161/255, blue: 49/255)
+    
+    static let appPrimary = appOrange
     static let appSecondary = Color.gray
-    static let appAccent = Color.purple
+    static let appAccent = appOrange
     
     static let appBackground = Color(.systemBackground)
     static let appSecondaryBackground = Color(.secondarySystemBackground)
@@ -81,4 +83,3 @@ extension View {
         self.shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y: 2)
     }
 }
-

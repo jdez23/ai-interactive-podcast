@@ -267,6 +267,6 @@ struct LargePodcastCard: View {
         )
     }
     .padding()
-    .preferredColorScheme(.dark)
+    .preferredColorScheme(.light)
 }
 

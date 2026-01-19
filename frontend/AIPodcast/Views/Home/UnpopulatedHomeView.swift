@@ -8,7 +8,7 @@ struct UnpopulatedHomeView: View {
     
     var body: some View {
         ZStack {
-            Color.black.ignoresSafeArea()
+            Color.appBackground.ignoresSafeArea()
             
             VStack(spacing: 0) {
                 Spacer()

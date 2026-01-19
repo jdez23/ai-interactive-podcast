@@ -12,7 +12,7 @@ struct PlaybackControlsView: View {
             Button(action: onPlayPause) {
                 Image(systemName: isPlaying ? "pause.circle.fill" : "play.circle.fill")
                     .font(.system(size: 70))
-                    .foregroundColor(.blue)
+                    .foregroundColor(.appOrange)
             }
             
             Spacer()
