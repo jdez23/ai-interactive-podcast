@@ -2,6 +2,8 @@ import Foundation
 
 struct QuestionResponse: Codable, Sendable {
     let answerText: String
+    let answerOnly: String?
+    let audioUrl: String?
     let sources: [String]
     let contextUsed: ContextUsed
     let timestamp: Double
@@ -18,6 +20,8 @@ struct QuestionResponse: Codable, Sendable {
     
     enum CodingKeys: String, CodingKey {
         case answerText = "answer_text"
+        case answerOnly = "answer_only"
+        case audioUrl = "audio_url"
         case sources
         case contextUsed = "context_used"
         case timestamp

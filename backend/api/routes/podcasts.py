@@ -216,13 +216,15 @@ async def generate_podcast(
         }
     """
     try:
-        target_duration = "medium"
-        if request.duration_minutes <= 2:
-            target_duration = "short"
-        elif request.duration_minutes <= 5:
-            target_duration = "medium"
-        else:
-            target_duration = "long"
+        # HARDCODED FOR TESTING: Always use "short" to save tokens
+        target_duration = "short"
+        # Original logic (commented out for testing):
+        # if request.duration_minutes <= 2:
+        #     target_duration = "short"
+        # elif request.duration_minutes <= 5:
+        #     target_duration = "medium"
+        # else:
+        #     target_duration = "long"
 
         
         podcast_id = f"pod_{uuid.uuid4().hex[:12]}"

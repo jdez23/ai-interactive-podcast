@@ -6,11 +6,18 @@ from the podcast and generating natural language answers.
 """
 
 import logging
+import uuid
+from pathlib import Path
 from typing import Dict, Any
 from services.qa_context_builder import build_qa_context, QAContextError
 from services.openai_service import generate_completion, OpenAIServiceError
+from services.audio_service import generate_speech, VOICE_CONFIG
+from config.settings import PODCAST_DIR
 
 logger = logging.getLogger(__name__)
+
+ANSWERS_DIR = Path("backend/generated/answers")
+ANSWERS_DIR.mkdir(parents=True, exist_ok=True)
 
 
 class QuestionAnswererError(Exception):
@@ -21,24 +28,29 @@ class QuestionAnswererError(Exception):
 async def answer_question(
     podcast_id: str,
     question: str,
-    timestamp: float
+    timestamp: float,
+    generate_audio: bool = True
 ) -> Dict[str, Any]:
     """
-    Answer a user's question about podcast content.
+    Answer a user's question about podcast content with conversational podcast-style audio.
     
     This function:
     1. Builds context using qa_context_builder
-    2. Generates a natural answer using OpenAI
-    3. Returns the answer with metadata
+    2. Generates conversational acknowledgment and answer using OpenAI
+    3. Generates audio response with podcast host voice
+    4. Returns the answer with metadata and audio URL
     
     Args:
         podcast_id: ID of the podcast being listened to
         question: User's question
         timestamp: Current playback position in seconds
+        generate_audio: Whether to generate audio response (default: True)
         
     Returns:
         {
-            "answer_text": str,           # The generated answer
+            "answer_text": str,           # The full conversational response
+            "answer_only": str,           # Just the answer without acknowledgment
+            "audio_url": str,             # URL to audio file (if generate_audio=True)
             "sources": List[str],         # Source document IDs
             "context_used": {             # Context that was used
                 "document_chunks": int,   # Number of chunks used
@@ -57,6 +69,7 @@ async def answer_question(
             timestamp=165.5
         )
         print(answer["answer_text"])
+        print(answer["audio_url"])
     """
     logger.info(f"Answering question for podcast {podcast_id} at {timestamp}s: '{question}'")
     
@@ -72,7 +85,7 @@ async def answer_question(
             f"{len(context['recent_dialogue'])} dialogue exchanges"
         )
         
-        answer_text = await _generate_answer_from_context(context)
+        conversational_response = await _generate_conversational_response(context, question)
         
         sources = list(set(
             chunk.get("source", "unknown")
@@ -80,7 +93,8 @@ async def answer_question(
         ))
         
         response = {
-            "answer_text": answer_text,
+            "answer_text": conversational_response["full_text"],
+            "answer_only": conversational_response["answer_only"],
             "sources": sources,
             "context_used": {
                 "document_chunks": len(context["document_chunks"]),
@@ -89,7 +103,15 @@ async def answer_question(
             "timestamp": timestamp
         }
         
-        logger.info(f"Successfully generated answer ({len(answer_text)} chars)")
+        if generate_audio:
+            audio_url = await _generate_answer_audio(
+                podcast_id=podcast_id,
+                full_text=conversational_response["full_text"]
+            )
+            response["audio_url"] = audio_url
+            logger.info(f"Generated audio response: {audio_url}")
+        
+        logger.info(f"Successfully generated answer ({len(conversational_response['full_text'])} chars)")
         return response
         
     except QAContextError as e:
@@ -106,20 +128,23 @@ async def answer_question(
         raise QuestionAnswererError(error_msg)
 
 
-async def _generate_answer_from_context(context: Dict[str, Any]) -> str:
+async def _generate_conversational_response(context: Dict[str, Any], question: str) -> Dict[str, str]:
     """
-    Generate an answer using the provided context.
+    Generate a conversational podcast-style response with acknowledgment and answer.
     
     Args:
         context: Context dictionary from build_qa_context
+        question: The user's question
         
     Returns:
-        Generated answer text
+        {
+            "full_text": str,      # Complete response with acknowledgment
+            "answer_only": str     # Just the answer part
+        }
         
     Raises:
         OpenAIServiceError: If answer generation fails
     """
-    question = context["question"]
     document_chunks = context["document_chunks"]
     recent_dialogue = context["recent_dialogue"]
     
@@ -129,11 +154,11 @@ async def _generate_answer_from_context(context: Dict[str, Any]) -> str:
     ])
     
     dialogue_text = "\n".join([
-        f"[{exchange['timestamp']}s] {exchange['speaker'].upper()}: {exchange['text']}"
+        f"[{exchange['timestamp']}s] {exchange['text']}"
         for exchange in recent_dialogue
     ])
     
-    prompt = f"""You are answering a listener's question during a podcast.
+    prompt = f"""You are a podcast host responding to a live listener question during your show.
 
 **Recent Podcast Dialogue:**
 {dialogue_text if dialogue_text else "No recent dialogue available."}
@@ -144,38 +169,91 @@ async def _generate_answer_from_context(context: Dict[str, Any]) -> str:
 **Listener's Question:** {question}
 
 **Instructions:**
-1. Answer the question naturally and conversationally, as if you're the podcast host responding
-2. Use information from the source documents and recent dialogue
-3. If the question relates to something just discussed, reference it naturally
-4. Keep your answer concise but complete (2-4 sentences typically)
-5. If the sources don't fully answer the question, acknowledge this honestly
-6. Don't start with "Great question!" or similar - just answer directly
-7. Maintain a friendly, educational tone
+The listener has just asked their question. Generate a natural, conversational answer that includes:
 
-Your answer:"""
+1. A brief reaction/filler (1 sentence)
+   - Examples: "Wow, that's a great question!"
+   - Or: "Ooh, that's an interesting one!"
+   - Or: "That's a really important topic!"
+
+2. The actual answer (2-4 sentences)
+   - Answer naturally and conversationally
+   - Use information from the source documents and recent dialogue
+   - If the question relates to something just discussed, reference it
+   - If sources don't fully answer, acknowledge honestly
+   - Maintain a friendly, educational tone
+
+DO NOT include any speaker labels like "HOST:" or "GUEST:" in your response.
+Format your response as natural speech, like you're talking directly to the listener.
+
+Your response:"""
     
-    logger.info("Generating answer with OpenAI...")
+    logger.info("Generating conversational response with OpenAI...")
     
     try:
         result = generate_completion(
             prompt=prompt,
             model="gpt-4o-mini",
-            temperature=0.7,
-            max_tokens=300
+            temperature=0.8,
+            max_tokens=400
         )
         
-        answer = result["content"].strip()
+        full_text = result["content"].strip()
         
-        if not answer:
-            raise OpenAIServiceError("Generated answer is empty")
+        if not full_text:
+            raise OpenAIServiceError("Generated response is empty")
         
-        logger.info(f"Generated answer: {len(answer)} characters, {result['usage']['total_tokens']} tokens")
+        logger.info(f"Generated response: {len(full_text)} characters, {result['usage']['total_tokens']} tokens")
         
-        return answer
+        answer_only = full_text
+        
+        return {
+            "full_text": full_text,
+            "answer_only": answer_only
+        }
         
     except Exception as e:
-        logger.error(f"Failed to generate answer: {str(e)}")
+        logger.error(f"Failed to generate conversational response: {str(e)}")
         raise
+
+
+async def _generate_answer_audio(podcast_id: str, full_text: str) -> str:
+    """
+    Generate audio for the conversational answer using podcast host voice.
+    
+    Args:
+        podcast_id: ID of the podcast (for organizing files)
+        full_text: The complete conversational response text
+        
+    Returns:
+        Relative URL path to the generated audio file
+        
+    Raises:
+        Exception: If audio generation fails
+    """
+    try:
+        answer_id = uuid.uuid4().hex[:12]
+        filename = f"answer_{podcast_id}_{answer_id}.mp3"
+        
+        logger.info(f"Generating audio for answer: {filename}")
+        
+        voice_id = VOICE_CONFIG["host"]
+        
+        audio_path = await generate_speech(
+            text=full_text,
+            voice_id=voice_id,
+            output_filename=filename,
+            model="eleven_turbo_v2"
+        )
+        
+        relative_path = f"generated/podcasts/{filename}"
+        logger.info(f"Audio generated successfully: {relative_path}")
+        
+        return relative_path
+        
+    except Exception as e:
+        logger.error(f"Failed to generate answer audio: {str(e)}")
+        raise Exception(f"Audio generation failed: {str(e)}")
 
 
 def validate_answer(answer: Dict[str, Any]) -> bool:
@@ -205,6 +283,10 @@ def validate_answer(answer: Dict[str, Any]) -> bool:
     
     if not isinstance(answer["context_used"], dict):
         logger.warning("context_used must be a dict")
+        return False
+    
+    if "audio_url" in answer and not isinstance(answer["audio_url"], str):
+        logger.warning("audio_url must be a string")
         return False
     
     logger.info("Answer validation passed")

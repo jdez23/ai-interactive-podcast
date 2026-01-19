@@ -8,6 +8,10 @@ import logging
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from services.question_answerer import answer_question, QuestionAnswererError
+from services.qa_audio_transitions import (
+    generate_acknowledgment_audio,
+    generate_return_transition_audio
+)
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -23,19 +27,22 @@ class QuestionRequest(BaseModel):
 @router.post("/ask")
 async def ask_question(request: QuestionRequest):
     """
-    Ask a question about the podcast content.
+    Ask a question about the podcast content with conversational audio response.
     
     This endpoint:
     1. Builds context from podcast content and recent dialogue
-    2. Generates a natural language answer using OpenAI
-    3. Returns the answer with source information
+    2. Generates a conversational podcast-style answer using OpenAI
+    3. Generates audio response with podcast host voice
+    4. Returns the answer with source information and audio URL
     
     Args:
         request: QuestionRequest with podcast_id, question, and timestamp
         
     Returns:
         {
-            "answer_text": "Backpropagation is an algorithm...",
+            "answer_text": "Looks like we have a question from one of our listeners! Go ahead...",
+            "answer_only": "Backpropagation is an algorithm...",
+            "audio_url": "generated/podcasts/answer_pod123_abc.mp3",
             "sources": ["machine_learning.pdf"],
             "context_used": {
                 "document_chunks": 5,
@@ -62,10 +69,14 @@ async def ask_question(request: QuestionRequest):
         answer = await answer_question(
             podcast_id=request.podcast_id,
             question=request.question.strip(),
-            timestamp=request.timestamp
+            timestamp=request.timestamp,
+            generate_audio=True
         )
         
-        logger.info(f"Successfully answered question for podcast {request.podcast_id}")
+        logger.info(
+            f"Successfully answered question for podcast {request.podcast_id} "
+            f"with audio: {answer.get('audio_url', 'N/A')}"
+        )
         return answer
         
     except QuestionAnswererError as e:
@@ -79,3 +90,74 @@ async def ask_question(request: QuestionRequest):
     except Exception as e:
         logger.error(f"Unexpected error in ask_question: {str(e)}")
         raise HTTPException(status_code=500, detail="Internal server error")
+
+
+class AcknowledgmentRequest(BaseModel):
+    """Request model for acknowledgment with question."""
+    question: str
+
+
+@router.post("/acknowledgment")
+async def get_acknowledgment(request: AcknowledgmentRequest):
+    """
+    Generate acknowledgment audio that includes reading the question.
+    
+    This endpoint generates:
+    - Acknowledgment phrase: "Oh, looks like we have a question from one of our listeners..."
+    - Question reading: "They're asking: [question]"
+    - Combined audio file
+    
+    Args:
+        request: AcknowledgmentRequest with the question text
+    
+    Returns:
+        {
+            "acknowledgment_text": str,
+            "question_text": str,
+            "full_text": str,
+            "audio_url": str
+        }
+        
+    Raises:
+        HTTPException: If audio generation fails
+    """
+    logger.info(f"Generating acknowledgment audio for question: '{request.question}'")
+    
+    try:
+        result = await generate_acknowledgment_audio(question=request.question)
+        logger.info(f"Successfully generated acknowledgment audio: {result['audio_url']}")
+        return result
+        
+    except Exception as e:
+        logger.error(f"Failed to generate acknowledgment audio: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to generate acknowledgment: {str(e)}")
+
+
+@router.post("/return-transition")
+async def get_return_transition():
+    """
+    Generate transition audio to return to the podcast.
+    
+    This endpoint generates a natural transition phrase like:
+    - "Alright, let's get back to it!"
+    - "Now, where were we..."
+    
+    Returns:
+        {
+            "text": str,
+            "audio_url": str
+        }
+        
+    Raises:
+        HTTPException: If audio generation fails
+    """
+    logger.info("Generating return transition audio")
+    
+    try:
+        result = await generate_return_transition_audio()
+        logger.info(f"Successfully generated return transition audio: {result['audio_url']}")
+        return result
+        
+    except Exception as e:
+        logger.error(f"Failed to generate return transition audio: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to generate transition: {str(e)}")

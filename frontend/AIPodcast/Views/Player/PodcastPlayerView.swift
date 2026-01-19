@@ -65,8 +65,6 @@ struct PodcastPlayerView: View {
                         )
                         .padding(.vertical)
                         
-                        Spacer()
-                        
                         // Error Message
                         if let errorMessage = viewModel.errorMessage {
                             HStack {
@@ -86,7 +84,6 @@ struct PodcastPlayerView: View {
                         AskAISection(
                             question: $viewModel.questionText,
                             isProcessing: viewModel.isProcessingQuestion,
-                            onTapToAsk: viewModel.startVoiceQuestion,
                             onSubmitText: viewModel.submitTextQuestion
                         )
                         .padding(.horizontal)
@@ -106,6 +103,7 @@ struct PodcastPlayerView: View {
                 AnswerDisplayView(
                     question: viewModel.lastAskedQuestion,
                     answer: answer,
+                    isPlayingAnswer: viewModel.isPlayingAnswer,
                     onDismiss: viewModel.dismissAnswer,
                     onResume: viewModel.resumePlayback
                 )

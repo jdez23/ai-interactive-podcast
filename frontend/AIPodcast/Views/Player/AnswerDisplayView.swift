@@ -3,6 +3,7 @@ import SwiftUI
 struct AnswerDisplayView: View {
     let question: String
     let answer: QuestionResponse
+    let isPlayingAnswer: Bool
     let onDismiss: () -> Void
     let onResume: () -> Void
     
@@ -58,6 +59,23 @@ struct AnswerDisplayView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .background(Color.appSecondaryBackground)
                             .cornerRadius(CornerRadius.md)
+                    }
+                    
+                    // Audio Playing Indicator
+                    if isPlayingAnswer {
+                        HStack(spacing: Spacing.sm) {
+                            Image(systemName: "waveform")
+                                .font(.appCallout)
+                                .foregroundColor(.appPrimary)
+                                .symbolEffect(.variableColor.iterative.reversing)
+                            Text("Playing audio response...")
+                                .font(.appCallout)
+                                .foregroundColor(.appPrimary)
+                        }
+                        .padding(Spacing.md)
+                        .frame(maxWidth: .infinity)
+                        .background(Color.appPrimary.opacity(0.1))
+                        .cornerRadius(CornerRadius.md)
                     }
                     
                     // Answer
@@ -175,6 +193,8 @@ struct AnswerDisplayView: View {
             question: "What is backpropagation?",
             answer: QuestionResponse(
                 answerText: "Backpropagation is an algorithm used to train neural networks by calculating gradients and updating weights based on the error between predicted and actual outputs. It works by propagating the error backwards through the network layers.",
+                answerOnly: nil,
+                audioUrl: nil,
                 sources: ["machine_learning.pdf", "neural_networks.pdf"],
                 contextUsed: QuestionResponse.ContextUsed(
                     documentChunks: 5,
@@ -182,6 +202,7 @@ struct AnswerDisplayView: View {
                 ),
                 timestamp: 165.5
             ),
+            isPlayingAnswer: false,
             onDismiss: {},
             onResume: {}
         )

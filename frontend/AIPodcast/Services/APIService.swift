@@ -172,4 +172,70 @@ class APIService {
         
         return questionResponse
     }
+    
+    func getAcknowledgment(question: String) async throws -> AcknowledgmentResponse {
+        let url = "\(baseURL)/api/questions/acknowledgment"
+        
+        let requestBody = ["question": question]
+        let encoder = JSONEncoder()
+        let requestData = try encoder.encode(requestBody)
+        
+        var urlRequest = URLRequest(url: URL(string: url)!)
+        urlRequest.httpMethod = "POST"
+        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        urlRequest.httpBody = requestData
+        
+        let data = try await AF.request(urlRequest)
+            .validate()
+            .serializingData()
+            .value
+        
+        let decoder = JSONDecoder()
+        let response = try decoder.decode(AcknowledgmentResponse.self, from: data)
+        
+        return response
+    }
+    
+    func getReturnTransition() async throws -> TransitionResponse {
+        let url = "\(baseURL)/api/questions/return-transition"
+        
+        var urlRequest = URLRequest(url: URL(string: url)!)
+        urlRequest.httpMethod = "POST"
+        
+        let data = try await AF.request(urlRequest)
+            .validate()
+            .serializingData()
+            .value
+        
+        let decoder = JSONDecoder()
+        let response = try decoder.decode(TransitionResponse.self, from: data)
+        
+        return response
+    }
+}
+
+// MARK: - Response Models
+
+struct AcknowledgmentResponse: Codable {
+    let acknowledgmentText: String
+    let questionText: String
+    let fullText: String
+    let audioUrl: String
+    
+    enum CodingKeys: String, CodingKey {
+        case acknowledgmentText = "acknowledgment_text"
+        case questionText = "question_text"
+        case fullText = "full_text"
+        case audioUrl = "audio_url"
+    }
+}
+
+struct TransitionResponse: Codable {
+    let text: String
+    let audioUrl: String
+    
+    enum CodingKeys: String, CodingKey {
+        case text
+        case audioUrl = "audio_url"
+    }
 }
