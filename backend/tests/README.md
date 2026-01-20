@@ -282,7 +282,60 @@ python tests/test_podcast_storage.py
 
 **Note:** This test only validates the database storage layer. No actual audio files are generated or required.
 
-### 13. `test_podcast_api_integration.py`
+### 13. `test_qa_context_simple.py`
+Tests the Q&A context builder service:
+- Error handling (empty inputs, invalid podcast_id, negative timestamp)
+- Dialogue extraction at different timestamps (beginning, middle, end, beyond)
+- Context validation (required fields, correct types)
+- Timestamp estimation algorithm
+- Recent dialogue lookback window
+
+**Run:**
+```bash
+cd backend
+source venv/bin/activate
+python tests/test_qa_context_simple.py
+```
+
+**Expected Output:**
+- All error handling tests pass (4 tests)
+- Dialogue extraction works at various timestamps (5 tests)
+- Context validation passes (3 tests)
+- Total: 3/3 test suites passed
+- Exit code: 0
+
+**Note:** This is an automated test that doesn't require a real podcast. It tests the core logic with mock data.
+
+### 14. `test_qa_context_builder.py`
+Interactive tests for Q&A context builder with real podcasts:
+- Basic context building with actual podcast data
+- Document chunk retrieval via semantic search
+- Recent dialogue extraction based on playback position
+- Different question types and timestamp edge cases
+- End-to-end context validation
+
+**Run:**
+```bash
+cd backend
+source venv/bin/activate
+python tests/test_qa_context_builder.py
+```
+
+**Prerequisites:**
+- At least one completed podcast in the database
+- Podcast must have associated script file ({podcast_id}_script.json)
+- Source documents must be in vector database
+
+**Expected Output:**
+- Prompts for podcast_id for interactive tests
+- Shows retrieved document chunks with relevance scores
+- Displays recent dialogue with estimated timestamps
+- Validates complete context structure
+- Tests various timestamp positions and question types
+
+**Note:** This test requires user input and a real podcast. Use `test_qa_context_simple.py` for automated testing.
+
+### 15. `test_podcast_api_integration.py`
 Integration tests for podcast API endpoints:
 - Health check endpoint
 - Document upload (optional if test file exists)
@@ -330,7 +383,8 @@ python tests/test_storage_errors.py && \
 python tests/test_end_to_end.py && \
 python tests/test_retrieve_chunks.py && \
 python tests/test_audio.py && \
-python tests/test_podcast_storage.py
+python tests/test_podcast_storage.py && \
+python tests/test_qa_context_simple.py
 ```
 
 ### Integration Tests (Server Required)
@@ -439,6 +493,20 @@ python tests/test_full_pipeline.py ~/Desktop/your-document.pdf short
     - ✅ Tested with multiple podcasts
     - ✅ Database persists across server restarts
     - ✅ Concurrent podcast generation supported
+
+13. **Q&A Context Builder (build_qa_context)**
+    - ✅ Function exists in `services/qa_context_builder.py`
+    - ✅ Accepts podcast_id, question, timestamp parameters
+    - ✅ Returns dictionary with required fields (question, timestamp, document_chunks, recent_dialogue, podcast_metadata)
+    - ✅ Retrieves podcast metadata from database
+    - ✅ Searches document chunks using semantic search (top 5 relevant chunks)
+    - ✅ Loads podcast script from JSON file
+    - ✅ Extracts recent dialogue based on timestamp (60-second lookback window)
+    - ✅ Includes estimated timestamps for dialogue exchanges
+    - ✅ Error handling for podcast not found, empty question, invalid timestamp, missing script file
+    - ✅ Comprehensive logging throughout
+    - ✅ Tested with 3+ different scenarios (error cases, dialogue extraction, validation)
+    - ✅ Works with mock data and ready for real podcast integration
 
 ## Expected Output
 

@@ -39,6 +39,7 @@
 		02E8BBAD2EE20210006B99D4 /* AIPodcastApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E8BBAA2EE20210006B99D4 /* AIPodcastApp.swift */; };
 		02E8BBBE2EE209B1006B99D4 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 02E8BBBD2EE209B1006B99D4 /* Alamofire */; };
 		02E8BBC22EE20B4D006B99D4 /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E8BBC12EE20B4A006B99D4 /* TestView.swift */; };
+		38D0DC662F1766670086D25C /* AnswerDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38D0DC652F1766670086D25C /* AnswerDisplayView.swift */; };
 		63C3F2A22EF629F400B856D7 /* CardButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C3F2A12EF629F400B856D7 /* CardButtonStyle.swift */; };
 		63C3F2E42F09FA9B00B856D7 /* AddFileEmptyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C3F2E32F09FA9200B856D7 /* AddFileEmptyState.swift */; };
 		63C3F2E62F09FAF100B856D7 /* AddFileBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63C3F2E52F09FAED00B856D7 /* AddFileBox.swift */; };
@@ -89,6 +90,7 @@
 		02E8BBB72EE2057B006B99D4 /* AudioPlayerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerService.swift; sourceTree = "<group>"; };
 		02E8BBB82EE205CF006B99D4 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		02E8BBC12EE20B4A006B99D4 /* TestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
+		38D0DC652F1766670086D25C /* AnswerDisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnswerDisplayView.swift; sourceTree = "<group>"; };
 		63C3F2A12EF629F400B856D7 /* CardButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardButtonStyle.swift; sourceTree = "<group>"; };
 		63C3F2E32F09FA9200B856D7 /* AddFileEmptyState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFileEmptyState.swift; sourceTree = "<group>"; };
 		63C3F2E52F09FAED00B856D7 /* AddFileBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFileBox.swift; sourceTree = "<group>"; };
@@ -185,6 +187,7 @@
 		026624E92EEB41FE00640CA3 /* Player */ = {
 			isa = PBXGroup;
 			children = (
+				38D0DC652F1766670086D25C /* AnswerDisplayView.swift */,
 				026625032EEB820400640CA3 /* AskAISection.swift */,
 				026625012EEB80FB00640CA3 /* PlaybackControlsView.swift */,
 				026624FF2EEB80D500640CA3 /* ProgressBarView.swift */,
@@ -448,6 +451,7 @@
 				63C3F2E42F09FA9B00B856D7 /* AddFileEmptyState.swift in Sources */,
 				02975E512EF0B8DB00843580 /* LoadingView.swift in Sources */,
 				02975E522EF0B8DB00843580 /* PodcastCard.swift in Sources */,
+				38D0DC662F1766670086D25C /* AnswerDisplayView.swift in Sources */,
 				02975E532EF0B8DB00843580 /* EmptyStateView.swift in Sources */,
 				026624FE2EEB806F00640CA3 /* CustomNavBar.swift in Sources */,
 				029C77332EE8D204007E9335 /* LibraryTabView.swift in Sources */,
@@ -648,6 +652,7 @@
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need microphone access to let you ask questions using your voice.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -693,6 +698,7 @@
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "We need microphone access to let you ask questions using your voice.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
