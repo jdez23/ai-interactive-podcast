@@ -16,7 +16,7 @@ struct ProgressBarView: View {
                     
                     // Progress
                     RoundedRectangle(cornerRadius: 2)
-                        .fill(Color.blue)
+                        .fill(Color.appOrange)
                         .frame(width: progressWidth(geometry: geometry), height: 4)
                 }
             }

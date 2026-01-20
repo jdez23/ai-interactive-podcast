@@ -8,8 +8,7 @@ struct GenerateTabView: View {
         NavigationStack {
             ZStack {
                 // Dark background
-                Color.black.ignoresSafeArea()
-
+                Color.appBackground.ignoresSafeArea()
                 VStack(spacing: 0) {
                     // Main content area
                     if viewModel.selectedFiles.isEmpty {
@@ -52,9 +51,6 @@ struct GenerateTabView: View {
             }
             .navigationTitle("Generate")
             .navigationBarTitleDisplayMode(.large)
-            .toolbarBackground(Color.black, for: .navigationBar)
-            .toolbarBackground(.visible, for: .navigationBar)
-            .toolbarColorScheme(.dark, for: .navigationBar)
             .fileImporter(
                 isPresented: $viewModel.showFilePicker,
                 allowedContentTypes: [.pdf],

@@ -28,6 +28,7 @@ struct AskAISection: View {
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
                 .padding()
+                .background(Color.appOrange)
                 .background(isWaitingForHost ? Color.orange : (isRecording ? Color.red : Color.blue))
                 .cornerRadius(12)
             }
@@ -55,7 +56,7 @@ struct AskAISection: View {
                         ProgressView()
                     } else {
                         Image(systemName: "paperplane.fill")
-                            .foregroundColor(.blue)
+                            .foregroundColor(.appOrange)
                     }
             }
             .disabled(question.isEmpty || isProcessing)

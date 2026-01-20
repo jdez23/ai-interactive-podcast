@@ -17,6 +17,8 @@ struct MainTabView: View {
                 }
                 .tag(Tab.generate)
         }
+        .tint(.appOrange)
+        .preferredColorScheme(.light)
         .sheet(item: $appState.selectedPodcast) { podcast in
             PodcastPlayerView(podcast: podcast)
         }

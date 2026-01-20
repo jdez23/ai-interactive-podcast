@@ -15,7 +15,7 @@ struct DocumentListView: View {
                     GenerateTabView()
                 } label: {
                     Label("Upload PDFs to Generate", systemImage: "arrow.up.doc")
-                        .foregroundColor(.blue)
+                        .foregroundColor(.appOrange)
                 }
             }
             
@@ -23,7 +23,7 @@ struct DocumentListView: View {
                 ForEach(placeholderDocuments, id: \.self) { document in
                     HStack {
                         Image(systemName: "doc.text")
-                            .foregroundColor(.blue)
+                            .foregroundColor(.appOrange)
                         Text(document)
                     }
                 }

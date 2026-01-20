@@ -6,7 +6,7 @@ struct AddFileBox: View {
     var body: some View {
         Button(action: onAddFile) {
             VStack(spacing: 12) {
-                // Blue circle with plus icon
+                // Orange circle with plus icon
                 ZStack {
                     Circle()
                         .fill(Color.appPrimary)
@@ -19,7 +19,7 @@ struct AddFileBox: View {
                 
                 Text("Add file")
                     .font(.headline)
-                    .foregroundColor(.white)
+                    .foregroundColor(.black)
                 
                 Text("Add files to generate your personalized\npodcast")
                     .font(.caption)
@@ -40,7 +40,7 @@ struct AddFileBox: View {
 
 #Preview {
     ZStack {
-        Color.black.ignoresSafeArea()
+        Color.white.ignoresSafeArea()
         AddFileBox(onAddFile: {})
             .padding()
     }

@@ -7,7 +7,7 @@ struct AddFileEmptyState: View {
         Button(action: onAddFile) {
             VStack(spacing: 16) {
                 VStack(spacing: 12) {
-                    // Blue circle with plus icon
+                    // Orange circle with plus icon
                     ZStack {
                         Circle()
                             .fill(Color.appPrimary)
@@ -21,11 +21,11 @@ struct AddFileEmptyState: View {
                     Text("Add file")
                         .font(.title3)
                         .fontWeight(.semibold)
-                        .foregroundColor(.white)
+                        .foregroundColor(.appText)
                     
                     Text("Add file(s) to generate your personalized\npodcast")
                         .font(.subheadline)
-                        .foregroundColor(.gray)
+                        .foregroundColor(.appSecondaryText)
                         .multilineTextAlignment(.center)
                 }
             }
@@ -38,7 +38,7 @@ struct AddFileEmptyState: View {
 
 #Preview {
     ZStack {
-        Color.black.ignoresSafeArea()
+        Color.appBackground.ignoresSafeArea()
         AddFileEmptyState(onAddFile: {})
     }
 }

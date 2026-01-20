@@ -175,5 +175,5 @@ struct SkeletonLoadingView: View {
         .padding(.horizontal)
     }
     .padding()
-    .preferredColorScheme(.dark)
+    .preferredColorScheme(.light)
 }
