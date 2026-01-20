@@ -11,9 +11,18 @@ class PodcastPlayerViewModel: ObservableObject {
     @Published var duration: TimeInterval = 0
     @Published var questionText = ""
     @Published var isProcessingQuestion = false
+    @Published var currentAnswer: QuestionResponse?
+    @Published var showAnswer = false
+    @Published var errorMessage: String?
+    @Published var lastAskedQuestion = ""
+    @Published var isPlayingAnswer = false
     
     private var player: AVPlayer?
+    private var answerPlayer: AVPlayer?
+    private var acknowledgmentPlayer: AVPlayer?
+    private var transitionPlayer: AVPlayer?
     private var timeObserver: Any?
+    private var savedTimestamp: TimeInterval = 0
     
     init(podcast: Podcast) {
         self.podcast = podcast
@@ -68,56 +77,260 @@ class PodcastPlayerViewModel: ObservableObject {
         player.seek(to: CMTime(seconds: newTime, preferredTimescale: 1))
     }
     
-    func startVoiceQuestion() {
-        // TODO: Implement voice recording
-        // For now, just show an alert
-        print("Voice question not yet implemented")
-    }
-    
     func submitTextQuestion() {
         guard !questionText.isEmpty else { return }
         
         isProcessingQuestion = true
+        errorMessage = nil
+        
+        let askedQuestion = questionText
         
         Task {
             do {
+                // Wait for current dialogue chunk to end (estimated 8 seconds per chunk)
+                let secondsPerChunk: TimeInterval = 8.0
+                let currentChunkIndex = Int(currentTime / secondsPerChunk)
+                let nextChunkTime = TimeInterval(currentChunkIndex + 1) * secondsPerChunk
+                let waitTime = max(0.1, nextChunkTime - currentTime)
+                
+                print("⏳ Waiting \(waitTime)s for current chunk to end...")
+                try await Task.sleep(nanoseconds: UInt64(waitTime * 1_000_000_000))
+                
+                // Save timestamp at end of chunk
+                savedTimestamp = nextChunkTime
+                
+                print("📝 Asking question at timestamp: \(savedTimestamp)s")
+                
+                // Fade out podcast smoothly
+                await fadeOutPodcast()
+                
+                // Get acknowledgment audio with question
+                print("🎤 Getting acknowledgment...")
+                let acknowledgment = try await APIService.shared.getAcknowledgment(question: askedQuestion)
+                await playAcknowledment(audioUrl: acknowledgment.audioUrl)
+                
+                // Get answer
                 let response = try await APIService.shared.askQuestion(
                     podcastId: podcast.id,
-                    questionText: questionText
+                    questionText: askedQuestion,
+                    timestamp: savedTimestamp
                 )
                 
-                // Pause current podcast
-                player?.pause()
-                isPlaying = false
+                print("✅ Received answer: \(response.answerText.prefix(50))...")
                 
-                // Play answer audio
-                if let answerAudioUrl = response.answerAudioUrl,
-                   let answerUrl = URL(string: answerAudioUrl) {
-                    playAnswerAudio(url: answerUrl)
-                }
+                // Show answer
+                lastAskedQuestion = askedQuestion
+                currentAnswer = response
+                showAnswer = true
                 
-                // Clear question
+                // Clear question input
                 questionText = ""
                 isProcessingQuestion = false
                 
-            } catch {
-                print("Error asking question: \(error)")
+                // Play audio response if available
+                if let audioUrl = response.audioUrl {
+                    await playAnswerAudio(audioUrl: audioUrl)
+                }
+                
+                // Play transition
+                print("🔄 Getting transition...")
+                let transition = try await APIService.shared.getReturnTransition()
+                await playTransition(audioUrl: transition.audioUrl)
+                
+                // Resume podcast with fade in
+                if let player = player {
+                    await player.seek(to: CMTime(seconds: savedTimestamp, preferredTimescale: 1))
+                }
+                await fadeInPodcast()
+                
+                // Dismiss answer overlay
+                showAnswer = false
+                currentAnswer = nil
+                
+                print("✅ Completed Q&A flow")
+                
+            } catch let error as APIError {
+                print("❌ API Error asking question: \(error.localizedDescription)")
+                errorMessage = error.localizedDescription
                 isProcessingQuestion = false
+                // Resume podcast on error
+                await fadeInPodcast()
+            } catch {
+                print("❌ Error asking question: \(error.localizedDescription)")
+                errorMessage = "Failed to get answer. Please try again."
+                isProcessingQuestion = false
+                // Resume podcast on error
+                await fadeInPodcast()
             }
         }
     }
     
-    private func playAnswerAudio(url: URL) {
-        print("🎤 Playing answer audio: \(url.absoluteString)")
-        let answerPlayer = AVPlayer(url: url)
-        answerPlayer.play()
+    private func fadeOutPodcast() async {
+        print("🔉 Fading out podcast...")
+        guard let player = player else { return }
         
-        // TODO: Resume podcast after answer finishes
+        let fadeSteps = 15
+        let fadeDuration: TimeInterval = 1.0
+        let stepDuration = fadeDuration / TimeInterval(fadeSteps)
+        let initialVolume = player.volume
+        let volumeStep = initialVolume / Float(fadeSteps)
+        
+        for _ in 0..<fadeSteps {
+            player.volume = max(0, player.volume - volumeStep)
+            try? await Task.sleep(nanoseconds: UInt64(stepDuration * 1_000_000_000))
+        }
+        
+        player.pause()
+        isPlaying = false
+        player.volume = 1.0 // Reset for later
+        print("✅ Podcast faded out")
+    }
+    
+    private func fadeInPodcast() async {
+        print("🔊 Fading in podcast...")
+        guard let player = player else { return }
+        
+        player.volume = 0
+        player.play()
+        isPlaying = true
+        
+        let fadeSteps = 15
+        let fadeDuration: TimeInterval = 1.0
+        let stepDuration = fadeDuration / TimeInterval(fadeSteps)
+        let volumeStep = 1.0 / Float(fadeSteps)
+        
+        for _ in 0..<fadeSteps {
+            player.volume = min(1.0, player.volume + volumeStep)
+            try? await Task.sleep(nanoseconds: UInt64(stepDuration * 1_000_000_000))
+        }
+        
+        print("✅ Podcast faded in")
+    }
+    
+    private func playAcknowledment(audioUrl: String) async {
+        print("🎤 Playing acknowledgment...")
+        
+        let fullUrlString: String
+        if audioUrl.hasPrefix("http://") || audioUrl.hasPrefix("https://") {
+            fullUrlString = audioUrl
+        } else {
+            let cleanPath = audioUrl.hasPrefix("/") ? String(audioUrl.dropFirst()) : audioUrl
+            fullUrlString = "\(Constants.apiBaseURL)/\(cleanPath)"
+        }
+        
+        guard let url = URL(string: fullUrlString) else {
+            print("⚠️ Invalid acknowledgment audio URL")
+            return
+        }
+        
+        let player = AVPlayer(url: url)
+        self.acknowledgmentPlayer = player
+        player.play()
+        
+        // Wait 3 seconds for acknowledgment
+        try? await Task.sleep(nanoseconds: 3_000_000_000)
+        print("✅ Acknowledgment finished")
+    }
+    
+    private func playAnswerAudio(audioUrl: String) async {
+        print("🎵 Playing answer audio...")
+        
+        let fullUrlString: String
+        if audioUrl.hasPrefix("http://") || audioUrl.hasPrefix("https://") {
+            fullUrlString = audioUrl
+        } else {
+            let cleanPath = audioUrl.hasPrefix("/") ? String(audioUrl.dropFirst()) : audioUrl
+            fullUrlString = "\(Constants.apiBaseURL)/\(cleanPath)"
+        }
+        
+        guard let url = URL(string: fullUrlString) else {
+            print("⚠️ Invalid answer audio URL")
+            return
+        }
+        
+        let player = AVPlayer(url: url)
+        self.answerPlayer = player
+        self.isPlayingAnswer = true
+        
+        await withCheckedContinuation { [weak self] (continuation: CheckedContinuation<Void, Never>) in
+            NotificationCenter.default.addObserver(
+                forName: .AVPlayerItemDidPlayToEndTime,
+                object: player.currentItem,
+                queue: .main
+            ) { _ in
+                Task { @MainActor in
+                    self?.isPlayingAnswer = false
+                    print("✅ Answer audio finished")
+                    continuation.resume()
+                }
+            }
+            
+            player.play()
+        }
+    }
+    
+    private func playTransition(audioUrl: String) async {
+        print("🔄 Playing transition...")
+        
+        let fullUrlString: String
+        if audioUrl.hasPrefix("http://") || audioUrl.hasPrefix("https://") {
+            fullUrlString = audioUrl
+        } else {
+            let cleanPath = audioUrl.hasPrefix("/") ? String(audioUrl.dropFirst()) : audioUrl
+            fullUrlString = "\(Constants.apiBaseURL)/\(cleanPath)"
+        }
+        
+        guard let url = URL(string: fullUrlString) else {
+            print("⚠️ Invalid transition audio URL")
+            return
+        }
+        
+        let player = AVPlayer(url: url)
+        self.transitionPlayer = player
+        player.play()
+        
+        // Wait 3 seconds for transition
+        try? await Task.sleep(nanoseconds: 3_000_000_000)
+        print("✅ Transition finished")
+    }
+    
+    @MainActor
+    func stopAnswerAudio() {
+        answerPlayer?.pause()
+        answerPlayer = nil
+        acknowledgmentPlayer?.pause()
+        acknowledgmentPlayer = nil
+        transitionPlayer?.pause()
+        transitionPlayer = nil
+        isPlayingAnswer = false
+    }
+    
+    func dismissAnswer() {
+        stopAnswerAudio()
+        showAnswer = false
+        currentAnswer = nil
+    }
+    
+    func resumePlayback() {
+        stopAnswerAudio()
+        dismissAnswer()
+        if let player = player {
+            player.seek(to: CMTime(seconds: savedTimestamp, preferredTimescale: 1))
+            player.play()
+            isPlaying = true
+        }
     }
     
     deinit {
         if let observer = timeObserver {
             player?.removeTimeObserver(observer)
         }
+        answerPlayer?.pause()
+        answerPlayer = nil
+        acknowledgmentPlayer?.pause()
+        acknowledgmentPlayer = nil
+        transitionPlayer?.pause()
+        transitionPlayer = nil
+        NotificationCenter.default.removeObserver(self)
     }
 }

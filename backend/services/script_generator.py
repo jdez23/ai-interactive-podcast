@@ -102,7 +102,7 @@ def _determine_chunk_count(target_length: str, total_chunks: int) -> int:
         Number of chunks to use
     """
     chunk_mapping = {
-        "short": 3,    # ~2-3 minutes
+        "short": 2,    # ~1-2 minutes (REDUCED FOR TESTING)
         "medium": 6,   # ~5 minutes
         "long": 12     # ~10 minutes
     }
@@ -123,7 +123,7 @@ def _get_duration_minutes(target_length: str) -> int:
         Duration in minutes
     """
     duration_mapping = {
-        "short": 3,
+        "short": 1,    # 1 minute (REDUCED FOR TESTING)
         "medium": 5,
         "long": 10
     }
